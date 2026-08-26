@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Renty.Domain/Renty.Domain.csproj" Id="71a37c69-227c-49ca-9a89-9203eb11fa41" />
   <Project Path="Renty.Web/Renty.Web.csproj" />
 </Solution>
