@@ -14,9 +14,8 @@ namespace Renty.Domain.Models.Orders
         public Guid Id { get; set; }
 
         // Связь с домом
-        public Guid HouseId { get; set; }
-        //[ForeignKey(nameof(HouseId))]
-        public virtual House House { get; set; }
+        public Guid PropertyId { get; set; }
+        public virtual Property Property { get; set; }
 
         // тот кто заезжает
         public Guid UserId { get; set; }
@@ -34,9 +33,9 @@ namespace Renty.Domain.Models.Orders
         // Стоимость
         public decimal TotalPrice { get; set; }
 
-        // Статус бронирования (связь с StatusLookup, Category="Booking")
+        // Статус бронирования (связь с StatusLookup)
         public int StatusId { get; set; }
-        [ForeignKey(nameof(StatusId))]
+        //[ForeignKey(nameof(StatusId))]
         public virtual BookingStatus Status { get; set; }
 
         // Даты

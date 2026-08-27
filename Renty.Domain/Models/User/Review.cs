@@ -21,8 +21,17 @@ namespace Renty.Domain.Models.User
         [ForeignKey(nameof(PropertyId))]
         public virtual Property Property { get; set; }
 
-        // Оценка (1-5)
-        public int Rating { get; set; }
+        // Общая оценка (1-5) - вычисляется на основе детальных оценок или задается независимо
+        public decimal Rating { get; set; }
+
+        // Детальные оценки (1-5 каждая)
+        public decimal? CleanlinessRating { get; set; }
+
+        public decimal? CommunicationRating { get; set; }
+
+        public decimal? AccuracyRating { get; set; }
+
+        public decimal? LocationRating { get; set; }
 
         // Текст отзыва
         public string Comment { get; set; } = string.Empty;

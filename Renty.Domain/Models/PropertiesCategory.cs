@@ -8,7 +8,7 @@ namespace Renty.Domain.Models
     /// <summary>
     /// Категории объектов недвижимости (Apartment, House, Villa, Hotel, Guesthouse, Hostel, etc.)
     /// </summary>
-    public class ApartmentsCategory
+    public class PropertiesCategory
     {
 
 

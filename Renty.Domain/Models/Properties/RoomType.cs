@@ -22,6 +22,6 @@ namespace Renty.Domain.Models.Properties
         public int DisplayOrder { get; set; } = 0;
 
         // Навигационные свойства
-        public virtual ICollection<House> Rooms { get; set; } = new List<House>();
+        public virtual ICollection<Property> Properties { get; set; } = new List<Property>();
     }
 }

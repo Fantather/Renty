@@ -22,7 +22,6 @@ namespace Renty.Domain.Models.Properties.Anemities
         public bool IsActive { get; set; } = true;
 
         // Навигационные свойства
-        public virtual ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
-        public virtual ICollection<HotelAmenity> HotelAmenities { get; set; } = new List<HotelAmenity>();
+        public virtual ICollection<PropertyAmenity> PropertyAmenities { get; set; } = new List<PropertyAmenity>();
     }
 }
