@@ -22,10 +22,6 @@ namespace Renty.Domain.Models.Media
         // Является ли изображение главным
         public bool IsPrimary { get; set; } = false;
 
-        public int? ImageTypeId { get; set; }
-        [ForeignKey(nameof(ImageTypeId))]
-        public virtual ImageType? ImageType { get; set; }
-
         // Дата загрузки
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

@@ -5,7 +5,6 @@ namespace Renty.Domain.Models.Properties
 {
     /// <summary>
     /// Характеристики недвижимости с поддержкой истории изменений
-    /// Используется паттерн Effective Dating для отслеживания изменений во времени
     /// </summary>
     public class PropertyDetails
     {
@@ -25,14 +24,14 @@ namespace Renty.Domain.Models.Properties
 
         public int BathroomsCount { get; set; } = 0;
 
-        // период действия этих характеристик
-        public DateTime ValidFrom { get; set; } = DateTime.UtcNow;
+        //// период действия этих характеристик
+        //public DateTime ValidFrom { get; set; } = DateTime.UtcNow;
 
-        // null = текущая версия
-        public DateTime? ValidTo { get; set; }
+        //// null = текущая версия
+        //public DateTime? ValidTo { get; set; }
 
-        // Кто изменил
-        public Guid? ModifiedByUserId { get; set; }
+        //// Кто изменил
+        //public Guid? ModifiedByUserId { get; set; }
 
         // Когда создана запись
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

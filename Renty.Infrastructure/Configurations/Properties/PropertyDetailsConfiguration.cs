@@ -15,10 +15,6 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.HasKey(pd => pd.Id);
 
-            // Индексы для эффективного поиска текущих и исторических данных
-            builder.HasIndex(pd => new { pd.PropertyId, pd.ValidTo });
-            builder.HasIndex(pd => new { pd.PropertyId, pd.ValidFrom, pd.ValidTo });
-
             // Свойства
             builder.Property(pd => pd.MaxGuests)
                 .IsRequired();
@@ -32,21 +28,21 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.Property(pd => pd.BathroomsCount)
                 .IsRequired();
 
-            builder.Property(pd => pd.ValidFrom)
-                .IsRequired();
+            //builder.Property(pd => pd.ValidFrom)
+            //    .IsRequired();
 
-            builder.Property(pd => pd.ValidTo);
+            //builder.Property(pd => pd.ValidTo);
 
-            builder.Property(pd => pd.ModifiedByUserId);
+            //builder.Property(pd => pd.ModifiedByUserId);
 
-            builder.Property(pd => pd.CreatedAt)
-                .IsRequired();
+            //builder.Property(pd => pd.CreatedAt)
+            //    .IsRequired();
 
-            // Связь с Property
-            builder.HasOne(pd => pd.Property)
-                .WithMany(p => p.DetailsHistory)
-                .HasForeignKey(pd => pd.PropertyId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //// Связь с Property
+            //builder.HasOne(pd => pd.Property)
+            //    .WithMany(p => p.DetailsHistory)
+            //    .HasForeignKey(pd => pd.PropertyId)
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

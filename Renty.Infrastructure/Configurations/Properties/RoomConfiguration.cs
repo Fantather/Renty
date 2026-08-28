@@ -24,8 +24,8 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasIndex(r => new { r.PropertyId, r.IsActive })
                 .HasDatabaseName("IX_Rooms_PropertyId_IsActive");
 
-            builder.HasIndex(r => new { r.PropertyId, r.DisplayOrder })
-                .HasDatabaseName("IX_Rooms_PropertyId_DisplayOrder");
+            //builder.HasIndex(r => new { r.PropertyId, r.DisplayOrder })
+            //    .HasDatabaseName("IX_Rooms_PropertyId_DisplayOrder");
 
             // Свойства
             builder.Property(r => r.Name)
@@ -76,6 +76,11 @@ namespace Renty.Infrastructure.Configurations.Properties
                 .WithOne(ra => ra.Room)
                 .HasForeignKey(ra => ra.RoomId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(r => r.RoomType)
+                .WithMany(rt => rt.Rooms)
+                .HasForeignKey(r => r.RoomTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

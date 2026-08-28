@@ -34,9 +34,10 @@ namespace Renty.Domain.Models.Orders
         public decimal TotalPrice { get; set; }
 
         // Статус бронирования (связь с StatusLookup)
-        public int StatusId { get; set; }
-        //[ForeignKey(nameof(StatusId))]
-        public virtual BookingStatus Status { get; set; }
+        //public int StatusId { get; set; }
+        ////[ForeignKey(nameof(StatusId))]
+        public BookingStatusEnum Status { get; set; } = BookingStatusEnum.Pending;
+        public PaymentStatusEnum PaymentStatus { get; set; } = PaymentStatusEnum.Pending;
 
         // Даты
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

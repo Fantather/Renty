@@ -7,6 +7,7 @@ using Renty.Domain.Models.Locations;
 using Renty.Domain.Models.Properties.Anemities;
 using Renty.Domain.Models.Media;
 using Renty.Domain.Models.Orders;
+using Renty.Domain.Models.LookupsTables;
 
 namespace Renty.Domain.Models.Properties
 {
@@ -77,7 +78,7 @@ namespace Renty.Domain.Models.Properties
         public TimeSpan? CheckOutTime { get; set; } = TimeSpan.FromHours(11); // 11:00
 
         // Статус
-        public bool IsActive { get; set; } = true;
+        public PropertyStatusEnum Status { get; set; } = PropertyStatusEnum.Active;
 
         // Даты
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -85,31 +86,31 @@ namespace Renty.Domain.Models.Properties
         public DateTime? UpdatedAt { get; set; }
 
         // Навигационные свойства
+        public virtual PropertyDetails Details { get; set; } = new PropertyDetails();
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
         public virtual ICollection<PropertyAmenity> PropertyAmenities { get; set; } = new List<PropertyAmenity>();
         public virtual ICollection<PropertyImage> PropertyImages { get; set; } = new List<PropertyImage>();
         public virtual ICollection<PropertyTag> PropertyTags { get; set; } = new List<PropertyTag>();
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-        public virtual ICollection<PropertyDetails> DetailsHistory { get; set; } = new List<PropertyDetails>();
         public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();
 
-        // Вспомогательные методы для работы с характеристиками
+        //// Вспомогательные методы для работы с характеристиками
 
-        /// <summary>
-        /// Получить текущие актуальные характеристики недвижимости
-        /// </summary>
-        [NotMapped]
-        public PropertyDetails? CurrentDetails => 
-            DetailsHistory?.FirstOrDefault(d => d.ValidTo == null);
+        ///// <summary>
+        ///// Получить текущие актуальные характеристики недвижимости
+        ///// </summary>
+        //[NotMapped]
+        //public PropertyDetails? CurrentDetails => 
+        //    DetailsHistory?.FirstOrDefault(d => d.ValidTo == null);
 
-        /// <summary>
-        /// Получить характеристики недвижимости на определенную дату
-        /// </summary>
-        public PropertyDetails? GetDetailsAt(DateTime date) =>
-            DetailsHistory?
-                .Where(d => d.ValidFrom <= date && (d.ValidTo == null || d.ValidTo >= date))
-                .OrderByDescending(d => d.ValidFrom)
-                .FirstOrDefault();
+        ///// <summary>
+        ///// Получить характеристики недвижимости на определенную дату
+        ///// </summary>
+        //public PropertyDetails? GetDetailsAt(DateTime date) =>
+        //    DetailsHistory?
+        //        .Where(d => d.ValidFrom <= date && (d.ValidTo == null || d.ValidTo >= date))
+        //        .OrderByDescending(d => d.ValidFrom)
+        //        .FirstOrDefault();
     }
 }

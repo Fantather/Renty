@@ -23,7 +23,7 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasIndex(p => p.CityId);
             builder.HasIndex(p => p.CategoryId);
             builder.HasIndex(p => new { p.Latitude, p.Longitude });
-            builder.HasIndex(p => p.IsActive);
+            //builder.HasIndex(p => p.IsActive);
             builder.HasIndex(p => p.PricePerNight);
 
             // Свойства
@@ -125,9 +125,9 @@ namespace Renty.Infrastructure.Configurations.Properties
                 .HasForeignKey(b => b.PropertyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(p => p.DetailsHistory)
+            builder.HasOne(p => p.Details)
                 .WithOne(d => d.Property)
-                .HasForeignKey(d => d.PropertyId)
+                .HasForeignKey<PropertyDetails>(d => d.PropertyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(p => p.Rooms)
@@ -135,8 +135,14 @@ namespace Renty.Infrastructure.Configurations.Properties
                 .HasForeignKey(r => r.PropertyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Игнорировать вычисляемые свойства
-            builder.Ignore(p => p.CurrentDetails);
+            builder.Property(b => b.Status)
+            .IsRequired()
+            .HasConversion<string>() 
+            .HasMaxLength(30);
+
+
+            //// Игнорировать вычисляемые свойства
+            //builder.Ignore(p => p.CurrentDetails);
         }
     }
 }

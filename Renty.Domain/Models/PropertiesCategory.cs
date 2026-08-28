@@ -8,10 +8,8 @@ namespace Renty.Domain.Models
     /// <summary>
     /// Категории объектов недвижимости (Apartment, House, Villa, Hotel, Guesthouse, Hostel, etc.)
     /// </summary>
-    public class PropertiesCategory
+    public class PropertiesCategory : Category
     {
-
-
         // Навигационные свойства
         public virtual ICollection<Property> Properties { get; set; } = new List<Property>();
     }

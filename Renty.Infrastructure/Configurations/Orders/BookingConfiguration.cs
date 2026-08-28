@@ -14,7 +14,6 @@ namespace Renty.Infrastructure.Configurations.Orders
 
             builder.HasIndex(b => b.PropertyId);
             builder.HasIndex(b => b.UserId);
-            builder.HasIndex(b => b.StatusId);
             builder.HasIndex(b => new { b.CheckInDate, b.CheckOutDate });
             builder.HasIndex(b => b.CreatedAt);
 
@@ -45,10 +44,20 @@ namespace Renty.Infrastructure.Configurations.Orders
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(b => b.Status)
-                .WithMany()
-                .HasForeignKey(b => b.StatusId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(b => b.Status)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(30);
+
+            builder.Property(b => b.PaymentStatus)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(30);
+
+            //builder.HasOne(b => b.Status)
+            //    .WithMany()
+            //    .HasForeignKey(b => b.StatusId)
+            //    .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

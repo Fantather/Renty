@@ -58,10 +58,10 @@ namespace Renty.Infrastructure.Configurations.Properties
                 .HasForeignKey(ri => ri.RoomId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(ri => ri.ImageType)
-                .WithMany()
-                .HasForeignKey(ri => ri.ImageTypeId)
-                .OnDelete(DeleteBehavior.SetNull);
+            //builder.HasOne(ri => ri.ImageType)
+            //    .WithMany()
+            //    .HasForeignKey(ri => ri.ImageTypeId)
+            //    .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

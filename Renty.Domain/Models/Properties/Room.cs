@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Renty.Domain.Models.Properties
@@ -15,6 +13,7 @@ namespace Renty.Domain.Models.Properties
         public Guid PropertyId { get; set; }
         [ForeignKey(nameof(PropertyId))]
         public virtual Property Property { get; set; }
+        public Guid RoomTypeId { get; set; }
 
         // Название комнаты (например, "Спальня 1", "Гостиная", "Ванная")
         public string Name { get; set; } = string.Empty;
@@ -43,6 +42,8 @@ namespace Renty.Domain.Models.Properties
         public DateTime? UpdatedAt { get; set; }
 
         // Навигационные свойства
+        public virtual RoomType RoomType { get; set; }
+
         public virtual ICollection<RoomImage> Images { get; set; } = new List<RoomImage>();
 
         public virtual ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
