@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Renty.Domain.Interfaces
 {
-    internal interface IReadService
+    public interface IHasSlug
     {
+        string Name { get; set; }
+        string Slug { get; set; }
     }
 }

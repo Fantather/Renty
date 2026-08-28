@@ -12,6 +12,8 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.HasKey(pc => pc.Id);
 
+            builder.HasIndex(pc => pc.Slug)
+                .HasDatabaseName("IX_PropertiesCategories_Slug");
             // Индексы
             builder.HasIndex(pc => pc.Name)
                 .HasDatabaseName("IX_PropertiesCategories_Name");
@@ -26,9 +28,11 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.Property(pc => pc.Description)
                 .HasMaxLength(500);
+            builder.Property(pc => pc.Slug)
+                .IsRequired()
+                .HasMaxLength(100);
 
-            builder.Property(pc => pc.IconUrl)
-                .HasMaxLength(500);
+            builder.Property(pc => pc.ImageUrl);
 
             builder.Property(pc => pc.IsActive)
                 .IsRequired()

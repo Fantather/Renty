@@ -6,6 +6,7 @@ using Renty.Domain.Models.Properties.Anemities;
 using Renty.Domain.Models.User;
 using System.ComponentModel.DataAnnotations.Schema;
 using NetTopologySuite.Geometries;
+using Renty.Domain.Interfaces;
 
 using System.Linq;
 
@@ -14,7 +15,7 @@ namespace Renty.Domain.Models.Properties
     /// <summary>
     /// Модель для сдачи недвижимости в аренду (отель, дом, квартира)
     /// </summary>
-    public class Property
+    public class Property: IHasSlug
     {
         public Guid Id { get; set; } = Guid.CreateVersion7();
 
