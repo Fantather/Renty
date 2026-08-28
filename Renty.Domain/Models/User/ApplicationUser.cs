@@ -8,7 +8,7 @@ using Renty.Domain.Models.Locations;
 namespace Renty.Domain.Models.User
 {
 
-    public class ApplicationUser : IdentityUser<long>
+    public class ApplicationUser : IdentityUser<Guid>
     {
         /// <summary>
         /// Модель пользователя, 

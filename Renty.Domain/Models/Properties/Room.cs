@@ -35,9 +35,6 @@ namespace Renty.Domain.Models.Properties
         // Площадь комнаты (опционально)
         public decimal? Area { get; set; }
 
-        // Порядок отображения
-        public int DisplayOrder { get; set; } = 0;
-
         // Активна ли комната (для soft delete)
         public bool IsActive { get; set; } = true;
 

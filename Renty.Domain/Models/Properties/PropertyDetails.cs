@@ -32,7 +32,7 @@ namespace Renty.Domain.Models.Properties
         public DateTime? ValidTo { get; set; }
 
         // Кто изменил
-        public long? ModifiedByUserId { get; set; }
+        public Guid? ModifiedByUserId { get; set; }
 
         // Когда создана запись
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

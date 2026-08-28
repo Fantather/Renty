@@ -24,7 +24,7 @@ namespace Renty.Domain.Models.Properties
         public string Description { get; set; } = string.Empty;
 
         // Владелец 
-        public long HostId { get; set; }
+        public Guid HostId { get; set; }
         [ForeignKey(nameof(HostId))]
         public virtual ApplicationUser Host { get; set; }
 
@@ -41,7 +41,7 @@ namespace Renty.Domain.Models.Properties
         //область
         public string? District { get; set; }
 
-        public int CityId { get; set; }
+        public Guid CityId { get; set; }
         [ForeignKey(nameof(CityId))]
         public virtual City City { get; set; }
 

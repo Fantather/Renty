@@ -46,9 +46,9 @@ namespace Renty.Infrastructure.Configurations.Properties
                 .HasPrecision(18, 2)
                 .IsRequired(false);
 
-            builder.Property(r => r.DisplayOrder)
-                .IsRequired()
-                .HasDefaultValue(0);
+            //builder.Property(r => r.DisplayOrder)
+            //    .IsRequired()
+            //    .HasDefaultValue(0);
 
             builder.Property(r => r.IsActive)
                 .IsRequired()

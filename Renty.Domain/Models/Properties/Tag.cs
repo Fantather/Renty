@@ -9,15 +9,15 @@ namespace Renty.Domain.Models.Properties
     /// </summary>
     public class Tag
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
 
         // ID иконки (может быть ссылкой на иконку или идентификатором из иконочного набора)
-        public string? IconId { get; set; }
+        public Guid? IconId { get; set; }
 
         // URL иконки (если используется прямая ссылка)
-        public string? IconUrl { get; set; }
+        public Guid? IconUrl { get; set; }
 
         // Свойство для определения порядка отображения тегов
         public int DisplayOrder { get; set; } = 0;

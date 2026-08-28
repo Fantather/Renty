@@ -24,8 +24,8 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasIndex(ri => new { ri.RoomId, ri.IsPrimary })
                 .HasDatabaseName("IX_RoomImages_RoomId_IsPrimary");
 
-            builder.HasIndex(ri => new { ri.RoomId, ri.DisplayOrder })
-                .HasDatabaseName("IX_RoomImages_RoomId_DisplayOrder");
+            //builder.HasIndex(ri => new { ri.RoomId, ri.DisplayOrder })
+            //    .HasDatabaseName("IX_RoomImages_RoomId_DisplayOrder");
 
             // Свойства из базового класса Image
             builder.Property(ri => ri.ImageUrl)
@@ -40,9 +40,9 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.Property(ri => ri.Description)
                 .HasMaxLength(500);
 
-            builder.Property(ri => ri.DisplayOrder)
-                .IsRequired()
-                .HasDefaultValue(0);
+            //builder.Property(ri => ri.DisplayOrder)
+            //    .IsRequired()
+            //    .HasDefaultValue(0);
 
             builder.Property(ri => ri.IsPrimary)
                 .IsRequired()

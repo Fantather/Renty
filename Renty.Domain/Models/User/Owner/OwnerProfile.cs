@@ -9,10 +9,10 @@ namespace Renty.Domain.Models.User.Host
     /// </summary>
     public class OwnerProfile
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         // Связь с пользователем(личный аккаут владельца)
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
 

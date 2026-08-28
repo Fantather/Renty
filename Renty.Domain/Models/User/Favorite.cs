@@ -10,10 +10,10 @@ namespace Renty.Domain.Models.User
     /// </summary>
     public class Favorite
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         // Пользователь
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
 

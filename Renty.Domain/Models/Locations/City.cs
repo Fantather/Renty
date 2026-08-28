@@ -8,12 +8,12 @@ namespace Renty.Domain.Models.Locations
     /// </summary>
     public class City
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
 
         // Связь с регионом
-        public int? RegionId { get; set; }
+        public Guid? RegionId { get; set; }
         [ForeignKey(nameof(RegionId))]
         public virtual Region? Region { get; set; }
 
