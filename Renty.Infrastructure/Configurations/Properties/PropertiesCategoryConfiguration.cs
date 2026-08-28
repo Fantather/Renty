@@ -36,7 +36,7 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.Property(pc => pc.CreatedAt)
                 .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.Property(pc => pc.UpdatedAt)
                 .IsRequired(false);

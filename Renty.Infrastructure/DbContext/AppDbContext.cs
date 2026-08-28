@@ -12,6 +12,7 @@ namespace Renty.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasPostgresExtension("postgis");
 
             // Автоматическое применение всех конфигураций из текущей сборки
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

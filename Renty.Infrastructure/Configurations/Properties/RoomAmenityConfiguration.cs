@@ -35,7 +35,7 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.Property(ra => ra.CreatedAt)
                 .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             // Связи
             builder.HasOne(ra => ra.Room)

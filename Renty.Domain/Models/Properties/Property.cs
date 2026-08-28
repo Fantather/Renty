@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using Renty.Domain.Models.User;
-using Renty.Domain.Models.Locations;
-using Renty.Domain.Models.Properties.Anemities;
+﻿using Renty.Domain.Models.Locations;
+using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Media;
 using Renty.Domain.Models.Orders;
-using Renty.Domain.Models.LookupsTables;
+using Renty.Domain.Models.Properties.Anemities;
+using Renty.Domain.Models.User;
+using System.ComponentModel.DataAnnotations.Schema;
+using NetTopologySuite.Geometries;
+
+using System.Linq;
 
 namespace Renty.Domain.Models.Properties
 {
@@ -16,7 +16,7 @@ namespace Renty.Domain.Models.Properties
     /// </summary>
     public class Property
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         public string Name { get; set; } = string.Empty;
 
@@ -51,9 +51,8 @@ namespace Renty.Domain.Models.Properties
         public virtual Country Country { get; set; }
 
         // Координаты недвижимости для отображения на карте
-        public decimal? Latitude { get; set; }
-
-        public decimal? Longitude { get; set; }
+        [Column(TypeName = "geometry (Point, 4326)")]
+        public Point? Location { get; set; }
 
 
         // Цена

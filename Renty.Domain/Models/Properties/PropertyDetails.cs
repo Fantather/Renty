@@ -8,7 +8,7 @@ namespace Renty.Domain.Models.Properties
     /// </summary>
     public class PropertyDetails
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Связь с недвижимостью
         public Guid PropertyId { get; set; }

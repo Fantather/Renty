@@ -10,7 +10,7 @@ namespace Renty.Domain.Models.Properties
     /// </summary>
     public class RoomAmenity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Связь с комнатой
         public Guid RoomId { get; set; }

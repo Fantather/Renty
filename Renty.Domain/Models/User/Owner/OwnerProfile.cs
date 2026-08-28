@@ -9,7 +9,7 @@ namespace Renty.Domain.Models.User.Host
     /// </summary>
     public class OwnerProfile
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Связь с пользователем(личный аккаут владельца)
         public Guid UserId { get; set; }

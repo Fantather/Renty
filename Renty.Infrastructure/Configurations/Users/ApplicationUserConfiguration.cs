@@ -11,8 +11,6 @@ namespace Renty.Infrastructure.Configurations.Users
             builder.ToTable("AspNetUsers");
 
             // Первичный ключ уже настроен Identity
-            
-            //builder.HasKey(u => u.Id);
 
             // Индексы
             builder.HasIndex(u => u.Email)
@@ -48,7 +46,7 @@ namespace Renty.Infrastructure.Configurations.Users
 
             builder.Property(u => u.CreatedAt)
                 .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             // Связи с Country и City
             builder.HasOne(u => u.HomeCountry)

@@ -10,7 +10,7 @@ namespace Renty.Domain.Models.User
     /// </summary>
     public class Favorite
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Пользователь
         public Guid UserId { get; set; }

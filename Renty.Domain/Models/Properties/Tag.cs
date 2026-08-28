@@ -9,7 +9,7 @@ namespace Renty.Domain.Models.Properties
     /// </summary>
     public class Tag
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         public string Name { get; set; } = string.Empty;
 

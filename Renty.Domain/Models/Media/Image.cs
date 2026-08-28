@@ -5,7 +5,7 @@ namespace Renty.Domain.Models.Media
 {
     public abstract class Image
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // URL изображения (путь к файлу, никто не хранит изображения в бд)
         public string ImageUrl { get; set; } = string.Empty;

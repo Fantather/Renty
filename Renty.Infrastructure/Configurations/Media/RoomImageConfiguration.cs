@@ -50,9 +50,9 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.Property(ri => ri.CreatedAt)
                 .IsRequired()
-                .HasDefaultValueSql("GETUTCDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            // Связи
+            // 
             builder.HasOne(ri => ri.Room)
                 .WithMany(r => r.Images)
                 .HasForeignKey(ri => ri.RoomId)

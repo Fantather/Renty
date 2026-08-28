@@ -9,7 +9,7 @@ namespace Renty.Domain.Models.User
     /// </summary>
     public class Review
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; }  = Guid.CreateVersion7();
 
         // Пользователь, который оставил отзыв
         public Guid UserId { get; set; }

@@ -22,7 +22,8 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasIndex(p => p.HostId);
             builder.HasIndex(p => p.CityId);
             builder.HasIndex(p => p.CategoryId);
-            builder.HasIndex(p => new { p.Latitude, p.Longitude });
+            builder.HasIndex(c => c.Location)
+               .HasMethod("gist");
             //builder.HasIndex(p => p.IsActive);
             builder.HasIndex(p => p.PricePerNight);
 
@@ -49,11 +50,8 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.Property(p => p.District)
                 .HasMaxLength(200);
 
-            builder.Property(p => p.Latitude)
-                .HasPrecision(10, 7);
-
-            builder.Property(p => p.Longitude)
-                .HasPrecision(10, 7);
+            builder.Property(c => c.Location)
+               .HasColumnType("geometry(Point, 4326)");
 
             builder.Property(p => p.PricePerNight)
                 .HasPrecision(18, 2);

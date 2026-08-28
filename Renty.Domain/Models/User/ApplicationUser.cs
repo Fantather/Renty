@@ -36,7 +36,17 @@ namespace Renty.Domain.Models.User
         /// LockoutEnd
         /// AccessFailedCount 
         /// </summary>
+        public ApplicationUser()
+        {
+            // Инициализируем Id, унаследованный от IdentityUser, как UUID v7
+            //он не должен сломать инициализацию остальных полей айдентити
+            Id = Guid.CreateVersion7();
 
+            // Инициализируем пустые списки для навигационных свойств
+            Reviews = new List<Review>();
+            Bookings = new List<Booking>();
+            Favorites = new List<Favorite>();
+        }
         //полное имя пользователя
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
@@ -57,9 +67,9 @@ namespace Renty.Domain.Models.User
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         //Коллекции
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
-        public ICollection<Favorite> Favorites { get; set; } 
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<Favorite> Favorites { get; set; } 
 
     }
 }

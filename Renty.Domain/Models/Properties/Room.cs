@@ -7,7 +7,7 @@ namespace Renty.Domain.Models.Properties
     /// </summary>
     public class Room
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Связь с недвижимостью
         public Guid PropertyId { get; set; }
@@ -42,7 +42,7 @@ namespace Renty.Domain.Models.Properties
         public DateTime? UpdatedAt { get; set; }
 
         // Навигационные свойства
-        public virtual RoomType RoomType { get; set; }
+        public virtual RoomType RoomType { get; set; } = null!;
 
         public virtual ICollection<RoomImage> Images { get; set; } = new List<RoomImage>();
 

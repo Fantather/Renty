@@ -11,7 +11,7 @@ namespace Renty.Domain.Models.Orders
     /// </summary>
     public class Booking
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Связь с домом
         public Guid PropertyId { get; set; }
