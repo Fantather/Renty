@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Renty.Domain.Models.Properties
+﻿namespace Renty.Domain.Models.Properties
 {
     /// <summary>
     /// Типы комнат (Studio, One Bedroom, Suite, Deluxe, etc.)
     /// </summary>
     public class RoomType
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         public string Name { get; set; } = string.Empty;
 
@@ -18,10 +14,10 @@ namespace Renty.Domain.Models.Properties
         // Активен ли тип комнаты
         public bool IsActive { get; set; } = true;
 
-        // Порядок отображения
-        public int DisplayOrder { get; set; } = 0;
+        //// Порядок отображения
+        //public int DisplayOrder { get; set; } = 0;
 
         // Навигационные свойства
-        public virtual ICollection<House> Rooms { get; set; } = new List<House>();
+        public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();
     }
 }

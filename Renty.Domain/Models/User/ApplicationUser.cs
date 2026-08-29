@@ -8,7 +8,7 @@ using Renty.Domain.Models.Locations;
 namespace Renty.Domain.Models.User
 {
 
-    public class ApplicationUser : IdentityUser<long>
+    public class ApplicationUser : IdentityUser<Guid>
     {
         /// <summary>
         /// Модель пользователя, 
@@ -36,26 +36,40 @@ namespace Renty.Domain.Models.User
         /// LockoutEnd
         /// AccessFailedCount 
         /// </summary>
+        public ApplicationUser()
+        {
+            // Инициализируем Id, унаследованный от IdentityUser, как UUID v7
+            //он не должен сломать инициализацию остальных полей айдентити
+            Id = Guid.CreateVersion7();
 
+            // Инициализируем пустые списки для навигационных свойств
+            Reviews = new List<Review>();
+            Bookings = new List<Booking>();
+            Favorites = new List<Favorite>();
+        }
         //полное имя пользователя
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
 
         ///ссылка на аватарку пользователя
         public string? AvatarUrl { get; set; }
 
         //его адрес проживания (страна, город)
-        public Country HomeCountry { get; set; }
-        public City HomeCity { get; set; } 
-        public string TravelReason { get; set; }
+        public Guid? HomeCountryId { get; set; }
+        public virtual Country? HomeCountry { get; set; }
+
+        public Guid? HomeCityId { get; set; }
+        public virtual City? HomeCity { get; set; }
+
+        public string? TravelReason { get; set; }
         public bool IsTravellingWithPet { get; set; } = false;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         //Коллекции
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<Booking> Bookings { get; set; }
-        public ICollection<Favorite> Favorites { get; set; } 
+        public virtual ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<Favorite> Favorites { get; set; } 
 
     }
 }

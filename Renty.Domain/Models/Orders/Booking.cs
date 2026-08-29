@@ -11,12 +11,11 @@ namespace Renty.Domain.Models.Orders
     /// </summary>
     public class Booking
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Связь с домом
-        public Guid HouseId { get; set; }
-        //[ForeignKey(nameof(HouseId))]
-        public virtual House House { get; set; }
+        public Guid PropertyId { get; set; }
+        public virtual Property Property { get; set; }
 
         // тот кто заезжает
         public Guid UserId { get; set; }
@@ -34,10 +33,11 @@ namespace Renty.Domain.Models.Orders
         // Стоимость
         public decimal TotalPrice { get; set; }
 
-        // Статус бронирования (связь с StatusLookup, Category="Booking")
-        public int StatusId { get; set; }
-        [ForeignKey(nameof(StatusId))]
-        public virtual BookingStatus Status { get; set; }
+        // Статус бронирования (связь с StatusLookup)
+        //public int StatusId { get; set; }
+        ////[ForeignKey(nameof(StatusId))]
+        public BookingStatusEnum Status { get; set; } = BookingStatusEnum.Pending;
+        public PaymentStatusEnum PaymentStatus { get; set; } = PaymentStatusEnum.Pending;
 
         // Даты
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -1,14 +1,12 @@
-﻿
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Renty.Domain.Models;
-
 
 namespace Renty.Domain.Models.Properties.Anemities
 {
     /// <summary>
-    /// Связь между отелем/недвижимостью и удобствами
+    /// Связь между недвижимостью и удобствами
     /// </summary>
-    public class HotelAmenity
+    public class PropertyAmenity
     {
         public Guid Id { get; set; }
 
@@ -16,11 +14,10 @@ namespace Renty.Domain.Models.Properties.Anemities
         [ForeignKey(nameof(PropertyId))]
         public virtual Property Property { get; set; }
 
-        public int AmenityId { get; set; }
+        public Guid AmenityId { get; set; }
         [ForeignKey(nameof(AmenityId))]
         public virtual Anemities Amenity { get; set; }
 
         public bool IsActive { get; set; } = true;
-
     }
 }
