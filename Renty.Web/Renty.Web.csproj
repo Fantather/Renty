@@ -4,6 +4,21 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>35ec0c95-0b07-48a0-acd8-2cea74890f51</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Renty.Application\Renty.Application.csproj" />
+    <ProjectReference Include="..\Renty.Domain\Renty.Domain.csproj" />
+    <ProjectReference Include="..\Renty.Infrastructure\Renty.Infrastructure.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -11,7 +11,7 @@ namespace Renty.Domain.Models.Messages
     /// </summary>
     public class Message
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         // Отправитель
         public Guid SenderId { get; set; }
@@ -20,12 +20,10 @@ namespace Renty.Domain.Models.Messages
 
         // Получатель
         public Guid ReceiverId { get; set; }
-        [ForeignKey(nameof(ReceiverId))]
         public virtual ApplicationUser Receiver { get; set; }
 
         // Связь с недвижимостью 
         public Guid? PropertyId { get; set; }
-        [ForeignKey(nameof(PropertyId))]
         public virtual Property? Property { get; set; }
 
         // Тема сообщения

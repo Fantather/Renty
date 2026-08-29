@@ -1,19 +1,17 @@
+using Renty.Domain.Models.Media;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Renty.Domain.Models.Properties;
 
-namespace Renty.Domain.Models.Media
+namespace Renty.Domain.Models.Properties
 {
     /// <summary>
-    /// Изображения комнат
+    /// Изображение комнаты
     /// </summary>
-    public class RoomImage: Image
+    public class RoomImage : Image
     {
-        // Связь с House
-        public int HouseId { get; set; }
-        [ForeignKey(nameof(HouseId))]
-        public virtual House House { get; set; }
-
+        // Связь с комнатой
+        public Guid RoomId { get; set; }
+        [ForeignKey(nameof(RoomId))]
+        public virtual Room Room { get; set; }
     }
 }

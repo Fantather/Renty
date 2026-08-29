@@ -9,10 +9,10 @@ namespace Renty.Domain.Models.User
     /// </summary>
     public class Review
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }  = Guid.CreateVersion7();
 
         // Пользователь, который оставил отзыв
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
 
@@ -21,8 +21,17 @@ namespace Renty.Domain.Models.User
         [ForeignKey(nameof(PropertyId))]
         public virtual Property Property { get; set; }
 
-        // Оценка (1-5)
-        public int Rating { get; set; }
+        // Общая оценка (1-5) - вычисляется на основе детальных оценок или задается независимо
+        public decimal Rating { get; set; }
+
+        // Детальные оценки (1-5 каждая)
+        public decimal? CleanlinessRating { get; set; }
+
+        public decimal? CommunicationRating { get; set; }
+
+        public decimal? AccuracyRating { get; set; }
+
+        public decimal? LocationRating { get; set; }
 
         // Текст отзыва
         public string Comment { get; set; } = string.Empty;
