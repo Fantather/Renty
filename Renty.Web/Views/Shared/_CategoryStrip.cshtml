@@ -1,0 +1,12 @@
+@model Renty.Web.Models.CategoryStripViewModel
+
+<nav class="category-strip" aria-label="Категорії">
+    @foreach (var category in Model.Categories)
+    {
+        var isActive = category.Slug == Model.SelectedSlug;
+        <a href="?categorySlug=@category.Slug" class="category-strip__item @(isActive ? "is-active" : "")">
+            <icon name="@category.IconName" class="category-strip__icon" />
+            <span class="category-strip__label">@category.Name</span>
+        </a>
+    }
+</nav>

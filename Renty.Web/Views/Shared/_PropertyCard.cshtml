@@ -1,0 +1,23 @@
+@model Renty.Web.Models.PropertyCardViewModel
+
+<div class="property-card">
+    <div class="property-card__image-wrap">
+        <img src="@Model.ImageUrls.First()" alt="@Model.City, @Model.Country" class="property-card__image" />
+        <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")" aria-label="Toggle favorite">
+            <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
+        </button>
+    </div>
+
+    <div class="property-card__body">
+        <div class="property-card__title-row">
+            <span class="property-card__location">@Model.City, @Model.Country</span>
+            <span class="property-card__rating">
+                <icon name="star" class="property-card__star" />
+                @Model.Rating.ToString("0.00")
+            </span>
+        </div>
+        <p class="property-card__category">@Model.CategoryName</p>
+        <p class="property-card__duration">@Model.DurationLabel</p>
+        <p class="property-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ніч</p>
+    </div>
+</div>

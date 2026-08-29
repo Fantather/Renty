@@ -1,0 +1,33 @@
+.category-strip {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    padding: 4px 0 12px;
+}
+
+.category-strip__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    padding-bottom: 10px;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    border-bottom: 2px solid transparent;
+    font-size: 0.85rem;
+}
+
+.category-strip__item.is-active {
+    color: var(--color-text);
+    border-bottom-color: var(--color-text);
+}
+
+.category-strip__label {
+    white-space: nowrap;
+}
+
+::deep .category-strip__icon {
+    width: 22px;
+    height: 22px;
+}

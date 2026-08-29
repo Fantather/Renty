@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "renty-web",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "Renty.Web", "--urls", "http://localhost:5047"],
+      "port": 5047
+    }
+  ]
+}

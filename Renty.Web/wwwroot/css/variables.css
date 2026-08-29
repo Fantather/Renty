@@ -1,0 +1,17 @@
+:root {
+    --color-bg: #e9e5db;
+    --color-surface: #ffffff;
+    --color-text: #2b2823;
+    --color-text-muted: #726c62;
+    --color-accent: #766a5c;
+    --color-accent-hover: #5f564a;
+    --color-border: #d9d3c5;
+    --color-overlay: rgba(43, 40, 35, 0.35);
+    --color-like: #e0483e;
+
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+
+    --shadow-card: 0 4px 16px rgba(43, 40, 35, 0.08);
+}
