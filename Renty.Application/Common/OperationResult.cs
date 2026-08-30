@@ -9,7 +9,7 @@ namespace Renty.Application.Common
         public T? Data { get; set; }
         public bool IsSuccess { get; set; }
         public List<string> Errors { get; set; } = new List<string>();
-        public Dictionary<string, string[]> Validationerrors { get; set; } = new Dictionary<string, string[]>();
+        public Dictionary<string, string[]> ValidationErrors { get; set; } = new Dictionary<string, string[]>();
 
         public static OperationResult<T> Success(T data) => new()
         {

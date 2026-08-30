@@ -8,6 +8,8 @@ namespace Renty.Application.DTOs.GetProperties
     // Автор жилья для аренды
     {
         public string? AvatarUrl { get; set; }
+
+        // Полное имя
         public string FullName { get; set; } = null!;
         
         // Дата создания аккаунта

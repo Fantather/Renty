@@ -8,11 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="here map in view model\" />
+    <Compile Remove="here map in view model\**" />
+    <EmbeddedResource Remove="here map in view model\**" />
+    <None Remove="here map in view model\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="14.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Renty.Domain\Renty.Domain.csproj" />
   </ItemGroup>
 
 

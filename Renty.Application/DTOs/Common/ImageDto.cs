@@ -10,11 +10,11 @@ namespace Renty.Application.DTOs.Common
         // Путь к изображению
         public string ImageUrl { get; set; } = string.Empty;
 
-        // Название изображения
-        public string Title { get; set; } =string.Empty!;
+        //// Название изображения
+        //public string Title { get; set; } =string.Empty!;
 
-        // Описание изображения
-        public string? Description { get; set; }
+        //// Описание изображения
+        //public string? Description { get; set; }
 
         // Порядок отображеения
         public int DisplayOrder { get; set; }
