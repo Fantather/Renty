@@ -23,5 +23,6 @@ namespace Renty.Domain.Models.Properties.Anemities
 
         // Навигационные свойства
         public virtual ICollection<PropertyAmenity> PropertyAmenities { get; set; } = new List<PropertyAmenity>();
+        public virtual ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
     }
 }

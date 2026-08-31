@@ -95,22 +95,5 @@ namespace Renty.Domain.Models.Properties
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();
 
-        //// Вспомогательные методы для работы с характеристиками
-
-        ///// <summary>
-        ///// Получить текущие актуальные характеристики недвижимости
-        ///// </summary>
-        //[NotMapped]
-        //public PropertyDetails? CurrentDetails => 
-        //    DetailsHistory?.FirstOrDefault(d => d.ValidTo == null);
-
-        ///// <summary>
-        ///// Получить характеристики недвижимости на определенную дату
-        ///// </summary>
-        //public PropertyDetails? GetDetailsAt(DateTime date) =>
-        //    DetailsHistory?
-        //        .Where(d => d.ValidFrom <= date && (d.ValidTo == null || d.ValidTo >= date))
-        //        .OrderByDescending(d => d.ValidFrom)
-        //        .FirstOrDefault();
     }
 }

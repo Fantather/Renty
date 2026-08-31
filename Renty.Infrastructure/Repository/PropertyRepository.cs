@@ -1,19 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
-using Renty.Domain.Models;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Properties;
 using Renty.Domain.Parameters;
 using Renty.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+
+
 
 namespace Renty.Infrastructure.Repository
 {
     public class PropertyRepository : GenericRepository<Property>, IPropertyRepository
     {
+
         public PropertyRepository(AppDbContext context) : base(context)
         {
         }
