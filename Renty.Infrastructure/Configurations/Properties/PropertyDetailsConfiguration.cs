@@ -28,21 +28,12 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.Property(pd => pd.BathroomsCount)
                 .IsRequired();
 
-            //builder.Property(pd => pd.ValidFrom)
-            //    .IsRequired();
+            builder.Property(pd => pd.FloorsCount)
+                .IsRequired()
+                .HasDefaultValue(1);
 
-            //builder.Property(pd => pd.ValidTo);
-
-            //builder.Property(pd => pd.ModifiedByUserId);
-
-            //builder.Property(pd => pd.CreatedAt)
-            //    .IsRequired();
-
-            //// Связь с Property
-            //builder.HasOne(pd => pd.Property)
-            //    .WithMany(p => p.DetailsHistory)
-            //    .HasForeignKey(pd => pd.PropertyId)
-            //    .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(pd => pd.Floor)
+                .IsRequired(false);
         }
     }
 }

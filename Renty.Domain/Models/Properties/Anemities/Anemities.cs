@@ -18,10 +18,11 @@ namespace Renty.Domain.Models.Properties.Anemities
         // Иконка удобства
         public string? IconUrl { get; set; }
 
-        // Активно ли удобство
+        // Soft delete: активность удобства (true = активно, false = удалено)
         public bool IsActive { get; set; } = true;
 
         // Навигационные свойства
         public virtual ICollection<PropertyAmenity> PropertyAmenities { get; set; } = new List<PropertyAmenity>();
+        public virtual ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
     }
 }

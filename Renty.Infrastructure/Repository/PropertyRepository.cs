@@ -1,19 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
-using Renty.Domain.Models;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Properties;
 using Renty.Domain.Parameters;
 using Renty.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
+
+
 
 namespace Renty.Infrastructure.Repository
 {
     public class PropertyRepository : GenericRepository<Property>, IPropertyRepository
     {
+
         public PropertyRepository(AppDbContext context) : base(context)
         {
         }
@@ -27,6 +25,7 @@ namespace Renty.Infrastructure.Repository
         public async Task<Property?> GetPropertyWithDetailsAsync(string slug, CancellationToken ct = default)
         {
             return await GetFullQueryWithIncludes()
+                
                 .FirstOrDefaultAsync(p => p.Slug == slug, ct);
         }
 
@@ -56,6 +55,8 @@ namespace Renty.Infrastructure.Repository
         ///<param name="checkInDate">Фильтрация по дате заселения</param>
         ///<param name="checkOutDate">Фильтрация по дате выезда</param>
         ///<param name="guestCount">Фильтрация по колличеству гостей</param>
+        ///<param name="amenityIds">Список идентификаторов удобств для фильтрации.</param>
+        ///<param name="ct">Токен отмены для асинхронной операции.</param>
         ///<returns>
         ///Список объектов Property с их связанными сущностями, соответствующих указанным фильтрам. Или пустой список, если ничего не подошло
         ///</returns>
@@ -70,7 +71,7 @@ namespace Renty.Infrastructure.Repository
 
             if (param.GuestCount.HasValue)
             {
-                query = query.Where(p => p.Details.MaxGuests > param.GuestCount);
+                query = query.Where(p => p.Details.MaxGuests >= param.GuestCount);
             }
 
             if (param.CheckInDate.HasValue && param.CheckOutDate.HasValue)
@@ -95,6 +96,15 @@ namespace Renty.Infrastructure.Repository
                     .Where(p => p.Category.Slug == param.CategorySlug);
             }
 
+            if (param.AmenityIds != null && param.AmenityIds.Any())
+            {
+                foreach (var amenityId in param.AmenityIds)
+                {
+                    // в объекте должно быть КАЖДОЕ удобство из списка
+                    query = query.Where(p => p.PropertyAmenities
+                        .Any(pa => pa.AmenityId == amenityId && pa.IsActive));
+                }
+            }
 
             query = param.SortBy switch
             {

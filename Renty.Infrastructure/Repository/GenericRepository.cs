@@ -24,19 +24,19 @@ namespace Renty.Infrastructure.Repository
         /// </summary>
         /// <param name="id">Идентификатор сущности</param>
         /// <returns>Сущность или null, если не найдена</returns>
-        public async Task<T?> GetByIdAsync(Guid id)
+        public async Task<T?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
 
-            return await _dbSet.FindAsync(id);
+            return await _dbSet.FindAsync(id, ct);
         }
 
         /// <summary>
         /// Получает все сущности
         /// </summary>
         /// <returns>Список всех сущностей</returns>
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken ct = default)
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.ToListAsync(ct);
         }
 
         /// <summary>
@@ -44,36 +44,36 @@ namespace Renty.Infrastructure.Repository
         /// </summary>  
         /// <param name="entity">Сущность для добавления</param>
         /// <returns>Задача, представляющая асинхронную операцию</returns>
-        public async Task AddAsync(T entity)
+        public async Task AddAsync(T entity, CancellationToken ct = default)
         {
 
 
             await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
         }
         /// <summary>
         /// Обновляет существующую сущность в базе данных
         /// </summary>
         /// <param name="entity">Сущность для обновления</param>
         /// <returns>Задача, представляющая асинхронную операцию</returns>
-        public async Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity, CancellationToken ct = default)
         {
 
             _dbSet.Update(entity);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
         }
         /// <summary>
         /// Удаляет существующую сущность из базы данных
         /// </summary>
         /// <param name="entity">Сущность для удаления</param>
         /// <returns>Задача, представляющая асинхронную операцию</returns>  
-        public async Task DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity, CancellationToken ct = default)
         {
     
             _dbSet.Remove(entity);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
         }
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace Renty.Infrastructure.Repository
         /// </summary>
         /// <param name="predicate">Условие для проверки</param>
         /// <returns>Задача, представляющая асинхронную операцию, результатом которой является true, если сущность существует, иначе false</returns>
-        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
         {
-            return await _dbSet.AnyAsync(predicate);
+            return await _dbSet.AnyAsync(predicate, ct);
         }
     }
 }

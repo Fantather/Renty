@@ -31,6 +31,11 @@ namespace Renty.Infrastructure.Configurations.Properties
                 .WithOne(pa => pa.Amenity)
                 .HasForeignKey(pa => pa.AmenityId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(a => a.RoomAmenities)
+                .WithOne(ra => ra.Amenity)
+                .HasForeignKey(ra => ra.AmenityId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

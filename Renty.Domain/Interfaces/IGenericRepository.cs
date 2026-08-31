@@ -11,16 +11,16 @@ namespace Renty.Domain.Interfaces
         /// </summary>
     {
         //возвращение одной сущности 
-        Task<T?> GetByIdAsync(Guid id);
+        Task<T?> GetByIdAsync(Guid id, CancellationToken ct = default);
 
         //возвращение всех сущностей
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(CancellationToken ct = default);
         //круд
-        Task AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        Task AddAsync(T entity, CancellationToken ct = default);
+        Task UpdateAsync(T entity, CancellationToken ct = default);
+        Task DeleteAsync(T entity, CancellationToken ct = default);
 
         //есть ли это уже в бд?
-        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
     }
 }

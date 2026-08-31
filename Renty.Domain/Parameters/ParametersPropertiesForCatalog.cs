@@ -15,5 +15,7 @@ namespace Renty.Domain.Parameters
         public DateTime? CheckInDate { get; set; } = null;
         public DateTime? CheckOutDate { get; set; } = null;
         public int? GuestCount { get; set; } = null;
+        //добавила для фильтра по удобствам
+        public List<Guid>? AmenityIds { get; set; } = null;
     }
 }
