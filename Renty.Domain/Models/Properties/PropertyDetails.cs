@@ -24,15 +24,13 @@ namespace Renty.Domain.Models.Properties
 
         public int BathroomsCount { get; set; } = 0;
 
-        //// период действия этих характеристик
-        //public DateTime ValidFrom { get; set; } = DateTime.UtcNow;
+        // Количество этажей в здании
+        // (Для квартиры - этажность всего дома, для частного дома - количество этажей в доме)
+        public int FloorsCount { get; set; } = 1;
 
-        //// null = текущая версия
-        //public DateTime? ValidTo { get; set; }
-
-        //// Кто изменил
-        //public Guid? ModifiedByUserId { get; set; }
-
+        // Этаж, на котором находится объект
+        // (Может быть null, если это частный дом, вилла или отель целиком)
+        public int? Floor { get; set; }
         // Когда создана запись
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
