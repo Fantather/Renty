@@ -153,6 +153,49 @@ namespace Renty.Infrastructure.Repository
             return await query.AsNoTracking().ToListAsync(ct);
         }
 
+        /// <summary>
+        /// Изменяет состояние объекта Property по его идентификатору.
+        /// </summary>
+        /// <param name="propertyId">Идентификатор объекта Property.</param>
+        /// <param name="newState">Новое состояние объекта Property.</param>
+        /// <returns>True, если состояние было успешно изменено; иначе false.</returns>
+        public bool ChangeState(Guid propertyId, PropertyStatusEnum newState)
+        {
+            var property = _dbSet.Find(propertyId);
+            if (property == null)
+            {
+                return false;
+            }
+            if (property.Status == newState)
+            {
+                return false; //Ничего не сменилось камон
+            }
+            property.Status = newState;
+            _context.SaveChanges();
+            return true;
+        }
+        /// <summary>
+        /// Изменяет состояние объекта Property по его слагу.
+        /// </summary>
+        /// <param name="slug">Слаг объекта Property.</param>
+        /// <param name="newState">Новое состояние объекта Property.</param>
+        /// <returns>True, если состояние было успешно изменено; иначе false.</returns>
+        public bool ChangeState(string slug, PropertyStatusEnum newState)
+        {
+            var property = _dbSet.FirstOrDefault(p => p.Slug == slug);
+            if (property == null)
+            {
+                return false;
+            }
+            if (property.Status == newState)
+            {
+                return false;   //Ничего не сменилось камон
+            }
+            property.Status = newState;
+            _context.SaveChanges();
+            return true;
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////////
         /*
          * Приватный метод для получения полного запроса с включением связанных сущностей Property.
@@ -171,5 +214,6 @@ namespace Renty.Infrastructure.Repository
                 .Include(p => p.PropertyTags)
                     .ThenInclude(pt => pt.Tag);
         }
+
     }
 }
