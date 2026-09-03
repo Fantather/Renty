@@ -5,7 +5,7 @@ using Renty.Domain.Models.Properties;
 namespace Renty.Domain.Models.User
 {
     /// <summary>
-    /// Отзывы пользователей о недвижимости (упрощенная версия)
+    /// Отзывы пользователей о недвижимости
     /// </summary>
     public class Review
     {
