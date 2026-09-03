@@ -9,6 +9,8 @@
     box-shadow: var(--shadow-card);
     padding: 6px;
     gap: 4px;
+
+    position: relative;
 }
 
 .search-bar__segment {
@@ -66,4 +68,21 @@
 ::deep .search-bar__submit-icon {
     width: 16px;
     height: 16px;
+}
+
+
+.date-popover {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+
+    width: 400px;
+    min-height: 200px;
 }
