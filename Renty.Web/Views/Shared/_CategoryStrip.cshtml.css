@@ -2,7 +2,7 @@
     display: flex;
     gap: 24px;
     overflow-x: auto;
-    padding: 4px 0 12px;
+    padding: 4px 0;
 }
 
 .category-strip__item {

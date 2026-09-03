@@ -1,6 +1,6 @@
 @model Renty.Web.Models.CategoryStripViewModel
 
-<nav class="category-strip" aria-label="Категорії">
+<nav class="category-strip" aria-label="Категории">
     @foreach (var category in Model.Categories)
     {
         var isActive = category.Slug == Model.SelectedSlug;
