@@ -4,8 +4,11 @@ using System.Text;
 
 namespace Renty.Application.DTOs.GetReviews
 {
+    /// <summary>
+    /// Модель автора отзыва
+    /// </summary>
     public class AuthorDto
-    // Модель автора отзыва
+    
     {
         // Полное имя
         public string FullName { get; set; } = null!;

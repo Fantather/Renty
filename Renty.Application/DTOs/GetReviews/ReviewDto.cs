@@ -4,8 +4,11 @@ using System.Text;
 
 namespace Renty.Application.DTOs.GetReviews
 {
+    /// <summary>
+    /// Модель отзыва
+    /// </summary>
     public class ReviewDto
-    // Модель отзыва
+    
     {
         public Guid Id { get; set; }
 
