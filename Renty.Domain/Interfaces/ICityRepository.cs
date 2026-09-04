@@ -51,5 +51,6 @@ namespace Renty.Domain.Interfaces
         /// <param name="ct">Токен отмены.</param>
         /// <returns>Возвращает true, если состояние было успешно изменено, иначе false.</returns>
         Task<bool> ChangeState(string name, bool isActive, CancellationToken ct = default);
+
     }
 }

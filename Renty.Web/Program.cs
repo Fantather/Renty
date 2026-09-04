@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
+using Renty.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,5 +42,34 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
+        // Локации(города, так как мне нужно протестировать)
+        await CountrySeeder.SeedAsync(context);
+
+        // Пользователи, админ, два одессита и киевлянин
+        await IdentitySeeder.SeedAdminAsync(userManager, roleManager);
+        await IdentitySeeder.SeedTestUsersAsync(userManager, context);
+
+        // Справочники
+        await PropertyCategorySeeder.SeedAsync(context);
+        await RoomTypesSeeder.SeedAsync(context);
+        await TagSeeder.SeedAsync(context);
+        await AmenitiesSeeder.SeedAsync(context);
+
+        // Квартиры
+        await PropertySeeder.SeedAsync(context);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+}
 app.Run();

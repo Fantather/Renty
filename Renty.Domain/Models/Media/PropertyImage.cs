@@ -12,10 +12,16 @@ namespace Renty.Domain.Models.Media
     public class PropertyImage:Image
     {
 
-        // Связь с Property
+        //приналдежит квартире ТОЧНО
         public Guid PropertyId { get; set; }
-        //[ForeignKey(nameof(PropertyId))]
-        public virtual Property Property { get; set; }
+        [ForeignKey(nameof(PropertyId))]
+        public virtual Property Property { get; set; } = null!;
 
+        ///если null - то это фасад
+        public Guid? RoomId { get; set; }
+        [ForeignKey(nameof(RoomId))]
+        public virtual Room? Room { get; set; }
     }
+
 }
+

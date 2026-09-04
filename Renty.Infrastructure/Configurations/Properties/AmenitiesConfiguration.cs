@@ -21,8 +21,7 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.Property(a => a.Description)
                 .HasMaxLength(500);
 
-            builder.Property(a => a.IconUrl)
-                .HasMaxLength(500);
+            builder.Property(a => a.IconUrl);
 
             builder.Property(a => a.IsActive)
                 .IsRequired();

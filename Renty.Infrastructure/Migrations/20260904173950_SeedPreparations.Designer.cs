@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Renty.Infrastructure.Data;
 namespace Renty.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260904173950_SeedPreparations")]
+    partial class SeedPreparations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,9 +280,6 @@ namespace Renty.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("integer");
-
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("text");
@@ -290,9 +290,6 @@ namespace Renty.Infrastructure.Migrations
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("RoomId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -301,8 +298,6 @@ namespace Renty.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId");
-
-                    b.HasIndex("RoomId");
 
                     b.ToTable("PropertyImages", (string)null);
                 });
@@ -693,6 +688,51 @@ namespace Renty.Infrastructure.Migrations
                         .HasDatabaseName("IX_RoomAmenities_RoomId_AmenityId");
 
                     b.ToTable("RoomAmenities", (string)null);
+                });
+
+            modelBuilder.Entity("Renty.Domain.Models.Properties.RoomImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsPrimary")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasDefaultValue("Title Image");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId")
+                        .HasDatabaseName("IX_RoomImages_RoomId");
+
+                    b.HasIndex("RoomId", "IsPrimary")
+                        .HasDatabaseName("IX_RoomImages_RoomId_IsPrimary");
+
+                    b.ToTable("RoomImages", (string)null);
                 });
 
             modelBuilder.Entity("Renty.Domain.Models.Properties.RoomType", b =>
@@ -1103,14 +1143,7 @@ namespace Renty.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Renty.Domain.Models.Properties.Room", "Room")
-                        .WithMany("Images")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("Property");
-
-                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Renty.Domain.Models.Orders.Booking", b =>
@@ -1258,6 +1291,17 @@ namespace Renty.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Amenity");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Renty.Domain.Models.Properties.RoomImage", b =>
+                {
+                    b.HasOne("Renty.Domain.Models.Properties.Room", "Room")
+                        .WithMany("Images")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Room");
                 });

@@ -70,7 +70,7 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasMany(r => r.Images)
                 .WithOne(ri => ri.Room)
                 .HasForeignKey(ri => ri.RoomId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(r => r.RoomAmenities)
                 .WithOne(ra => ra.Room)

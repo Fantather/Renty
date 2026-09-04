@@ -6,10 +6,12 @@ namespace Renty.Domain.Models.Properties.Anemities
 {
     /// <summary>
     /// Удобства (Wi-Fi, кондиционер, парковка, бассейн и т.д.)
+    /// Я неправильно подписала название класса кст
     /// </summary>
+
     public class Anemities
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7(); 
 
         public string Name { get; set; } = string.Empty; // "Free Wi-Fi", "Air conditioning", "Pool", etc.
 

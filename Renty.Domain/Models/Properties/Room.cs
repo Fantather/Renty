@@ -1,3 +1,4 @@
+using Renty.Domain.Models.Media;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Renty.Domain.Models.Properties
@@ -44,7 +45,7 @@ namespace Renty.Domain.Models.Properties
         // Навигационные свойства
         public virtual RoomType RoomType { get; set; } = null!;
 
-        public virtual ICollection<RoomImage> Images { get; set; } = new List<RoomImage>();
+        public virtual ICollection<PropertyImage> Images { get; set; } = new List<PropertyImage>();
 
         public virtual ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
     }
