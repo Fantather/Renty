@@ -5,12 +5,14 @@ using System.Text;
 
 namespace Renty.Application.DTOs.GetProperties
 {
+    /// <summary>
+    /// Модель для отображения недвижимости для аренды
+    /// </summary>
     public class PropertyListItem
-    ///  Модель для отображения недвижимости для аренды
     {
         public string Slug { get; set; } = null!;
 
-        public string Name { get; set; } = string.Empty;
+        public string PropertyName { get; set; } = string.Empty;
         //public string Tag { get; set; } = string.Empty;
         public string CategoryName { get; set; } = null!;
 
@@ -18,8 +20,8 @@ namespace Renty.Application.DTOs.GetProperties
         public bool IsFavorite { get; set; }
 
         // Страна город
-        public string City { get; set; } = null!;
-        public string Country { get; set; } = null!;
+        public string CityName { get; set; } = null!;
+        public string CountryName { get; set; } = null!;
 
         // В зависимости от выбранной страны пользователя (по умолчанию в USD)
         public decimal PricePerNight { get; set; }
@@ -38,7 +40,7 @@ namespace Renty.Application.DTOs.GetProperties
         //Failed = 3,
         //[Description("Возвращено")]
         //Refunded = 4
-        public string Status { get; set; } = null!;
+        //public string Status { get; set; } = null!;
 
         // Титульное изображение
         public string CoverImage { get; set; } = null!;

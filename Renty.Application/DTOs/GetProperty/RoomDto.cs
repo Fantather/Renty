@@ -5,8 +5,11 @@ using System.Text;
 
 namespace Renty.Application.DTOs.GetProperty
 {
+    /// <summary>
+    /// Модель для отображения комнат
+    /// </summary>
     public class RoomDto
-    // Модель для отображения комнат
+
     {
         // Название комнаты
         public string Name { get; set; } = string.Empty;
@@ -26,7 +29,7 @@ namespace Renty.Application.DTOs.GetProperty
         public DateTime? UpdatedAt { get; set; }
 
         // Удобства
-        public List<AnemitiesDto> Anemities { get; set; } = new();
+        public List<AmenitiesDto> Amenities { get; set; } = new();
 
         // Тип комнаты (Studio, One Bedroom, Suite, Deluxe, etc.)
         public RoomTypeDto RoomType { get; set; } = null!;

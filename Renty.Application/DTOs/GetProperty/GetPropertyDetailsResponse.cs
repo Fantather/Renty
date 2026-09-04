@@ -1,24 +1,27 @@
 ﻿using Renty.Application.DTOs.Common;
-using Renty.Application.DTOs.GetProperties;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Renty.Application.DTOs.GetProperty
 {
+    /// <summary>
+    /// Детали об аренде 
+    /// </summary>
     public class GetPropertyDetailsResponse
-        // Детали об аренде 
+        
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Slug { get; set; } = string.Empty;
+        public string PropertyName { get; set; } = string.Empty;
         public CategoryDto Category { get; set; } = null!;
 
         // Добавленна ли недвижимость в список избранных
         public bool IsFavorite { get; set; }
 
-        // Страна город
-        public string City { get; set; } = null!;
-        public string Country { get; set; } = null!;
+        // Страна область город 
+        public string CityName { get; set; } = null!;
+        //public string? RegionName { get; set; } = null!;
+        public string CountryName { get; set; } = null!;
 
         // В зависимости от выбранной страны пользователя (по умолчанию в USD)
         public decimal PricePerNight { get; set; }
@@ -28,20 +31,17 @@ namespace Renty.Application.DTOs.GetProperty
         public decimal AverageRating { get; set; }
         public int ReviewsCount { get; set; }
 
-        // Статус
-        public string Status { get; set; } = null!;
+        //// Статус
+        //public string Status { get; set; } = null!;
 
         // Изображеня комнат
         public List<ImageDto> Images { get; set; } = new();
-
-        // Диапазон свободных дат для заселения или что то такое
-        //public DateTime 
 
         // Дата создания объявления и последнего обновления
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
-        public string Tag { get; set; } = string.Empty;
+        public List<TagDto> Tags { get; set; } = new();
         public string Description { get; set; } = string.Empty;
 
         // Адрес, область и местоположение
@@ -72,14 +72,14 @@ namespace Renty.Application.DTOs.GetProperty
         public string? HouseRules { get; set; }
 
         // Времена заезда/выезда
-        public TimeSpan? CheckInTime { get; set; }
-        public TimeSpan? CheckOutTime { get; set; }
+        //public TimeSpan? CheckInTime { get; set; }
+        //public TimeSpan? CheckOutTime { get; set; }
 
 
         // Владелец 
         public HostDto Host { get; set; } = null!;
 
         // Удобства
-        public List<AnemitiesDto> Anemities { get; set; } = new();
+        public List<AmenitiesDto> Amenities { get; set; } = new();
     }
 }

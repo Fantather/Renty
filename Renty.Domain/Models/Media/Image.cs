@@ -17,7 +17,7 @@ namespace Renty.Domain.Models.Media
         public string? Description { get; set; }
 
         //// Порядок отображения, я закоментировала потому что не уверенна нужен ли он
-        //public int DisplayOrder { get; set; } = 0;
+        public int DisplayOrder { get; set; } = 0;
 
         // Является ли изображение главным
         public bool IsPrimary { get; set; } = false;
