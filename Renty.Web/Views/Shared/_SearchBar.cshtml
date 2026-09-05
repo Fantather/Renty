@@ -16,10 +16,11 @@
 }
 
 <div class="search-bar">
-    <button type="button" class="search-bar__segment">
-        <span class="search-bar__label">Где</span>
-        <span class="search-bar__value">@(string.IsNullOrEmpty(Model.Destination) ? "Поиск направлений" : Model.Destination)</span>
-    </button>
+    <div class="search-bar__segment" id="destinationSegment">
+        <label class="search-bar__label" for="destinationInput">Где</label>
+        <input type="text" class="search-bar__value search-bar__input" id="destinationInput" name="Destination"
+               placeholder="Поиск направлений" value="@Model.Destination" autocomplete="off" />
+    </div>
 
     <span class="search-bar__divider"></span>
 
@@ -40,6 +41,8 @@
     </button>
 
 
+
+    <div class="popover-panel destination-popover" id="destinationPopover" hidden></div>
 
     <div class="popover-panel date-popover" id="datePopover" hidden>
         <button type="button" class="date-popover__nav" id="prevMonthBtn">‹</button>

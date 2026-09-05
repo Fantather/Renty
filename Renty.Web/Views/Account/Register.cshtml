@@ -1,0 +1,39 @@
+@model Renty.Web.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<div class="register-page">
+    <div class="register-card auth-card">
+        <h1 class="auth-card__title">Регистрация</h1>
+
+        <form asp-controller="Account" asp-action="Register" method="post" class="auth-card__form">
+            <label class="auth-card__label" asp-for="Name">Имя</label>
+            <input asp-for="Name" class="auth-card__input" />
+            <span asp-validation-for="Name" class="auth-card__error"></span>
+
+            <label class="auth-card__label" asp-for="Email">Email</label>
+            <input asp-for="Email" class="auth-card__input" />
+            <span asp-validation-for="Email" class="auth-card__error"></span>
+
+            <label class="auth-card__label" asp-for="Password">Пароль</label>
+            <input asp-for="Password" class="auth-card__input" />
+            <span asp-validation-for="Password" class="auth-card__error"></span>
+
+            <label class="auth-card__label" asp-for="ConfirmPassword">Подтверждение пароля</label>
+            <input asp-for="ConfirmPassword" class="auth-card__input" />
+            <span asp-validation-for="ConfirmPassword" class="auth-card__error"></span>
+
+            <button type="submit" class="auth-card__submit">Зарегистрироваться</button>
+        </form>
+
+        <div class="auth-card__divider"><span>или</span></div>
+
+        <button type="button" class="auth-card__google-btn" id="googleSignUpBtn" disabled>
+            <icon name="star" class="auth-card__google-icon" />
+            Продолжить с Google
+        </button>
+
+        <p class="auth-card__footer">Уже есть аккаунт? <a asp-controller="Home" asp-action="Index">Войти</a></p>
+    </div>
+</div>

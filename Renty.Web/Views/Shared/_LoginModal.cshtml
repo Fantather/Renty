@@ -1,0 +1,30 @@
+@model LoginViewModel
+
+<div class="modal-overlay" id="loginModal" hidden>
+    <div class="modal-card auth-card">
+        <button type="button" class="modal-card__close" id="loginModalClose" aria-label="Закрыть">✕</button>
+
+        <h2 class="auth-card__title">Войти</h2>
+
+        <form asp-controller="Account" asp-action="Login" method="post" class="auth-card__form">
+            <label class="auth-card__label" asp-for="Email">Email</label>
+            <input asp-for="Email" class="auth-card__input" />
+            <span asp-validation-for="Email" class="auth-card__error"></span>
+
+            <label class="auth-card__label" asp-for="Password">Пароль</label>
+            <input asp-for="Password" class="auth-card__input" />
+            <span asp-validation-for="Password" class="auth-card__error"></span>
+
+            <button type="submit" class="auth-card__submit">Войти</button>
+        </form>
+
+        <div class="auth-card__divider"><span>или</span></div>
+
+        <button type="button" class="auth-card__google-btn" disabled>
+            <icon name="star" class="auth-card__google-icon" />
+            Продолжить с Google
+        </button>
+
+        <p class="auth-card__footer">Нет аккаунта? <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a></p>
+    </div>
+</div>

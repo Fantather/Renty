@@ -43,6 +43,15 @@
     white-space: nowrap;
 }
 
+.search-bar__input {
+    border: none;
+    background: none;
+    outline: none;
+    padding: 0;
+    font: inherit;
+    width: 100%;
+}
+
 .search-bar__divider {
     width: 1px;
     height: 24px;
@@ -72,18 +81,61 @@
 }
 
 /* === Popovers === */
+/* .popover-panel (shared base) now lives in wwwroot/css/site.css — see note there */
 
-.popover-panel {
-    position: absolute;
-    top: calc(100% + 12px);
-    z-index: 20;
+/* Destination */
+.destination-popover {
+    left: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 16px 8px;
+    width: min(420px, 90vw);
+    max-height: 480px;
+    overflow-y: auto;
+}
+
+::deep .destination-popover__heading {
+    margin: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+}
+
+::deep .destination-popover__item {
     display: flex;
-    gap: 24px;
-    padding: 20px;
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-card);
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    text-align: left;
+    cursor: pointer;
+}
+
+::deep .destination-popover__item:hover {
+    background-color: var(--color-bg);
+}
+
+::deep .destination-popover__icon {
+    display: block;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+}
+
+::deep .destination-popover__title {
+    display: block;
+    font-weight: 600;
+}
+
+::deep .destination-popover__subtitle {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
 }
 
 /* Calendar */

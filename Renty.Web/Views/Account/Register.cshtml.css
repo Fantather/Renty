@@ -1,0 +1,9 @@
+.register-page {
+    display: flex;
+    justify-content: center;
+    padding: 48px 16px;
+}
+
+.register-card {
+    border: 1px solid var(--color-border);
+}

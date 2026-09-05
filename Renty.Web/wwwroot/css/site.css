@@ -29,3 +29,129 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Shared across components — not CSS-isolated, so any view's popover can use it */
+.popover-panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    z-index: 20;
+    display: flex;
+    gap: 24px;
+    padding: 20px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+/* Shared between Register.cshtml and _LoginModal.cshtml — same reason: CSS Isolation
+   scopes each view's own .cshtml.css separately, so this can't live in either one. */
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 32px;
+}
+
+.auth-card__title {
+    margin: 0 0 24px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.auth-card__google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.auth-card__google-btn:hover {
+    background-color: var(--color-bg);
+}
+
+/* Global stylesheet — no CSS Isolation scope attribute exists here, so unlike in a
+   .cshtml.css file, this needs no ::deep to reach the <icon> tag helper's output. */
+.auth-card__google-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.auth-card__divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.auth-card__divider::before,
+.auth-card__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+.auth-card__form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.auth-card__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.auth-card__input {
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font: inherit;
+}
+
+.auth-card__input:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: -1px;
+}
+
+.auth-card__error {
+    color: var(--color-like);
+    font-size: 0.85rem;
+    margin: 8px 0 0;
+}
+
+.auth-card__submit {
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.auth-card__submit:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.auth-card__footer {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}

@@ -1,0 +1,21 @@
+@{
+    // TODO: заменить на реальную проверку, когда подключим Identity — например User.Identity?.IsAuthenticated ?? false
+    var isAuthenticated = false;
+}
+
+<div class="account-menu">
+    <button type="button" class="account-menu__trigger" id="accountMenuTrigger" aria-label="Меню">
+        <icon name="star" class="account-menu__trigger-icon" />
+    </button>
+
+    <div class="popover-panel account-menu__popover" id="accountMenuPopover" hidden>
+        @if (isAuthenticated)
+        {
+            <button type="button" class="account-menu__item" id="logoutButton">Выйти</button>
+        }
+        else
+        {
+            <button type="button" class="account-menu__item" id="loginTrigger">Войти или зарегистрироваться</button>
+        }
+    </div>
+</div>

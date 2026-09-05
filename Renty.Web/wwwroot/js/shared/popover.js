@@ -18,12 +18,17 @@ export function createDismissible(rootId, onOpen) {
     return { open: open, close: close, root: root };
 }
 
-export function createPopover(triggerId, rootId, onOpen) {
+export function createPopover(triggerId, rootId, onOpen, triggerEvent) {
+    triggerEvent = triggerEvent || 'click';
     var trigger = document.getElementById(triggerId);
     var dismissible = createDismissible(rootId, onOpen);
 
-    trigger.addEventListener('click', function () {
-        dismissible.root.hidden ? open() : close();
+    trigger.addEventListener(triggerEvent, function () {
+        if (triggerEvent === 'focus') {
+            if (dismissible.root.hidden) open();
+        } else {
+            dismissible.root.hidden ? open() : close();
+        }
     });
 
     function open() {
@@ -39,4 +44,17 @@ export function createPopover(triggerId, rootId, onOpen) {
     }
 
     return { open: open, close: close, root: dismissible.root, trigger: trigger };
+}
+
+export function createModal(rootId, closeButtonId) {
+    var dismissible = createDismissible(rootId, null);
+    var closeBtn = document.getElementById(closeButtonId);
+
+    closeBtn.addEventListener('click', dismissible.close);
+
+    dismissible.root.addEventListener('click', function (e) {
+        if (e.target === dismissible.root) dismissible.close();
+    });
+
+    return dismissible;
 }
