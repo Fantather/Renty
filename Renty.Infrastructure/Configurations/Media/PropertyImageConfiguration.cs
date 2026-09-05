@@ -28,8 +28,8 @@ namespace Renty.Infrastructure.Configurations.Media
             builder.Property(pi => pi.IsPrimary)
                 .IsRequired();
 
-            //builder.Property(pi => pi.DisplayOrder)
-            //    .IsRequired();
+            builder.Property(pi => pi.DisplayOrder)
+                .IsRequired();
 
             builder.Property(pi => pi.CreatedAt)
                 .IsRequired();
@@ -40,10 +40,10 @@ namespace Renty.Infrastructure.Configurations.Media
                 .HasForeignKey(pi => pi.PropertyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //builder.HasOne(pi => pi.ImageType)
-            //    .WithMany()
-            //    .HasForeignKey(pi => pi.ImageTypeId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(pi => pi.Room)
+                .WithMany(r => r.Images)
+                .HasForeignKey(pi => pi.RoomId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

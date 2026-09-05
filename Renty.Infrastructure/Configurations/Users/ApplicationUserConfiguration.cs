@@ -34,8 +34,7 @@ namespace Renty.Infrastructure.Configurations.Users
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(u => u.AvatarUrl)
-                .HasMaxLength(500);
+            builder.Property(u => u.AvatarUrl);
 
             builder.Property(u => u.TravelReason)
                 .HasMaxLength(500);

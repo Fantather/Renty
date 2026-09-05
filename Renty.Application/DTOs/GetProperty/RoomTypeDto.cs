@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Renty.Application.DTOs.GetProperty
 {
+    /// <summary>
+    /// Тип комнаты (Studio, One Bedroom, Suite, Deluxe, etc.)
+    /// </summary>
     public class RoomTypeDto
     {
         public string Name { get; set; } = string.Empty;

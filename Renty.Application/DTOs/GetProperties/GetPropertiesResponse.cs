@@ -5,14 +5,17 @@ using System.Text;
 
 namespace Renty.Application.DTOs.GetProperties
 {
+    /// <summary>
+    /// Модель для отображения списка недвижимости для аренды на главной странице
+    /// </summary>
     public class GetPropertiesResponse
-    ///  Модель для отображения списка недвижимости для аренды на главной странице
+    
     {
 
         public List<PropertyListItem> Properties { get; set; } = new();
 
-        // Общее количество объектов
-        public int TotalCount { get; set; }
+        //// Общее количество объектов
+        //public int TotalCount { get; set; }
 
         // Текущая страница
         public int Page { get; set; }
@@ -21,7 +24,7 @@ namespace Renty.Application.DTOs.GetProperties
         public int PageSize { get; set; }
 
         // Всего страниц
-        public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
+        //public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
 
     }
 }
