@@ -5,6 +5,14 @@
     var dateLabel = (Model.CheckInDate.HasValue && Model.CheckOutDate.HasValue)
         ? $"{Model.CheckInDate.Value:d MMM} – {Model.CheckOutDate.Value:d MMM}"
         : "Когда?";
+
+    var guestCounters = new[]
+    {
+        new { Key = "adult", Title = "Взрослые", Subtitle = "От 13 лет" },
+        new { Key = "child", Title = "Дети", Subtitle = "Возраст от 2 до 12" },
+        new { Key = "infant", Title = "Младенцы", Subtitle = "Младше 2" },
+        new { Key = "pet", Title = "Домашние животные", Subtitle = "Путешествуете с животным-помощником?" },
+    };
 }
 
 <div class="search-bar">
@@ -17,19 +25,53 @@
 
     <button type="button" class="search-bar__segment" id="dateSegment">
         <span class="search-bar__label">Когда</span>
-        <span class="search-bar__value">@dateLabel</span>
+        <span class="search-bar__value" id="dateSegmentValue">@dateLabel</span>
     </button>
 
     <span class="search-bar__divider"></span>
 
-    <button type="button" class="search-bar__segment">
+    <button type="button" class="search-bar__segment" id="guestsSegment">
         <span class="search-bar__label">Кто</span>
-        <span class="search-bar__value">@(guestsTotal > 0 ? $"Гостей: {guestsTotal}" : "Кто едет?")</span>
+        <span class="search-bar__value" id="guestsSegmentValue">@(guestsTotal > 0 ? $"Гостей: {guestsTotal}" : "Кто едет?")</span>
     </button>
 
     <button type="button" class="search-bar__submit">
         <icon name="star" class="search-bar__submit-icon" />
     </button>
 
-    <div class="date-popover" id="datePopover" hidden></div>
+
+
+    <div class="popover-panel date-popover" id="datePopover" hidden>
+        <button type="button" class="date-popover__nav" id="prevMonthBtn">‹</button>
+        <div class="date-popover__calendar" data-month-slot="0"></div>
+        <div class="date-popover__calendar" data-month-slot="1"></div>
+        <button type="button" class="date-popover__nav" id="nextMonthBtn">›</button>
+    </div>
+    
+    <div class="popover-panel guests-popover" id="guestsPopover" hidden>
+        @foreach (var counter in guestCounters)
+        {
+            <div class="guests-popover__row" data-counter="@counter.Key">
+                <div class="guests-popover__info">
+                    <p class="guests-popover__title">@counter.Title</p>
+                    <p class="guests-popover__subtitle">@counter.Subtitle</p>
+                </div>
+                <div class="guests-popover__counter">
+                    <button type="button" class="guests-popover__btn guests-popover__btn--minus" aria-label="Уменьшить">−</button>
+                    <span class="guests-popover__count">0</span>
+                    <button type="button" class="guests-popover__btn guests-popover__btn--plus" aria-label="Увеличить">+</button>
+                </div>
+            </div>
+        }
+    </div>
+
+
+
+    <input type="hidden" id="checkInInput" name="CheckInDate" value="@(Model.CheckInDate?.ToString("yyyy-MM-dd"))" />
+    <input type="hidden" id="checkOutInput" name="CheckOutDate" value="@(Model.CheckOutDate?.ToString("yyyy-MM-dd"))" />
+
+    <input type="hidden" id="adultCountInput" name="AdultCount" value="@(Model.AdultCount ?? 0)" />
+    <input type="hidden" id="childCountInput" name="ChildCount" value="@(Model.ChildCount ?? 0)" />
+    <input type="hidden" id="infantCountInput" name="InfantCount" value="@(Model.InfantCount ?? 0)" />
+    <input type="hidden" id="petCountInput" name="PetCount" value="@(Model.PetCount ?? 0)" />
 </div>
