@@ -1,4 +1,6 @@
-namespace Renty.Web.Models
+using Renty.Web.Models.Shared;
+
+namespace Renty.Web.Models.Home
 {
     public class HomeIndexViewModel
     {

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Renty.Web.Models;
+using Renty.Web.Models.Home;
+using Renty.Web.Models.Shared;
 using System.Diagnostics;
 
 namespace Renty.Web.Controllers

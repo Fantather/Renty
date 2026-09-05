@@ -1,4 +1,4 @@
-namespace Renty.Web.Models
+namespace Renty.Web.Models.Shared
 {
     public class PropertyCardViewModel
     {
