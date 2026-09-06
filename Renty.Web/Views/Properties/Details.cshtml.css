@@ -59,6 +59,16 @@
     top: 0;
     background-color: var(--color-surface);
     z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .15s ease;
+}
+
+.property-nav.is-visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .property-nav a {
@@ -99,6 +109,13 @@
     height: 56px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+#rooms,
+#amenities,
+#reviews,
+#location {
+    scroll-margin-top: 120px;
 }
 
 .property-rooms__grid,
