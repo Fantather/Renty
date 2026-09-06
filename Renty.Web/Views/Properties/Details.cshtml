@@ -10,7 +10,7 @@
     <header class="property-details__header">
         <h1 class="property-details__title">@Model.Name</h1>
         <div class="property-details__meta">
-            <span class="property-details__rating"><icon name="star" /> @Model.OverallRating.ToString("0.00") · @Model.ReviewsCount відгуків</span>
+            <span class="property-details__rating"><icon name="star" /> @Model.OverallRating.ToString("0.00") · @Model.ReviewsCount отзывов</span>
             <span class="property-details__location">@Model.City, @Model.Country</span>
         </div>
     </header>
@@ -27,9 +27,9 @@
 
     <nav class="property-nav">
         <a href="#rooms">Фото</a>
-        <a href="#amenities">Зручності</a>
-        <a href="#reviews">Відгуки</a>
-        <a href="#location">Розташування</a>
+        <a href="#amenities">Удобства</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#location">Расположение</a>
     </nav>
 
     <div id="navTrigger"></div>
@@ -39,19 +39,19 @@
 
             <section class="property-overview">
                 <div class="property-overview__info">
-                    <h2>Помешкання для оренди, господар — @Model.Host.FullName</h2>
-                    <p>@Model.MaxGuests гостя · @Model.Bedrooms спальня · @Model.Beds ліжка · @Model.Bathrooms ванна кімната</p>
+                    <h2>Жильё в аренду, хозяин — @Model.Host.FullName</h2>
+                    <p>@Model.MaxGuests гостей · @Model.Bedrooms спальня · @Model.Beds кроватей · @Model.Bathrooms ванная комната</p>
                 </div>
                 <img src="@Model.Host.AvatarUrl" alt="@Model.Host.FullName" class="property-overview__host-avatar" />
             </section>
 
             <section class="property-description">
                 <p class="property-description__text">@Model.Description</p>
-                <button type="button" id="showDescriptionBtn" class="btn-outline">Показати ще</button>
+                <button type="button" id="showDescriptionBtn" class="btn-outline">Показать ещё</button>
             </section>
 
             <section id="rooms" class="property-rooms">
-                <h2>Де ви будете спати</h2>
+                <h2>Где вы будете спать</h2>
                 <div class="property-rooms__grid">
                     @foreach (var room in Model.Rooms)
                     {
@@ -61,7 +61,7 @@
             </section>
 
             <section id="amenities" class="property-amenities">
-                <h2>Які зручності на вас чекають</h2>
+                <h2>Какие удобства вас ждут</h2>
                 <div class="property-amenities__grid">
                     @foreach (var amenity in Model.Amenities.Take(8))
                     {
@@ -70,12 +70,12 @@
                 </div>
                 @if (Model.Amenities.Count > 8)
                 {
-                    <button type="button" id="showAllAmenitiesBtn" class="btn-outline">Показати всі зручності: @Model.Amenities.Count</button>
+                    <button type="button" id="showAllAmenitiesBtn" class="btn-outline">Показать все удобства: @Model.Amenities.Count</button>
                 }
             </section>
 
             <section id="calendar" class="property-calendar">
-                <h2>Виберіть дати</h2>
+                <h2>Выберите даты</h2>
                 <div class="property-calendar__months">
                     <button type="button" id="calendarPrevBtn" class="date-popover__nav">‹</button>
                     <div class="date-popover__calendar" data-month-slot="0"></div>
@@ -85,24 +85,24 @@
             </section>
 
             <section id="reviews" class="property-reviews">
-                <h2><icon name="star" /> @Model.OverallRating.ToString("0.00") · @Model.ReviewsCount відгуків</h2>
+                <h2><icon name="star" /> @Model.OverallRating.ToString("0.00") · @Model.ReviewsCount отзывов</h2>
 
                 <div class="rating-breakdown">
                     <div class="rating-breakdown__item"><span>Чистота</span><strong>@Model.RatingBreakdown.Cleanliness.ToString("0.0")</strong></div>
-                    <div class="rating-breakdown__item"><span>Точність</span><strong>@Model.RatingBreakdown.Accuracy.ToString("0.0")</strong></div>
-                    <div class="rating-breakdown__item"><span>Прибуття</span><strong>@Model.RatingBreakdown.CheckIn.ToString("0.0")</strong></div>
-                    <div class="rating-breakdown__item"><span>Спілкування</span><strong>@Model.RatingBreakdown.Communication.ToString("0.0")</strong></div>
-                    <div class="rating-breakdown__item"><span>Розташування</span><strong>@Model.RatingBreakdown.Location.ToString("0.0")</strong></div>
-                    <div class="rating-breakdown__item"><span>Ціна/якість</span><strong>@Model.RatingBreakdown.Value.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Точность</span><strong>@Model.RatingBreakdown.Accuracy.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Заезд</span><strong>@Model.RatingBreakdown.CheckIn.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Общение</span><strong>@Model.RatingBreakdown.Communication.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Расположение</span><strong>@Model.RatingBreakdown.Location.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Цена/качество</span><strong>@Model.RatingBreakdown.Value.ToString("0.0")</strong></div>
                 </div>
 
                 <div class="property-reviews__grid" id="reviewsList"></div>
 
-                <button type="button" id="loadMoreReviewsBtn" class="btn-outline">Показати ще</button>
+                <button type="button" id="loadMoreReviewsBtn" class="btn-outline">Показать ещё</button>
             </section>
 
             <section id="location" class="property-location">
-                <h2>Де ви будете</h2>
+                <h2>Где вы будете</h2>
                 <p>@Model.Address</p>
                 @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
                 {
@@ -116,7 +116,7 @@
             @if (!string.IsNullOrEmpty(Model.HouseRules))
             {
                 <section class="property-rules">
-                    <h2>Важлива інформація</h2>
+                    <h2>Важная информация</h2>
                     <p style="white-space: pre-line">@Model.HouseRules</p>
                 </section>
             }
@@ -124,15 +124,15 @@
 
         <aside class="property-details__sidebar">
             <div class="booking-card">
-                <p class="booking-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ніч</p>
+                <p class="booking-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ночь</p>
                 <div class="booking-card__dates">
                     <button type="button" class="booking-card__date" id="checkInDateBtn">
-                        <span>Прибуття</span>
-                        <strong id="checkInDateText">Додати дату</strong>
+                        <span>Заезд</span>
+                        <strong id="checkInDateText">Добавить дату</strong>
                     </button>
                     <button type="button" class="booking-card__date" id="checkOutDateBtn">
-                        <span>Виїзд</span>
-                        <strong id="checkOutDateText">Додати дату</strong>
+                        <span>Выезд</span>
+                        <strong id="checkOutDateText">Добавить дату</strong>
                     </button>
                     <input type="hidden" name="CheckInDate" id="checkInDateInput" />
                     <input type="hidden" name="CheckOutDate" id="checkOutDateInput" />
@@ -147,13 +147,13 @@
                     </button>
                     <div class="popover-panel guests-popover" id="guestsPopover" hidden>
                         <partial name="_GuestsPopoverRows" />
-                        <p class="guests-popover__note">Помешкання розраховане максимум на @Model.MaxGuests гостей.</p>
+                        <p class="guests-popover__note">Жильё рассчитано максимум на @Model.MaxGuests гостей.</p>
                     </div>
                     <input type="hidden" name="Guests" id="guestsInput" value="1" />
                 </div>
                 <p id="totalPrice" class="booking-card__total-price" hidden></p>
-                <button type="button" class="btn-primary booking-card__submit">Забронювати</button>
-                <p class="booking-card__note">Поки що ви нічого не платите</p>
+                <button type="button" class="btn-primary booking-card__submit">Забронировать</button>
+                <p class="booking-card__note">Пока что вы ничего не платите</p>
             </div>
         </aside>
     </div>
@@ -161,7 +161,7 @@
     <div id="allReviewsModal" class="modal-overlay" hidden>
         <div class="modal-panel">
             <button type="button" id="closeReviewsModalBtn" class="modal-panel__close">×</button>
-            <h2>Відгуки</h2>
+            <h2>Отзывы</h2>
             <div class="property-reviews__grid" id="allReviewsList"></div>
         </div>
     </div>
@@ -169,7 +169,7 @@
     <div id="descriptionModal" class="modal-overlay" hidden>
         <div class="modal-panel">
             <button type="button" id="closeDescriptionModalBtn" class="modal-panel__close">×</button>
-            <h2>Про помешкання</h2>
+            <h2>О жилье</h2>
             <p style="white-space: pre-line">@Model.Description</p>
         </div>
     </div>
@@ -177,7 +177,7 @@
     <div id="allAmenitiesModal" class="modal-overlay" hidden>
         <div class="modal-panel">
             <button type="button" id="closeAmenitiesModalBtn" class="modal-panel__close">×</button>
-            <h2>Які зручності на вас чекають</h2>
+            <h2>Какие удобства вас ждут</h2>
             <div class="property-amenities__grid">
                 @foreach (var amenity in Model.Amenities)
                 {
@@ -198,7 +198,7 @@
     </div>
 
     <div id="lightboxOverlay" class="lightbox-overlay" hidden>
-        <button type="button" id="closeLightboxBtn" class="lightbox__close">✕ Закрити</button>
+        <button type="button" id="closeLightboxBtn" class="lightbox__close">✕ Закрыть</button>
         <span class="lightbox__counter" id="lightboxCounter"></span>
         <button type="button" id="lightboxPrevBtn" class="lightbox__nav lightbox__nav--prev">‹</button>
         <img id="lightboxImage" class="lightbox__image" src="" alt="" />

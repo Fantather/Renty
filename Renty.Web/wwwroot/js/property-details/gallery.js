@@ -30,7 +30,7 @@ if (lightboxOverlay && lightboxImage) {
     function showLightboxImage(index) {
         currentLightboxIndex = index;
         lightboxImage.src = lightboxImages[index].src;
-        lightboxCounter.textContent = (index + 1) + ' з ' + lightboxImages.length;
+        lightboxCounter.textContent = (index + 1) + ' из ' + lightboxImages.length;
     }
 
     lightboxImages.forEach(function (img, index) {

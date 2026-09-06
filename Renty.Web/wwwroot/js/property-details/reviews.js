@@ -7,8 +7,8 @@ import { createModal } from '../shared/popover.js';
 // }
 async function loadMoreReviews() {
     return [
-        { authorName: 'Оксана', authorAvatarUrl: 'https://placehold.co/60x60', text: 'Все сподобалось, обов’язково повернемось.', createdAt: '2026-08-10' },
-        { authorName: 'Дмитро', authorAvatarUrl: 'https://placehold.co/60x60', text: 'Чисто, тихо, поруч з морем.', createdAt: '2026-08-02' },
+        { authorName: 'Оксана', authorAvatarUrl: 'https://placehold.co/60x60', text: 'Все понравилось, обязательно вернёмся.', createdAt: '2026-08-10' },
+        { authorName: 'Дмитрий', authorAvatarUrl: 'https://placehold.co/60x60', text: 'Чисто, тихо, рядом с морем.', createdAt: '2026-08-02' },
     ];
 }
 

@@ -51,8 +51,8 @@ if (calendarMonthSlots.length && calendarPrevBtn && calendarNextBtn) {
         onSelect: function (checkIn, checkOut) {
             checkInDateInput.value = checkIn ? formatIsoDate(checkIn) : '';
             checkOutDateInput.value = checkOut ? formatIsoDate(checkOut) : '';
-            checkInDateText.textContent = checkIn ? formatDisplayDate(checkIn) : 'Додати дату';
-            checkOutDateText.textContent = checkOut ? formatDisplayDate(checkOut) : 'Додати дату';
+            checkInDateText.textContent = checkIn ? formatDisplayDate(checkIn) : 'Добавить дату';
+            checkOutDateText.textContent = checkOut ? formatDisplayDate(checkOut) : 'Добавить дату';
 
             if (checkIn && checkOut) {
                 updateTotalPrice(checkIn, checkOut);

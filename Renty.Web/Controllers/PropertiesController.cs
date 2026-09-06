@@ -23,10 +23,10 @@ namespace Renty.Web.Controllers
             {
                 Slug = slug,
                 GoogleMapsApiKey = _configuration["GoogleMaps:ApiKey"] ?? string.Empty,
-                Name = "Студія та спальня з панорамою на місто! Біля моря!",
-                Description = "На краю моря, в тихому і затишному районі, ми пропонуємо цю чудову студію площею 45 м², нещодавно відремонтовану.\n\n" +
-                              "Ідеально підходить для пар, які шукають ідеальне місце для знайомства з містом.\n\n" +
-                              "5 хвилин пішки до пляжу, 10 хвилин до центру міста.",
+                Name = "Студия и спальня с панорамой на город! Возле моря!",
+                Description = "На краю моря, в тихом и уютном районе, мы предлагаем эту прекрасную студию площадью 45 м², недавно отремонтированную.\n\n" +
+                              "Идеально подходит для пар, которые ищут идеальное место для знакомства с городом.\n\n" +
+                              "5 минут пешком до пляжа, 10 минут до центра города.",
                 Images = new List<string>
                 {
                     "https://placehold.co/1200x900",
@@ -37,10 +37,10 @@ namespace Renty.Web.Controllers
                 },
                 Host = new HostViewModel
                 {
-                    FullName = "Ілона",
+                    FullName = "Илона",
                     AvatarUrl = "https://placehold.co/80x80",
                     IsSuperhost = true,
-                    ResponseSpeed = "Відповідає протягом години",
+                    ResponseSpeed = "Отвечает в течение часа",
                     YearsHosting = 3,
                 },
                 OverallRating = 4.95m,
@@ -54,9 +54,9 @@ namespace Renty.Web.Controllers
                     Location = 4.8m,
                     Value = 4.8m,
                 },
-                City = "Одеса",
-                Country = "Україна",
-                Address = "Одеса, Одеська область, Україна",
+                City = "Одесса",
+                Country = "Украина",
+                Address = "Одесса, Одесская область, Украина",
                 Latitude = 46.4825,
                 Longitude = 30.7233,
                 MaxGuests = 4,
@@ -65,30 +65,30 @@ namespace Renty.Web.Controllers
                 Bathrooms = 1,
                 Amenities = new List<AmenityViewModel>
                 {
-                    new() { Name = "Окреме робоче місце", IconName = "star" },
+                    new() { Name = "Отдельное рабочее место", IconName = "star" },
                     new() { Name = "Wi-Fi", IconName = "star" },
                     new() { Name = "Кухня", IconName = "star" },
-                    new() { Name = "Телевізор", IconName = "star" },
-                    new() { Name = "Пральна машина", IconName = "star" },
+                    new() { Name = "Телевизор", IconName = "star" },
+                    new() { Name = "Стиральная машина", IconName = "star" },
                     new() { Name = "Вид на море", IconName = "star" },
-                    new() { Name = "Ліфт", IconName = "star" },
-                    new() { Name = "Кондиціонер", IconName = "star" },
-                    new() { Name = "Безкоштовна парковка", IconName = "star" },
+                    new() { Name = "Лифт", IconName = "star" },
+                    new() { Name = "Кондиционер", IconName = "star" },
+                    new() { Name = "Бесплатная парковка", IconName = "star" },
                 },
                 Rooms = new List<RoomViewModel>
                 {
                     new() { Name = "Спальня", RoomTypeId = RoomViewModel.BedroomTypeId, ImageUrl = "https://placehold.co/500x400" },
-                    new() { Name = "Вітальня", RoomTypeId = Guid.NewGuid(), ImageUrl = "https://placehold.co/500x400" },
-                    new() { Name = "Ванна кімната", RoomTypeId = RoomViewModel.BathroomTypeId, ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Гостиная", RoomTypeId = Guid.NewGuid(), ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Ванная комната", RoomTypeId = RoomViewModel.BathroomTypeId, ImageUrl = "https://placehold.co/500x400" },
                 },
                 Reviews = new List<ReviewViewModel>
                 {
-                    new() { AuthorName = "Stefan", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Відмінне розташування, швидкий доступ до транспорту, магазини поруч.", CreatedAt = DateTime.UtcNow.AddDays(-14) },
-                    new() { AuthorName = "Giulia", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Дуже сподобалось розташування, квартира простора і сучасна.", CreatedAt = DateTime.UtcNow.AddDays(-14) },
-                    new() { AuthorName = "Maeva", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Красиво, дуже чисто і функціонально!", CreatedAt = DateTime.UtcNow.AddDays(-21) },
-                    new() { AuthorName = "Sjors", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Відмінне перебування. Чистота і прекрасне розташування.", CreatedAt = DateTime.UtcNow.AddDays(-21) },
+                    new() { AuthorName = "Stefan", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Отличное расположение, быстрый доступ к транспорту, магазины рядом.", CreatedAt = DateTime.UtcNow.AddDays(-14) },
+                    new() { AuthorName = "Giulia", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Очень понравилось расположение, квартира просторная и современная.", CreatedAt = DateTime.UtcNow.AddDays(-14) },
+                    new() { AuthorName = "Maeva", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Красиво, очень чисто и функционально!", CreatedAt = DateTime.UtcNow.AddDays(-21) },
+                    new() { AuthorName = "Sjors", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Отличное пребывание. Чистота и прекрасное расположение.", CreatedAt = DateTime.UtcNow.AddDays(-21) },
                 },
-                HouseRules = "Прибуття після 15:00\nВиїзд до 11:00\nМаксимум 4 гості",
+                HouseRules = "Заезд после 15:00\nВыезд до 11:00\nМаксимум 4 гостя",
                 PricePerNight = MockPricePerNight,
                 Currency = "USD",
                 BookedRanges = new List<(DateTime From, DateTime To)>
