@@ -33,57 +33,57 @@ namespace Renty.Infrastructure.Seeders
             new PropertiesCategory {
                 Name = "Красивые виды",
                 Description = "Жилье с панорамными или живописными видами",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "Маленькие квартиры",
                 Description = "Компактное и уютное жилье для одного или двух человек",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-3-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-3-line"
             },
             new PropertiesCategory {
                 Name = "Большие квартиры",
                 Description = "Просторное жилье для больших семей или компаний",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "Комнаты",
                 Description = "Отдельные комнаты в аренду в квартирах или домах",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "Хостелы",
                 Description = "Бюджетные спальные места в общих номерах",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "Люкс",
                 Description = "Элитное жилье премиум-класса с высоким уровнем комфорта",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "В центре города",
                 Description = "Жилье в самом сердце города в пешей доступности от достопримечательностей",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "Сельская местность",
                 Description = "Спокойный отдых в загородных домах, деревнях или на фермах",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "Дизайнерское жилье",
                 Description = "Апартаменты с уникальным интерьером от профессиональных дизайнеров",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "У моря",
                 Description = "Жилье на первой линии или в шаговой доступности от пляжа",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             },
             new PropertiesCategory {
                 Name = "Особняки",
                 Description = "Роскошные отдельно стоящие дома и большие резиденции",
-                Slug = "", IsActive = true, ImageUrl = "/icons/property-category/ri--home-4-line.svg"
+                Slug = "", IsActive = true, ImageUrl = "property-category/ri--home-4-line"
             }
 
         };
