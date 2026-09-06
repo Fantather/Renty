@@ -1,0 +1,17 @@
+.room-card__image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+}
+
+.room-card__name {
+    margin: 8px 0 0;
+    font-weight: 600;
+}
+
+.room-card__description {
+    margin: 2px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}

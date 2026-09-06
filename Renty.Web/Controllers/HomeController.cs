@@ -28,14 +28,14 @@ namespace Renty.Web.Controllers
 
             // TEMPORARY: stands in for a real `Property` entity until EF Core is wired up —
             // holds CategorySlug so we can filter before mapping, same as a DB query would.
-            var mockProperties = new List<(string CategorySlug, string ImageUrl, string City, string Country, string CategoryName, string DurationLabel, decimal Price, decimal Rating, bool IsFavorite)>
+            var mockProperties = new List<(string CategorySlug, string Slug, string ImageUrl, string City, string Country, string CategoryName, string DurationLabel, decimal Price, decimal Rating, bool IsFavorite)>
             {
-                ("seaside", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "1-10 ночей", 70, 4.88m, false),
-                ("seaside", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "2-7 суток", 100, 4.98m, true),
-                ("seaside", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "25-30 суток", 75, 4.76m, false),
-                ("seaside", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "5-11 суток", 42, 4.78m, false),
-                ("seaside", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "5-10 дней", 30, 4.68m, false),
-                ("seaside", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "10-20 дней", 28, 4.78m, false),
+                ("seaside", "studio-s-panoramoy-na-more-1", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "1-10 ночей", 70, 4.88m, false),
+                ("seaside", "studio-s-panoramoy-na-more-2", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "2-7 суток", 100, 4.98m, true),
+                ("seaside", "studio-s-panoramoy-na-more-3", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "25-30 суток", 75, 4.76m, false),
+                ("seaside", "studio-s-panoramoy-na-more-4", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "5-11 суток", 42, 4.78m, false),
+                ("seaside", "studio-s-panoramoy-na-more-5", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "5-10 дней", 30, 4.68m, false),
+                ("seaside", "studio-s-panoramoy-na-more-6", "https://placehold.co/600x450", "Odesa", "Ukraine", "У моря", "10-20 дней", 28, 4.78m, false),
             };
 
             var filtered = string.IsNullOrEmpty(filter.CategorySlug)
@@ -45,6 +45,7 @@ namespace Renty.Web.Controllers
             var properties = filtered.Select(p => new PropertyCardViewModel
             {
                 Id = Guid.NewGuid(),
+                Slug = p.Slug,
                 ImageUrls = [p.ImageUrl],
                 IsFavorite = p.IsFavorite,
                 City = p.City,

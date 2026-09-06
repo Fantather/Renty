@@ -2,7 +2,9 @@
 
 <div class="property-card">
     <div class="property-card__image-wrap">
-        <img src="@Model.ImageUrls.First()" alt="@Model.City, @Model.Country" class="property-card__image" />
+        <a asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.Slug" class="property-card__image-link">
+            <img src="@Model.ImageUrls.First()" alt="@Model.City, @Model.Country" class="property-card__image" />
+        </a>
         <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")" aria-label="Toggle favorite">
             <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
         </button>
@@ -10,7 +12,7 @@
 
     <div class="property-card__body">
         <div class="property-card__title-row">
-            <span class="property-card__location">@Model.City, @Model.Country</span>
+            <a asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.Slug" class="property-card__location">@Model.City, @Model.Country</a>
             <span class="property-card__rating">
                 <icon name="star" class="property-card__star" />
                 @Model.Rating.ToString("0.00")

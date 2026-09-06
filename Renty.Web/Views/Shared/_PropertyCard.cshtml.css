@@ -1,7 +1,6 @@
 .property-card {
     display: flex;
     flex-direction: column;
-    cursor: pointer;
 }
 
 .property-card__image-wrap {
@@ -10,6 +9,13 @@
     border-radius: var(--radius-lg);
     overflow: hidden;
     background-color: var(--color-surface);
+}
+
+::deep .property-card__image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 }
 
 .property-card__image {
@@ -52,6 +58,11 @@
     align-items: center;
     justify-content: space-between;
     font-weight: 600;
+}
+
+::deep .property-card__location {
+    color: inherit;
+    text-decoration: none;
 }
 
 .property-card__rating {

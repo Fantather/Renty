@@ -16,7 +16,7 @@
 }
 
 .account-menu__trigger:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-hover);
 }
 
 ::deep .account-menu__trigger-icon {
@@ -48,5 +48,5 @@
 }
 
 .account-menu__item:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-hover);
 }

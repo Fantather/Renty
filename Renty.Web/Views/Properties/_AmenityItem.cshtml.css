@@ -1,0 +1,10 @@
+.amenity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+::deep .amenity-item__icon {
+    width: 20px;
+    height: 20px;
+}

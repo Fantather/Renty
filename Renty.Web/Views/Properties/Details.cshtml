@@ -1,0 +1,152 @@
+@model PropertyDetailsViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<article class="property-details">
+
+    <header class="property-details__header">
+        <h1 class="property-details__title">@Model.Name</h1>
+        <div class="property-details__meta">
+            <span class="property-details__rating"><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount відгуків</span>
+            <span class="property-details__location">@Model.City, @Model.Country</span>
+        </div>
+    </header>
+
+    <div class="property-gallery">
+        <img src="@Model.Images.First()" alt="@Model.Name" class="property-gallery__main" />
+        <div class="property-gallery__grid">
+            @foreach (var image in Model.Images.Skip(1).Take(4))
+            {
+                <img src="@image" alt="@Model.Name" class="property-gallery__thumb" />
+            }
+        </div>
+    </div>
+
+    <nav class="property-nav" aria-label="Розділи сторінки">
+        <a href="#rooms">Фото</a>
+        <a href="#amenities">Зручності</a>
+        <a href="#reviews">Відгуки</a>
+        <a href="#location">Розташування</a>
+    </nav>
+
+    <div class="property-details__layout">
+        <div class="property-details__main">
+
+            <section class="property-overview">
+                <div class="property-overview__info">
+                    <h2>Помешкання для оренди, господар — @Model.Host.FullName</h2>
+                    <p>@Model.MaxGuests гостя · @Model.Bedrooms спальня · @Model.Beds ліжка · @Model.Bathrooms ванна кімната</p>
+                </div>
+                <img src="@Model.Host.AvatarUrl" alt="@Model.Host.FullName" class="property-overview__host-avatar" />
+            </section>
+
+            <section class="property-description">
+                <details>
+                    <summary>@Model.Description.Split('\n').First()</summary>
+                    <p style="white-space: pre-line">@Model.Description</p>
+                </details>
+            </section>
+
+            <section id="rooms" class="property-rooms">
+                <h2>Де ви будете спати</h2>
+                <div class="property-rooms__grid">
+                    @foreach (var room in Model.Rooms)
+                    {
+                        <partial name="_RoomCard" model="room" />
+                    }
+                </div>
+            </section>
+
+            <section id="amenities" class="property-amenities">
+                <h2>Які зручності на вас чекають</h2>
+                <div class="property-amenities__grid">
+                    @foreach (var amenity in Model.Amenities.Take(8))
+                    {
+                        <partial name="_AmenityItem" model="amenity" />
+                    }
+                </div>
+                @if (Model.Amenities.Count > 8)
+                {
+                    <button type="button" id="showAllAmenitiesBtn" class="btn-outline">Показати всі зручності: @Model.Amenities.Count</button>
+                }
+            </section>
+
+            <section id="reviews" class="property-reviews">
+                <h2><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount відгуків</h2>
+
+                <div class="rating-breakdown">
+                    <div class="rating-breakdown__item"><span>Чистота</span><strong>@Model.RatingBreakdown.Cleanliness.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Точність</span><strong>@Model.RatingBreakdown.Accuracy.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Прибуття</span><strong>@Model.RatingBreakdown.CheckIn.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Спілкування</span><strong>@Model.RatingBreakdown.Communication.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Розташування</span><strong>@Model.RatingBreakdown.Location.ToString("0.0")</strong></div>
+                    <div class="rating-breakdown__item"><span>Ціна/якість</span><strong>@Model.RatingBreakdown.Value.ToString("0.0")</strong></div>
+                </div>
+
+                <div class="property-reviews__grid" id="reviewsList">
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <partial name="_ReviewCard" model="review" />
+                    }
+                </div>
+
+                <button type="button" id="loadMoreReviewsBtn" class="btn-outline">Показати ще</button>
+            </section>
+
+            <section id="location" class="property-location">
+                <h2>Де ви будете</h2>
+                <p>@Model.Address</p>
+                <div class="property-location__map-placeholder">Мапа (@Model.Latitude, @Model.Longitude)</div>
+            </section>
+
+            @if (!string.IsNullOrEmpty(Model.HouseRules))
+            {
+                <section class="property-rules">
+                    <h2>Важлива інформація</h2>
+                    <p style="white-space: pre-line">@Model.HouseRules</p>
+                </section>
+            }
+        </div>
+
+        <aside class="property-details__sidebar">
+            <div class="booking-card">
+                <p class="booking-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ніч</p>
+                <div class="booking-card__dates">
+                    <label>
+                        <span>Прибуття</span>
+                        <input type="date" name="CheckInDate" />
+                    </label>
+                    <label>
+                        <span>Виїзд</span>
+                        <input type="date" name="CheckOutDate" />
+                    </label>
+                </div>
+                <label class="booking-card__guests">
+                    <span>Гостей</span>
+                    <input type="number" name="Guests" min="1" max="@Model.MaxGuests" value="1" />
+                </label>
+                <button type="button" class="btn-primary booking-card__submit">Забронювати</button>
+                <p class="booking-card__note">Поки що ви нічого не платите</p>
+            </div>
+        </aside>
+    </div>
+
+    <div id="allAmenitiesModal" class="modal-overlay" hidden>
+        <div class="modal-panel">
+            <button type="button" id="closeAmenitiesModalBtn" class="modal-panel__close" aria-label="Закрити">×</button>
+            <h2>Які зручності на вас чекають</h2>
+            <div class="property-amenities__grid">
+                @foreach (var amenity in Model.Amenities)
+                {
+                    <partial name="_AmenityItem" model="amenity" />
+                }
+            </div>
+        </div>
+    </div>
+
+</article>
+
+@section Scripts {
+    <script src="~/js/property-details/property-details.js" type="module" asp-append-version="true"></script>
+}

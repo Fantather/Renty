@@ -28,7 +28,7 @@
 }
 
 .search-bar__segment:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-hover);
 }
 
 .search-bar__label {
@@ -115,7 +115,7 @@
 }
 
 ::deep .destination-popover__item:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-hover);
 }
 
 ::deep .destination-popover__icon {
@@ -181,7 +181,7 @@
 }
 
     ::deep .date-popover__day:hover {
-        background-color: var(--color-bg);
+        background-color: var(--color-hover);
     }
 
     ::deep .date-popover__day.is-selected {
@@ -225,7 +225,7 @@
 }
 
     .date-popover__nav:hover {
-        background-color: var(--color-bg);
+        background-color: var(--color-hover);
     }
 
 
@@ -282,7 +282,7 @@
 }
 
 .guests-popover__btn:hover:not(:disabled) {
-    background-color: var(--color-bg);
+    background-color: var(--color-hover);
 }
 
 .guests-popover__btn:disabled {

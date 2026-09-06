@@ -30,6 +30,13 @@ body {
   text-align: start;
 }
 
+/* Anchor-nav scroll on Properties/Details.cshtml jumps to #id sections on the page —
+   this has to live here, not in Details.cshtml.css: CSS Isolation only scopes elements
+   the view itself renders, and <html> is rendered by _Layout.cshtml, not by the view. */
+html {
+    scroll-behavior: smooth;
+}
+
 /* Shared across components — not CSS-isolated, so any view's popover can use it */
 .popover-panel {
     position: absolute;
@@ -42,6 +49,20 @@ body {
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
+}
+
+/* Shared between _LoginModal.cshtml and Properties/Details.cshtml (amenities modal) —
+   same CSS Isolation reason as .auth-card below: each view's .cshtml.css is scoped
+   separately, so a class used by more than one view has to live here instead. */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-overlay);
+    padding: 16px;
 }
 
 /* Shared between Register.cshtml and _LoginModal.cshtml — same reason: CSS Isolation
@@ -77,7 +98,7 @@ body {
 }
 
 .auth-card__google-btn:hover {
-    background-color: var(--color-bg);
+    background-color: var(--color-hover);
 }
 
 /* Global stylesheet — no CSS Isolation scope attribute exists here, so unlike in a

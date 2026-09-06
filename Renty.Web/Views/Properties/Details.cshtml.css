@@ -1,0 +1,274 @@
+.property-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 40px;
+}
+
+.property-details__title {
+    margin: 0 0 8px;
+    font-size: 1.75rem;
+}
+
+.property-details__meta {
+    display: flex;
+    gap: 16px;
+    color: var(--color-text-muted);
+}
+
+::deep .property-details__rating svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Gallery: one big image on the left, a 2x2 grid of thumbnails on the right */
+.property-gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 8px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.property-gallery__main {
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
+    object-fit: cover;
+}
+
+.property-gallery__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.property-gallery__thumb {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.property-nav {
+    display: flex;
+    gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    background-color: var(--color-bg);
+    z-index: 10;
+}
+
+.property-nav a {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.property-nav a:hover {
+    color: var(--color-accent);
+}
+
+.property-details__layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+.property-details__main {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.property-overview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.property-overview__host-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.property-rooms__grid,
+.property-amenities__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.rating-breakdown {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px 24px;
+    padding: 24px 0;
+}
+
+.rating-breakdown__item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.rating-breakdown__item strong {
+    color: var(--color-text);
+    font-size: 1.1rem;
+}
+
+.property-reviews__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.property-location__map-placeholder {
+    margin-top: 12px;
+    height: 320px;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+}
+
+.btn-outline {
+    align-self: flex-start;
+    margin-top: 16px;
+    padding: 10px 20px;
+    border: 1px solid var(--color-text);
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    background-color: var(--color-hover);
+}
+
+.property-details__sidebar {
+    position: sticky;
+    top: 80px;
+}
+
+.booking-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.booking-card__price {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.booking-card__dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.booking-card__dates label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.booking-card__dates label:first-child {
+    border-right: 1px solid var(--color-border);
+}
+
+.booking-card__guests {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.btn-primary {
+    padding: 14px;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.booking-card__note {
+    margin: 0;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.modal-panel {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+}
+
+.modal-panel__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    color: var(--color-text);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.modal-panel__close:hover {
+    background-color: var(--color-hover);
+}
+
+@media (max-width: 900px) {
+    .property-gallery,
+    .property-details__layout,
+    .property-reviews__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .property-details__sidebar {
+        position: static;
+    }
+}

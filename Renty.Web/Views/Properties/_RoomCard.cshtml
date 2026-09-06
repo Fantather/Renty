@@ -1,0 +1,10 @@
+@model RoomViewModel
+
+<div class="room-card">
+    <img src="@Model.ImageUrl" alt="@Model.Name" class="room-card__image" />
+    <p class="room-card__name">@Model.Name</p>
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <p class="room-card__description">@Model.Description</p>
+    }
+</div>
