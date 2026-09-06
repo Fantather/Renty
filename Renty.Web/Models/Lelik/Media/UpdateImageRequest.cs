@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Renty.Domain.Models.Media
+namespace Renty.Web.Models.Lelik.Media
 {
     /// <summary>
     /// вот тут уже заполнить их данными
