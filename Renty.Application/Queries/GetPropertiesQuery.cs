@@ -20,5 +20,5 @@ namespace Renty.Application.Queries
     /// <param name="CheckInDate">Фильтрация по дате заселения</param>
     /// <param name="CheckOutDate">Фильтрация по дате выезда</param>
     /// <param name="GuestCount">Фильтрация по колличеству гостей</param>
-    public record GetPropertiesQuery(int Page, int PageSize, Guid? UserId, Guid? CityId, Guid? CategoryId, string? CategorySlug,  string? SortBy, DateTime? CheckInDate, DateTime? CheckOutDate, int? GuestCount) : IRequest<OperationResult<GetPropertiesResponse>>;
+    public record GetPropertiesQuery(int Page = 1, int PageSize = 20, Guid? UserId = null, Guid? CityId = null, Guid? CategoryId = null, string? CategorySlug = null, string? SortBy = null, DateTime? CheckInDate = null, DateTime? CheckOutDate = null, int? GuestCount = null) : IRequest<OperationResult<GetPropertiesResponse>>;
 }
