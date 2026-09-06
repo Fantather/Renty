@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using NetTopologySuite.Geometries;
 using Renty.Domain.Models;
 using Renty.Domain.Models.Locations;
@@ -20,6 +21,7 @@ namespace Renty.Infrastructure.Seeders
             {
                 return;
             }
+           
 
             // Получаем зависимости
             var hostOdesa = await context.Users.FirstOrDefaultAsync(u => u.UserName == "izya-troff");
@@ -49,8 +51,8 @@ namespace Renty.Infrastructure.Seeders
                 return;
             }
 
+            var counter = 4;
             var propertiesToSeed = new List<Property>();
-
             //главная картинка что бы разные были у квартир
             var odesaImages = new string[]
             {
@@ -87,15 +89,20 @@ namespace Renty.Infrastructure.Seeders
                 "https://a0.muscache.com/im/pictures/hosting/Hosting-1716050899513982782/original/634235ce-a49c-4963-8d12-3ea1d3d7f5e8.jpeg?im_w=1200"
             };
 
+  
             //квартиры одесса
             Property CreateOdessaClone(string mainImageUrl, int index)
             {
-                
+
                 var bedroomId = Guid.CreateVersion7();
                 var bathroomId = Guid.CreateVersion7();
                 var livingRoomId = Guid.CreateVersion7();
                 var kitchenId = Guid.CreateVersion7();
                 var balconyId = Guid.CreateVersion7();
+
+                var reviews = new List<Review>();
+                reviews.AddRange(Enumerable.Range(0, counter + 1)
+                .Select(i => GetRandomReview(min: 1, max: 5, hostId: hostKyiv.Id, index: i)));
 
                 return new Property
                 {
@@ -107,25 +114,13 @@ namespace Renty.Infrastructure.Seeders
                     Address = $"ул. Аркадийское плато, 36 (Кв. {index})",
                     CityId = odesa.Id,
                     CountryId = odesa.CountryId,
-                    Location = new Point(30.767277773685088, 46.429824395462816) { SRID = 4326 },
-                    PricePerNight = 1500,
+                    Location = new Point(30.767277773685088, 46.429824395462816),
+                    PricePerNight = Random.Shared.Next(1000, 5000),
                     Currency = "UAH",
                     Status = PropertyStatusEnum.Active,
-                    Reviews = new List<Review>
-                    {
-                        new Review
-                        {
-                            Id = Guid.CreateVersion7(),
-                            UserId = hostKyiv.Id, 
-                            Rating = 4.8m,
-                            CleanlinessRating = 5,
-                            CommunicationRating = 5,
-                            AccuracyRating = 4,
-                            LocationRating = 5,
-                            Comment = $"Прекрасный вид на море! Останавливался в квартире и остался очень доволен. Рекомендую!",                        
-                            CreatedAt = DateTime.UtcNow.AddDays(-index * 2)
-                        }
-                    },
+                    Reviews = reviews,
+                    AverageRating = reviews.Average(r => r.Rating),
+                    ReviewsCount = reviews.Count,
                     Details = new PropertyDetails
                     {
                         MaxGuests = 4,
@@ -157,7 +152,7 @@ namespace Renty.Infrastructure.Seeders
                         new PropertyImage
                         {
                             Id = Guid.CreateVersion7(),
-                            RoomId = livingRoomId, 
+                            RoomId = livingRoomId,
                             Title = $"Вид на квартиру {index}",
                             ImageUrl = mainImageUrl,
                             IsPrimary = true,
@@ -225,7 +220,9 @@ namespace Renty.Infrastructure.Seeders
             {
                 var studioId = Guid.CreateVersion7();
                 var bathroomId = Guid.CreateVersion7();
-
+                var reviews = new List<Review>();
+                reviews.AddRange(Enumerable.Range(0, counter + 1)
+                .Select(i => GetRandomReview(min: 1, max: 5, hostId: hostOdesa.Id, index: i)));
                 return new Property
                 {
                     Id = Guid.CreateVersion7(),
@@ -236,25 +233,14 @@ namespace Renty.Infrastructure.Seeders
                     Address = $"8 ул. Прорезная (Кв. {index})",
                     CityId = kyiv.Id,
                     CountryId = kyiv.CountryId,
-                    Location = new Point(30.52030844107298, 50.448625765764874) { SRID = 4326 },
-                    PricePerNight = 2500,
+                    Location = new Point(30.52030844107298, 50.448625765764874),
+                    PricePerNight = Random.Shared.Next(1000, 2500),
+                    Reviews = reviews,
                     Currency = "UAH",
+                    AverageRating = reviews.Average(r => r.Rating),
+                    ReviewsCount = reviews.Count,
                     Status = PropertyStatusEnum.Active,
-                    Reviews = new List<Review>
-                    {
-                        new Review
-                        {
-                            Id = Guid.CreateVersion7(),
-                            UserId = hostOdesa.Id,
-                            Rating = 4.8m,
-                            CleanlinessRating = 5,
-                            CommunicationRating = 5,
-                            AccuracyRating = 4,
-                            LocationRating = 5,
-                            Comment = $"Прекрасный вид на Крещатик! Останавливался в квартире и остался очень доволен. Рекомендую!",
-                            CreatedAt = DateTime.UtcNow.AddDays(-index * 2)
-                        }
-                    },
+
                     Details = new PropertyDetails
                     {
                         MaxGuests = 2,
@@ -345,5 +331,53 @@ namespace Renty.Infrastructure.Seeders
 
         private static PropertyTag? ifNotNullCreateTag(Guid? tagId) =>
             tagId.HasValue ? new PropertyTag { TagId = tagId.Value } : null;
+
+        private static decimal GetRandomRating(double min, double max) =>
+        (decimal)Math.Round(min + Random.Shared.NextDouble() * (max - min), 1);
+
+        private static Review GetRandomReview(double min, double max, Guid hostId, int index) 
+        {
+                    var positiveComments = new[]
+          {
+                        "Отличная квартира с потрясающим видом! Очень доволен. Рекомендую!",
+                        "Очень уютно, все необходимое для проживания есть. Вид шикарный!",
+                        "Прекрасное расположение, чисто и комфортно. Обязательно вернусь еще раз.",
+                        "Во имя императора эта квартира заставила мою кровь бурлить!",
+                        "Я ВЫЖИЛ УРА"
+                    };
+                    var neutralComments = new[]
+                                {
+                        "В целом неплохо, но были мелкие недочеты. Расположение удобное.",
+                        "Нормальная квартира за свои деньги. Чисто, но мебель уставшая.",
+                        "Настроения совсем не подняло, не зашло",
+                        "В подъезде воняло",
+                        "Император не одобрил"
+                    };
+
+            decimal rating2 = GetRandomRating(3.0, 4.5);
+            int cleanliness2 = Random.Shared.Next(3, 5);   
+            int communication2 = Random.Shared.Next(3, 5);
+            int accuracy2 = Random.Shared.Next(3, 5);
+            int location2 = Random.Shared.Next(4, 6);      
+            string comment2 = rating2 >= 4.0m
+                ? positiveComments[Random.Shared.Next(positiveComments.Length)]
+                : neutralComments[Random.Shared.Next(neutralComments.Length)];
+
+            var review = new Review()
+            {
+                Id = Guid.CreateVersion7(),
+                UserId = hostId,
+                Rating = rating2,
+                CleanlinessRating = cleanliness2,
+                CommunicationRating = communication2,
+                AccuracyRating = accuracy2,
+                LocationRating = location2,
+                Comment = $"Отличная квартира с потрясающим видом на море! Останавливался в квартире и остался очень доволен. Рекомендую!",
+                CreatedAt = DateTime.UtcNow.AddDays(-index * 3)
+            };
+
+           return review;
+
+        }
     }
 }
