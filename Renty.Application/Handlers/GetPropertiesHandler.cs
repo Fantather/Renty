@@ -29,13 +29,30 @@ namespace Renty.Application.Handlers
         /// <returns>Возвращает список недвижимости отвечающий переданным параметрам</returns>
         public async Task<OperationResult<GetPropertiesResponse>> Handle(GetPropertiesQuery request, CancellationToken cancellationToken)
         {
+            var page = 1;
+            var pageSize = 1;
             try 
             {
-                if (request.Page <= 1)
-                    return OperationResult<GetPropertiesResponse>.Fail("The page cannot be less than 1");
 
-                if(request.PageSize <= 5)
-                    return OperationResult<GetPropertiesResponse>.Fail("The page size cannot be less than 5");
+                //if (request.Page <= 1)
+                if (request.Page < page)
+                    return OperationResult<GetPropertiesResponse>.Fail($"The page cannot be less than {page}");
+
+                //if(request.PageSize <= 5)
+                if (request.PageSize < pageSize)
+                    return OperationResult<GetPropertiesResponse>.Fail($"The page size cannot be less than {pageSize}");
+
+                string durationString = string.Empty;
+
+                if (request.CheckInDate.HasValue && request.CheckOutDate.HasValue)
+                {
+                    var checkIn = request.CheckInDate.Value;
+                    var checkOut = request.CheckOutDate.Value;
+                    var nights = (checkOut - checkIn).Days;
+
+                    // черновой вариант
+                    durationString = $"{checkIn:dd MMM} - {checkOut:dd MMM} ({nights} ночей)";
+                }
 
                 var param = new ParametersPropertiesForCatalog
                 {
@@ -54,24 +71,34 @@ namespace Renty.Application.Handlers
 
                 // Черновой вариант маппинга
                 var propertiesDto = properties.Select(p =>
-                    new PropertyListItem 
+                {
+                    // Если картинок нет - null или дефолт
+                    var coverImage = p.PropertyImages != null && p.PropertyImages.Any()
+                        ? (p.PropertyImages.FirstOrDefault(i => i.IsPrimary)?.ImageUrl ?? p.PropertyImages.First().ImageUrl)
+                        : null; // надо загрузить дефолтную картинку, и заменить null
+
+                    return new PropertyListItem
                     {
                         Slug = p.Slug,
                         PropertyName = p.Name,
                         AverageRating = p.AverageRating,
-                        CoverImage = p.PropertyImages.FirstOrDefault(i=>i.IsPrimary)?.ImageUrl ?? p.PropertyImages.First().ImageUrl,
-                        CategoryName = p.Category.Name,
-                        IsFavorite = request.UserId == null ? false : p.Favorites.Any(f => f.UserId == request.UserId),
-                        CityName = p.City.Name,
-                        CountryName = p.Country.Name,
+                        CoverImage = coverImage,
+                        CategoryName = p.Category?.Name, // Безопасное обращение
+
+                        
+                        IsFavorite = request.UserId != null && p.Favorites != null && p.Favorites.Any(f => f.UserId == request.UserId),
+
+                        CityName = p.City?.Name,       
+                        CountryName = p.Country?.Name, 
+
                         ReviewsCount = p.ReviewsCount,
                         PricePerNight = p.PricePerNight,
                         Currency = p.Currency,
-                        Duration = "",
+                        Duration = durationString,
                         CreatedAt = p.CreatedAt,
                         UpdatedAt = p.UpdatedAt
-                    }
-                ).ToList();
+                    };
+                }).ToList();
 
                 return OperationResult<GetPropertiesResponse>.Success(new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto });
             }

@@ -65,8 +65,11 @@ namespace Renty.Infrastructure.Repository
         {
             var query = _dbSet
                 .Where(p => p.Status == PropertyStatusEnum.Active)
+                .Include(p=> p.Country)
                 .Include(p => p.City)
                 .Include(p => p.PropertyImages)
+                .Include(p => p.Category)
+                .Include(p => p.Favorites)
                 .AsQueryable();
 
             if (param.GuestCount.HasValue)
