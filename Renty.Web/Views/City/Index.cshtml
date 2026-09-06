@@ -1,0 +1,43 @@
+﻿@model IEnumerable<City>
+
+@{
+    ViewData["Title"] = "Cities";
+    ViewData["iso2"] = "";
+
+    var iso2Filter = Context.Request.Query["iso2"].ToString();
+
+    var filteredCities = string.IsNullOrEmpty(iso2Filter)
+        ? Model
+        : Model.Where(c => c.Name.StartsWith(iso2Filter));
+}
+
+<h2>Cities</h2>
+
+<form method="get">
+    <input type="text" name="iso2" placeholder="Enter country iso" value="@iso2Filter" />
+    <button type="submit">Filter</button>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>CountryIso2</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var city in filteredCities)
+        {
+            <tr>
+                <td>@city.Id</td>
+                <td>@city.Name</td>
+                <td>@city.CountryIso2</td>
+                <td>@city.Latitude</td>
+                <td>@city.Longitude</td>
+            </tr>
+        }
+    </tbody>
+</table>
