@@ -8,7 +8,7 @@
     <header class="property-details__header">
         <h1 class="property-details__title">@Model.Name</h1>
         <div class="property-details__meta">
-            <span class="property-details__rating"><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount відгуків</span>
+            <span class="property-details__rating"><icon name="star" /> @Model.OverallRating.ToString("0.00") · @Model.ReviewsCount відгуків</span>
             <span class="property-details__location">@Model.City, @Model.Country</span>
         </div>
     </header>
@@ -73,7 +73,7 @@
             </section>
 
             <section id="reviews" class="property-reviews">
-                <h2><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount відгуків</h2>
+                <h2><icon name="star" /> @Model.OverallRating.ToString("0.00") · @Model.ReviewsCount відгуків</h2>
 
                 <div class="rating-breakdown">
                     <div class="rating-breakdown__item"><span>Чистота</span><strong>@Model.RatingBreakdown.Cleanliness.ToString("0.0")</strong></div>

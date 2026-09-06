@@ -33,7 +33,7 @@ namespace Renty.Web.Controllers
                     ResponseSpeed = "Відповідає протягом години",
                     YearsHosting = 3,
                 },
-                Rating = 4.95m,
+                OverallRating = 4.95m,
                 ReviewsCount = 35,
                 RatingBreakdown = new RatingBreakdownViewModel
                 {
@@ -50,9 +50,7 @@ namespace Renty.Web.Controllers
                 Latitude = 46.4825,
                 Longitude = 30.7233,
                 MaxGuests = 4,
-                Bedrooms = 1,
                 Beds = 2,
-                Bathrooms = 1,
                 Amenities = new List<AmenityViewModel>
                 {
                     new() { Name = "Окреме робоче місце", IconName = "star" },
@@ -67,8 +65,9 @@ namespace Renty.Web.Controllers
                 },
                 Rooms = new List<RoomViewModel>
                 {
-                    new() { Name = "Спальня", Description = "1 ліжко queen-size", ImageUrl = "https://placehold.co/500x400" },
-                    new() { Name = "Вітальня", Description = "1 диван-ліжко", ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Спальня", RoomType = "Спальня", Description = "1 ліжко queen-size", ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Вітальня", RoomType = "Гостиная", Description = "1 диван-ліжко", ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Ванна кімната", RoomType = "Ванная комната", Description = "Душова кабіна", ImageUrl = "https://placehold.co/500x400" },
                 },
                 Reviews = new List<ReviewViewModel>
                 {
