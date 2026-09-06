@@ -1,5 +1,4 @@
-﻿using Flurl.Http;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,7 +29,7 @@ namespace Renty.Infrastructure.Services
 
                 return JsonSerializer.Deserialize<List<Country>>(json);
             }
-            catch(FlurlHttpException ex)
+            catch(Exception ex)
             {
                 Console.WriteLine("Error message: "+ex.Message);
             }
