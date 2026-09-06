@@ -51,6 +51,8 @@ namespace Renty.Web.Controllers
                 Longitude = 30.7233,
                 MaxGuests = 4,
                 Beds = 2,
+                Bedrooms = 1,
+                Bathrooms = 1,
                 Amenities = new List<AmenityViewModel>
                 {
                     new() { Name = "Окреме робоче місце", IconName = "star" },
@@ -65,9 +67,9 @@ namespace Renty.Web.Controllers
                 },
                 Rooms = new List<RoomViewModel>
                 {
-                    new() { Name = "Спальня", RoomType = "Спальня", Description = "1 ліжко queen-size", ImageUrl = "https://placehold.co/500x400" },
-                    new() { Name = "Вітальня", RoomType = "Гостиная", Description = "1 диван-ліжко", ImageUrl = "https://placehold.co/500x400" },
-                    new() { Name = "Ванна кімната", RoomType = "Ванная комната", Description = "Душова кабіна", ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Спальня", RoomTypeId = RoomViewModel.BedroomTypeId, ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Вітальня", RoomTypeId = Guid.NewGuid(), ImageUrl = "https://placehold.co/500x400" },
+                    new() { Name = "Ванна кімната", RoomTypeId = RoomViewModel.BathroomTypeId, ImageUrl = "https://placehold.co/500x400" },
                 },
                 Reviews = new List<ReviewViewModel>
                 {

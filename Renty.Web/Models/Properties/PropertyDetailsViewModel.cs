@@ -23,12 +23,11 @@ namespace Renty.Web.Models.Properties
 
         public int MaxGuests { get; set; }
         public int Beds { get; set; }
+        public int Bedrooms { get; set; }
+        public int Bathrooms { get; set; }
 
         public List<AmenityViewModel> Amenities { get; set; } = new(); // список удобств квартиры
         public List<RoomViewModel> Rooms { get; set; } = new();
-
-        public int Bedrooms => Rooms.Count(r => r.RoomType == "Спальня");
-        public int Bathrooms => Rooms.Count(r => r.RoomType == "Ванная комната");
 
         public List<ReviewViewModel> Reviews { get; set; } = new(); // только уже отрисованная порция — остальные подгружаются через loadMoreReviews()
 
