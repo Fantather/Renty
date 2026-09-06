@@ -1,0 +1,13 @@
+/* Shared across components — not CSS-isolated, so any view's popover can use it */
+.popover-panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    z-index: 20;
+    display: flex;
+    gap: 24px;
+    padding: 20px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}

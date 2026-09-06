@@ -1,6 +1,6 @@
 @model CategoryStripViewModel
 
-<nav class="category-strip" aria-label="Категории">
+<nav class="category-strip">
     @foreach (var category in Model.Categories)
     {
         var isActive = category.Slug == Model.SelectedSlug;

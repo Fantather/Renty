@@ -5,6 +5,15 @@ namespace Renty.Web.Controllers
 {
     public class PropertiesController : Controller
     {
+        private const decimal MockPricePerNight = 63m;
+
+        private readonly IConfiguration _configuration;
+
+        public PropertiesController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         // TEMPORARY: заглушка вместо реального GetPropertyDetailsQuery — контроллер/DI на бэке ещё не готовы.
         // Когда будут готовы, тело метода заменится на вызов _mediator.Send(new GetPropertyDetailsQuery(slug, userId)),
         // а ViewModel и Details.cshtml трогать не придётся.
@@ -13,6 +22,7 @@ namespace Renty.Web.Controllers
             var vm = new PropertyDetailsViewModel
             {
                 Slug = slug,
+                GoogleMapsApiKey = _configuration["GoogleMaps:ApiKey"] ?? string.Empty,
                 Name = "Студія та спальня з панорамою на місто! Біля моря!",
                 Description = "На краю моря, в тихому і затишному районі, ми пропонуємо цю чудову студію площею 45 м², нещодавно відремонтовану.\n\n" +
                               "Ідеально підходить для пар, які шукають ідеальне місце для знайомства з містом.\n\n" +
@@ -79,7 +89,7 @@ namespace Renty.Web.Controllers
                     new() { AuthorName = "Sjors", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Відмінне перебування. Чистота і прекрасне розташування.", CreatedAt = DateTime.UtcNow.AddDays(-21) },
                 },
                 HouseRules = "Прибуття після 15:00\nВиїзд до 11:00\nМаксимум 4 гості",
-                PricePerNight = 63,
+                PricePerNight = MockPricePerNight,
                 Currency = "USD",
                 BookedRanges = new List<(DateTime From, DateTime To)>
                 {
@@ -89,6 +99,19 @@ namespace Renty.Web.Controllers
             };
 
             return View(vm);
+        }
+
+        public IActionResult Price(string slug, DateOnly checkIn, DateOnly checkOut)
+        {
+            var nights = checkOut.DayNumber - checkIn.DayNumber;
+            if (nights <= 0)
+            {
+                return BadRequest();
+            }
+
+            var total = nights * MockPricePerNight;
+
+            return Json(new { nights, pricePerNight = MockPricePerNight, total });
         }
     }
 }

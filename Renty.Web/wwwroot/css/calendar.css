@@ -1,0 +1,85 @@
+/* Shared between _SearchBar.cshtml (popover) and Properties/Details.cshtml (inline
+   calendar) — same reason as above: a class used by more than one view can't live
+   in either view's own .cshtml.css. */
+.date-popover__calendar {
+    flex: 1;
+    min-width: 0;
+}
+
+.date-popover__month-title {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.date-popover__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.date-popover__weekday {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    padding-bottom: 6px;
+}
+
+.date-popover__day {
+    aspect-ratio: 1;
+    width: 100%;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    color: var(--color-text);
+    cursor: pointer;
+    position: relative;
+}
+
+    .date-popover__day:hover {
+        background-color: var(--color-hover);
+    }
+
+    .date-popover__day.is-selected {
+        background-color: var(--color-accent);
+        color: #fff;
+    }
+
+    .date-popover__day.is-in-range {
+        background-color: var(--color-bg);
+        border-radius: 0;
+    }
+
+    .date-popover__day.is-range-start::before,
+    .date-popover__day.is-range-end::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 50%;
+        background-color: var(--color-bg);
+        z-index: -1;
+    }
+    .date-popover__day.is-range-start::before {
+        right: 0;
+    }
+    .date-popover__day.is-range-end::before {
+        left: 0;
+    }
+
+.date-popover__nav {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    margin-top: 2px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+    .date-popover__nav:hover {
+        background-color: var(--color-hover);
+    }

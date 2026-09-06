@@ -20,6 +20,7 @@ namespace Renty.Web.Models.Properties
         public string Address { get; set; } = string.Empty; // точный адрес
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+        public string GoogleMapsApiKey { get; set; } = string.Empty;
 
         public int MaxGuests { get; set; }
         public int Beds { get; set; }

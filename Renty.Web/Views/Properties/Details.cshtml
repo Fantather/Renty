@@ -1,9 +1,11 @@
+@using System.Text.Json
 @model PropertyDetailsViewModel
 @{
     ViewData["Title"] = Model.Name;
+    var reviewsJsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 }
 
-<article class="property-details">
+<article id="propertyDetails" class="property-details" data-slug="@Model.Slug">
 
     <header class="property-details__header">
         <h1 class="property-details__title">@Model.Name</h1>
@@ -23,7 +25,7 @@
         </div>
     </div>
 
-    <nav class="property-nav" aria-label="Розділи сторінки">
+    <nav class="property-nav">
         <a href="#rooms">Фото</a>
         <a href="#amenities">Зручності</a>
         <a href="#reviews">Відгуки</a>
@@ -44,10 +46,8 @@
             </section>
 
             <section class="property-description">
-                <details>
-                    <summary>@Model.Description.Split('\n').First()</summary>
-                    <p style="white-space: pre-line">@Model.Description</p>
-                </details>
+                <p class="property-description__text">@Model.Description</p>
+                <button type="button" id="showDescriptionBtn" class="btn-outline">Показати ще</button>
             </section>
 
             <section id="rooms" class="property-rooms">
@@ -74,6 +74,16 @@
                 }
             </section>
 
+            <section id="calendar" class="property-calendar">
+                <h2>Виберіть дати</h2>
+                <div class="property-calendar__months">
+                    <button type="button" id="calendarPrevBtn" class="date-popover__nav">‹</button>
+                    <div class="date-popover__calendar" data-month-slot="0"></div>
+                    <div class="date-popover__calendar" data-month-slot="1"></div>
+                    <button type="button" id="calendarNextBtn" class="date-popover__nav">›</button>
+                </div>
+            </section>
+
             <section id="reviews" class="property-reviews">
                 <h2><icon name="star" /> @Model.OverallRating.ToString("0.00") · @Model.ReviewsCount відгуків</h2>
 
@@ -86,12 +96,7 @@
                     <div class="rating-breakdown__item"><span>Ціна/якість</span><strong>@Model.RatingBreakdown.Value.ToString("0.0")</strong></div>
                 </div>
 
-                <div class="property-reviews__grid" id="reviewsList">
-                    @foreach (var review in Model.Reviews)
-                    {
-                        <partial name="_ReviewCard" model="review" />
-                    }
-                </div>
+                <div class="property-reviews__grid" id="reviewsList"></div>
 
                 <button type="button" id="loadMoreReviewsBtn" class="btn-outline">Показати ще</button>
             </section>
@@ -99,7 +104,13 @@
             <section id="location" class="property-location">
                 <h2>Де ви будете</h2>
                 <p>@Model.Address</p>
-                <div class="property-location__map-placeholder">Мапа (@Model.Latitude, @Model.Longitude)</div>
+                @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
+                {
+                    <div id="propertyMap" class="property-location__map"
+                         data-lat="@Model.Latitude" data-lng="@Model.Longitude"
+                         data-name="@Model.Name" data-api-key="@Model.GoogleMapsApiKey"></div>
+                    <template id="mapMarkerIconTemplate"><icon name="star" /></template>
+                }
             </section>
 
             @if (!string.IsNullOrEmpty(Model.HouseRules))
@@ -115,28 +126,57 @@
             <div class="booking-card">
                 <p class="booking-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ніч</p>
                 <div class="booking-card__dates">
-                    <label>
+                    <button type="button" class="booking-card__date" id="checkInDateBtn">
                         <span>Прибуття</span>
-                        <input type="date" name="CheckInDate" />
-                    </label>
-                    <label>
+                        <strong id="checkInDateText">Додати дату</strong>
+                    </button>
+                    <button type="button" class="booking-card__date" id="checkOutDateBtn">
                         <span>Виїзд</span>
-                        <input type="date" name="CheckOutDate" />
-                    </label>
+                        <strong id="checkOutDateText">Додати дату</strong>
+                    </button>
+                    <input type="hidden" name="CheckInDate" id="checkInDateInput" />
+                    <input type="hidden" name="CheckOutDate" id="checkOutDateInput" />
                 </div>
-                <label class="booking-card__guests">
-                    <span>Гостей</span>
-                    <input type="number" name="Guests" min="1" max="@Model.MaxGuests" value="1" />
-                </label>
+                <div class="booking-card__guests-field">
+                    <button type="button" class="booking-card__guests-trigger" id="guestsBtn">
+                        <span>
+                            <span class="booking-card__guests-label">Для кого</span>
+                            <strong id="guestsText">1 гостей</strong>
+                        </span>
+                        <span class="booking-card__guests-chevron">⌄</span>
+                    </button>
+                    <div class="popover-panel guests-popover" id="guestsPopover" hidden>
+                        <partial name="_GuestsPopoverRows" />
+                        <p class="guests-popover__note">Помешкання розраховане максимум на @Model.MaxGuests гостей.</p>
+                    </div>
+                    <input type="hidden" name="Guests" id="guestsInput" value="1" />
+                </div>
+                <p id="totalPrice" class="booking-card__total-price" hidden></p>
                 <button type="button" class="btn-primary booking-card__submit">Забронювати</button>
                 <p class="booking-card__note">Поки що ви нічого не платите</p>
             </div>
         </aside>
     </div>
 
+    <div id="allReviewsModal" class="modal-overlay" hidden>
+        <div class="modal-panel">
+            <button type="button" id="closeReviewsModalBtn" class="modal-panel__close">×</button>
+            <h2>Відгуки</h2>
+            <div class="property-reviews__grid" id="allReviewsList"></div>
+        </div>
+    </div>
+
+    <div id="descriptionModal" class="modal-overlay" hidden>
+        <div class="modal-panel">
+            <button type="button" id="closeDescriptionModalBtn" class="modal-panel__close">×</button>
+            <h2>Про помешкання</h2>
+            <p style="white-space: pre-line">@Model.Description</p>
+        </div>
+    </div>
+
     <div id="allAmenitiesModal" class="modal-overlay" hidden>
         <div class="modal-panel">
-            <button type="button" id="closeAmenitiesModalBtn" class="modal-panel__close" aria-label="Закрити">×</button>
+            <button type="button" id="closeAmenitiesModalBtn" class="modal-panel__close">×</button>
             <h2>Які зручності на вас чекають</h2>
             <div class="property-amenities__grid">
                 @foreach (var amenity in Model.Amenities)
@@ -147,7 +187,27 @@
         </div>
     </div>
 
+    <div id="fullGalleryOverlay" class="full-gallery-overlay" hidden>
+        <button type="button" id="closeFullGalleryBtn" class="full-gallery__back">←</button>
+        <div class="full-gallery__grid">
+            @foreach (var image in Model.Images)
+            {
+                <img src="@image" alt="@Model.Name" />
+            }
+        </div>
+    </div>
+
+    <div id="lightboxOverlay" class="lightbox-overlay" hidden>
+        <button type="button" id="closeLightboxBtn" class="lightbox__close">✕ Закрити</button>
+        <span class="lightbox__counter" id="lightboxCounter"></span>
+        <button type="button" id="lightboxPrevBtn" class="lightbox__nav lightbox__nav--prev">‹</button>
+        <img id="lightboxImage" class="lightbox__image" src="" alt="" />
+        <button type="button" id="lightboxNextBtn" class="lightbox__nav lightbox__nav--next">›</button>
+    </div>
+
 </article>
+
+<script type="application/json" id="initialReviewsData">@Html.Raw(JsonSerializer.Serialize(Model.Reviews, reviewsJsonOptions))</script>
 
 @section Scripts {
     <script src="~/js/property-details/property-details.js" type="module" asp-append-version="true"></script>
