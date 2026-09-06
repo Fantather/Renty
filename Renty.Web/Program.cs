@@ -1,16 +1,31 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Renty.Application.Handlers;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
 using Renty.Infrastructure.Seeders;
+using Renty.Web.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Временно отключено — падает при старте, пустая настройка не находит сборку с обработчиками
-// builder.Services.AddMediatR(cfg => { });
+builder.Services.AddMediatR(cfg => {
+    cfg.RegisterServicesFromAssembly(typeof(GetPropertiesHandler).Assembly);
+});
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+})
+.AddCookie()
+.AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
@@ -19,6 +34,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+// Регистрация репозиториев в DI
+builder.Services.AddInfrastructure();
+
+// Регистрация сервисов в DI
+builder.Services.AddServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -33,6 +54,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

@@ -27,8 +27,8 @@ namespace Renty.Application.Handlers
             if (string.IsNullOrEmpty(request.SearchTerm))
                 return OperationResult<GetCitiesResponse>.Fail("Search term is null or empty");
 
-            if(request.SearchTerm.Length > 2 && request.SearchTerm.Length <= 100)
-                return OperationResult<GetCitiesResponse>.Fail("The limit should be from 3 to 100");
+            //if(request.SearchTerm.Length > 2 && request.SearchTerm.Length <= 100)
+            //    return OperationResult<GetCitiesResponse>.Fail("The limit should be from 3 to 100");
 
             if(request.Limit.HasValue)
                 if (request.Limit.Value > 0 && request.Limit.Value < 100)

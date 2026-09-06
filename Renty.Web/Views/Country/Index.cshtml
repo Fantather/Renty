@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Country>;
+@{
+    ViewData["Title"] = "Countries";
+}
+
+<h2>Countries</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+@*             <th>Iso2</th>
+            <th>Iso3</th>
+            <th>Capital</th>
+            <th>Currency</th>
+            <th>RegionId</th>
+            <th>SubregionId</th> *@
+            <th>Latitude</th>
+            <th>Longitude</th>
+@*             <th>Timezones</th>
+ *@        </tr>
+    </thead>
+    <tbody>
+        @foreach (var country in Model)
+        {
+            <tr>
+                <td>@country.Id</td>
+                <td>@country.Name</td>
+                 <td>@country.Iso2</td>
+ @*               <td>@country.Iso3</td>
+                <td>@country.Capital</td>*@
+                <td>@country.Currency</td>
+                @*<td>@country.RegionId</td>
+                <td>@country.SubregionId</td> *@
+                <td>@country.Latitude</td>
+                <td>@country.Longitude</td>
+@*                 <td>@country.Timezones</td> *@
+            </tr>
+        }
+    </tbody>
+</table>
