@@ -36,7 +36,7 @@ namespace Renty.Infrastructure.Repository
         /// <returns>
         /// Полный объект Property с его связанными сущностями, если найден; иначе null.
         /// </returns>
-        public async Task<Property?> GetPropertyWithDetailsAsync(Guid id, CancellationToken ct = default)
+        public  async Task<Property?> GetPropertyWithDetailsAsync(Guid id, CancellationToken ct = default)
         {
             return await GetFullQueryWithIncludes()
                  .FirstOrDefaultAsync(p => p.Id == id,ct);
@@ -46,6 +46,7 @@ namespace Renty.Infrastructure.Repository
         ///Принимает уникальный идентификатор категории, как или слаг так или айди
         ///фильтрует по городу и категории, возвращает список объектов Property с их связанными сущностями.
         ///</summary>
+        ///<remarks>Warning: legacy</remarks>
         ///<param name="skip">Количество пропущенных объектов</param>
         ///<param name="pageSize">Количество объектов на странице</param>
         ///<param name="cityId">Идентификатор города для фильтрации.</param>
@@ -215,7 +216,9 @@ namespace Renty.Infrastructure.Repository
                 .Include(p => p.PropertyImages)
                 .Include(p => p.PropertyAmenities)
                 .Include(p => p.PropertyTags)
-                    .ThenInclude(pt => pt.Tag);
+                    .ThenInclude(pt => pt.Tag)
+                .Include(p => p.Reviews)
+                .ThenInclude(r => r.User);
         }
 
     }

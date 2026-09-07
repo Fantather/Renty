@@ -14,11 +14,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
     <PackageReference Include="MediatR" Version="14.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Renty.Domain\Renty.Domain.csproj" />
+    <ProjectReference Include="..\Renty.Infrastructure\Renty.Infrastructure.csproj" />
   </ItemGroup>
 
 

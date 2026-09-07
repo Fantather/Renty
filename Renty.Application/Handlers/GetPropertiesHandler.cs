@@ -1,108 +1,96 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Renty.Application.Common;
 using Renty.Application.DTOs.GetProperties;
 using Renty.Application.Queries;
-using Renty.Domain.Interfaces;
-using Renty.Domain.Models.User;
-using Renty.Domain.Parameters;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Renty.Domain.Models.LookupsTables;
+using Renty.Infrastructure.Data;
 
 namespace Renty.Application.Handlers
 {
     public class GetPropertiesHandler : IRequestHandler<GetPropertiesQuery, OperationResult<GetPropertiesResponse>>
     {
-        private readonly IPropertyRepository _propertyRepository;
+        private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public GetPropertiesHandler(IPropertyRepository propertyRepository)
+        public GetPropertiesHandler(AppDbContext context, IMapper mapper)
         {
-            _propertyRepository = propertyRepository;
-            
+            _context = context;
+            _mapper = mapper;
         }
-        /// <summary>
-        /// Метод фильтрует, сортирует, и использует пагинацию для отображения 
-        /// </summary>
-        /// <param name="request">Объект для поиска недвижимости</param>
-        /// <param name="cancellationToken">Отменяющий токен</param>
-        /// <returns>Возвращает список недвижимости отвечающий переданным параметрам</returns>
+
         public async Task<OperationResult<GetPropertiesResponse>> Handle(GetPropertiesQuery request, CancellationToken cancellationToken)
         {
             var page = 1;
-            var pageSize = 1;
-            try 
+            var pageSize = 5;
+            try
             {
-
-                //if (request.Page <= 1)
                 if (request.Page < page)
                     return OperationResult<GetPropertiesResponse>.Fail($"The page cannot be less than {page}");
 
-                //if(request.PageSize <= 5)
                 if (request.PageSize < pageSize)
                     return OperationResult<GetPropertiesResponse>.Fail($"The page size cannot be less than {pageSize}");
-
+                //подготовка строки 
                 string durationString = string.Empty;
-
                 if (request.CheckInDate.HasValue && request.CheckOutDate.HasValue)
                 {
                     var checkIn = request.CheckInDate.Value;
                     var checkOut = request.CheckOutDate.Value;
-                    var nights = (checkOut - checkIn).Days;
-
-                    // черновой вариант
-                    durationString = $"{checkIn:dd MMM} - {checkOut:dd MMM} ({nights} ночей)";
+                    durationString = $"{checkIn:dd MMM} - {checkOut:dd MMM} ({(checkOut - checkIn).Days} ночей)";
                 }
 
-                var param = new ParametersPropertiesForCatalog
+                //без репозитория запрос идет к бд
+                var query = _context.Properties
+                    .Where(p => p.Status == PropertyStatusEnum.Active)
+                    .AsNoTracking()
+                    .AsQueryable();
+
+                // фильтрация
+                if (request.GuestCount.HasValue)
+                    query = query.Where(p => p.Details.MaxGuests >= request.GuestCount);
+
+                if (request.CheckInDate.HasValue && request.CheckOutDate.HasValue)
+                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > request.CheckInDate.Value && b.CheckInDate < request.CheckOutDate.Value));
+
+                if (request.CityId.HasValue)
+                    query = query.Where(p => p.CityId == request.CityId.Value);
+
+                if (request.CategoryId.HasValue)
+                    query = query.Where(p => p.CategoryId == request.CategoryId.Value);
+
+                if (!string.IsNullOrEmpty(request.CategorySlug))
+                    query = query.Where(p => p.Category.Slug == request.CategorySlug);
+
+                // сортировка
+                query = request.SortBy switch
                 {
-                    Skip = (request.Page - 1) * request.PageSize,
-                    PageSize = request.PageSize,
-                    SortBy = request.SortBy,
-                    CityId = request.CityId,
-                    CategoryId = request.CategoryId,
-                    CategorySlug = request.CategorySlug,
-                    CheckInDate = request.CheckInDate,
-                    CheckOutDate = request.CheckOutDate,
-                    GuestCount = request.GuestCount
+                    "RATING_ASC" => query.OrderBy(p => p.AverageRating),
+                    "RATING_DESC" => query.OrderByDescending(p => p.AverageRating),
+                    "PRICEPRENIGHT_ASC" => query.OrderBy(p => p.PricePerNight),
+                    "PRICEPRENIGHT_DESC" => query.OrderByDescending(p => p.PricePerNight),
+                    "CREATED_AT_ASC" => query.OrderBy(p => p.CreatedAt),
+                    _ => query.OrderByDescending(p => p.CreatedAt)
                 };
 
-                var properties = await _propertyRepository.GetPropertiesForCatalogAsync(param, cancellationToken);
+                // пагинация и проекция в DTO
+                var propertiesDto = await query
+                    .Skip((request.Page - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .ProjectTo<PropertyListItem>(_mapper.ConfigurationProvider)
+                    .ToListAsync(cancellationToken);
 
-                // Черновой вариант маппинга
-                var propertiesDto = properties.Select(p =>
+                // та самая строка в дто
+                foreach (var dto in propertiesDto)
                 {
-                    // Если картинок нет - null или дефолт
-                    var coverImage = p.PropertyImages != null && p.PropertyImages.Any()
-                        ? (p.PropertyImages.FirstOrDefault(i => i.IsPrimary)?.ImageUrl ?? p.PropertyImages.First().ImageUrl)
-                        : null; // надо загрузить дефолтную картинку, и заменить null
+                    dto.Duration = durationString;
+                }
 
-                    return new PropertyListItem
-                    {
-                        Slug = p.Slug,
-                        PropertyName = p.Name,
-                        AverageRating = p.AverageRating,
-                        CoverImage = coverImage,
-                        CategoryName = p.Category?.Name, // Безопасное обращение
-
-                        
-                        IsFavorite = request.UserId != null && p.Favorites != null && p.Favorites.Any(f => f.UserId == request.UserId),
-
-                        CityName = p.City?.Name,       
-                        CountryName = p.Country?.Name, 
-
-                        ReviewsCount = p.ReviewsCount,
-                        PricePerNight = p.PricePerNight,
-                        Currency = p.Currency,
-                        Duration = durationString,
-                        CreatedAt = p.CreatedAt,
-                        UpdatedAt = p.UpdatedAt
-                    };
-                }).ToList();
-
-                return OperationResult<GetPropertiesResponse>.Success(new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto });
+                return OperationResult<GetPropertiesResponse>.Success(
+                    new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return OperationResult<GetPropertiesResponse>.Fail(ex.Message);
             }

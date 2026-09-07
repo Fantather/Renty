@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddMediatR(cfg => {
-    cfg.RegisterServicesFromAssembly(typeof(GetPropertiesHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(OLDGetPropertiesHandler).Assembly);
 });
 
 //builder.Services.AddAuthentication(options =>
@@ -26,7 +26,6 @@ builder.Services.AddMediatR(cfg => {
 //    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
 //    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 //});
-
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
         x => x.UseNetTopologySuite()));
@@ -41,6 +40,9 @@ builder.Services.AddInfrastructure();
 // Регистрация сервисов в DI
 builder.Services.AddServices(builder.Configuration);
 
+// Регистрация AutoMapper и добавление профилей из сборки Renty.Application
+builder.Services.AddAutoMapper(tcp => { }, typeof(Renty.Application.Mappers.PropertyProfile));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -50,12 +52,11 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthentication();
+//app.UseAuthorization();
 
 app.MapStaticAssets();
 
