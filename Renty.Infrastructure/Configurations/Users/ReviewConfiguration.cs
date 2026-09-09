@@ -32,6 +32,12 @@ namespace Renty.Infrastructure.Configurations.Users
             builder.Property(r => r.LocationRating)
                 .HasPrecision(3, 2);
 
+            builder.Property(r => r.CheckInRating)
+               .HasPrecision(3, 2);
+
+            builder.Property(r => r.ValueRating)
+               .HasPrecision(3, 2);
+
             builder.Property(r => r.Comment)
                 .IsRequired()
                 .HasMaxLength(2000);
@@ -41,6 +47,7 @@ namespace Renty.Infrastructure.Configurations.Users
 
             builder.Property(r => r.CreatedAt)
                 .IsRequired();
+            
 
             // Связи
             builder.HasOne(r => r.User)

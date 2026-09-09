@@ -7,9 +7,7 @@ namespace Renty.Application.Mappers.Reviews
     public class ReviewProfile : Profile
     {
         public ReviewProfile()
-        {
-            CreateMap<ApplicationUser, AuthorDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
+        {     
 
             CreateMap<Review, ReviewDto>()
                 .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Comment))

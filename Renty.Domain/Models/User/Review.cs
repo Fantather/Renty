@@ -33,6 +33,10 @@ namespace Renty.Domain.Models.User
 
         public decimal? LocationRating { get; set; }
 
+        public decimal? CheckInRating { get; set; }
+
+        public decimal? ValueRating { get; set; }
+
         // Текст отзыва
         public string Comment { get; set; } = string.Empty;
 

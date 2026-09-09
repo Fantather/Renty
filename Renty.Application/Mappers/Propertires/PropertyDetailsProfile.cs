@@ -33,8 +33,17 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.PropertyImages))
                 .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
 
-                // оно лежит в handler
-                .ForMember(dest => dest.IsFavorite, opt => opt.Ignore());
+                // Маппинг отзывы 
+                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews))
+
+                // Поля в Handler
+                .ForMember(dest => dest.IsFavorite, opt => opt.Ignore())
+                .ForMember(dest => dest.BookedRanges, opt => opt.Ignore())
+                .ForMember(dest => dest.RatingBreakdown, opt => opt.Ignore())
+
+                // Координаты (если они есть в сущности, укажите MapFrom)
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location != null ? src.Location.Y : (double?)null))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location != null ? src.Location.X : (double?)null));
         }
     }
 }

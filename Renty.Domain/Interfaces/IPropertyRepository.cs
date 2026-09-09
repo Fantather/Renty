@@ -70,6 +70,5 @@ namespace Renty.Domain.Interfaces
         /// <param name="username">Имя пользователя для фильтрации.</param>
         /// <returns>Список объектов Property, принадлежащих указанному хосту, включая связанные изображения.</returns>
         Task<IEnumerable<Property>> GetPropertiesByHostAsync(Guid? hostId = null, string? username = null, CancellationToken ct = default);
-
     }
 }

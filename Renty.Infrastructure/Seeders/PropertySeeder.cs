@@ -357,10 +357,13 @@ namespace Renty.Infrastructure.Seeders
                     };
 
             decimal rating2 = GetRandomRating(3.0, 4.5);
-            int cleanliness2 = Random.Shared.Next(3, 5);   
-            int communication2 = Random.Shared.Next(3, 5);
-            int accuracy2 = Random.Shared.Next(3, 5);
-            int location2 = Random.Shared.Next(4, 6);      
+            decimal cleanliness2 = Random.Shared.Next(3, 5);
+            decimal communication2 = Random.Shared.Next(3, 5);
+            decimal accuracy2 = Random.Shared.Next(3, 5);
+            decimal location2 = Random.Shared.Next(4, 6);
+            decimal checkIn2 = Random.Shared.Next(3, 5);
+            decimal value2 = Random.Shared.Next(3, 5);
+
             string comment2 = rating2 >= 4.0m
                 ? positiveComments[Random.Shared.Next(positiveComments.Length)]
                 : neutralComments[Random.Shared.Next(neutralComments.Length)];
@@ -374,6 +377,8 @@ namespace Renty.Infrastructure.Seeders
                 CommunicationRating = communication2,
                 AccuracyRating = accuracy2,
                 LocationRating = location2,
+                CheckInRating = checkIn2,
+                ValueRating = value2,
                 Comment = $"Отличная квартира с потрясающим видом на море! Останавливался в квартире и остался очень доволен. Рекомендую!",
                 CreatedAt = DateTime.UtcNow.AddDays(-index * 3)
             };

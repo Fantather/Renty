@@ -24,6 +24,8 @@ namespace Renty.Application.DTOs.GetReviews
         public decimal? CommunicationRating { get; set; }
         public decimal? AccuracyRating { get; set; }
         public decimal? LocationRating { get; set; }
+        public decimal? CheckInRating { get; set; }
+        public decimal? ValueRating { get; set; }
 
         // Ответ хоста на отзыв
         public HostResponseDto? HostResponse { get; set; }

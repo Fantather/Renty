@@ -1,7 +1,6 @@
 ﻿using Renty.Application.DTOs.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Renty.Application.DTOs.GetReviews;
+using Renty.Application.DTOs.GetProperties;
 
 namespace Renty.Application.DTOs.GetProperty
 {
@@ -30,6 +29,9 @@ namespace Renty.Application.DTOs.GetProperty
         // Рейтинг и отзывы
         public decimal AverageRating { get; set; }
         public int ReviewsCount { get; set; }
+        public List<ReviewDto> Reviews { get; set; } = new();
+
+        public RatingBreakdownDto RatingBreakdown { get; set; } = new();
 
         //// Статус
         //public string Status { get; set; } = null!;
@@ -75,11 +77,13 @@ namespace Renty.Application.DTOs.GetProperty
         //public TimeSpan? CheckInTime { get; set; }
         //public TimeSpan? CheckOutTime { get; set; }
 
-
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
         // Владелец 
         public HostDto Host { get; set; } = null!;
 
         // Удобства
         public List<AmenitiesDto> Amenities { get; set; } = new();
+        public List<BookedRangeDto> BookedRanges { get; set; } = new();
     }
 }
