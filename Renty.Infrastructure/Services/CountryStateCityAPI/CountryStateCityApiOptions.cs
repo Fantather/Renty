@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Renty.Infrastructure.Services
+namespace Renty.Infrastructure.Services.CountryStateCityAPI
 {
     public class CountryStateCityApiOptions
     {

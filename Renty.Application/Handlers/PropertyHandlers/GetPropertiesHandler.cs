@@ -8,7 +8,7 @@ using Renty.Application.Queries;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Infrastructure.Data;
 
-namespace Renty.Application.Handlers
+namespace Renty.Application.Handlers.PropertyHandlers
 {
     public class GetPropertiesHandler : IRequestHandler<GetPropertiesQuery, OperationResult<GetPropertiesResponse>>
     {

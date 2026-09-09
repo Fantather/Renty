@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Renty.Application.Handlers
+namespace Renty.Application.Handlers.PropertyHandlers
 {
     public class GetPropertyDetailsHandler : IRequestHandler<GetPropertyDetailsQuery, OperationResult<GetPropertyDetailsResponse>>
     {

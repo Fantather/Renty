@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Renty.Application.Handlers
+namespace Renty.Application.Handlers.ReviewHandlers
 {
     public class GetPropertyReviewsHandler : IRequestHandler<GetPropertyReviewsQuery, OperationResult<GetReviewsResponse>>
     {
