@@ -5,6 +5,8 @@ using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
 using Renty.Infrastructure.Seeders;
 using Renty.Web.DI;
+using Renty.Application.Mappers.Properties;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

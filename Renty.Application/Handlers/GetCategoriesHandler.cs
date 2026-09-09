@@ -1,23 +1,28 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Renty.Application.Common;
 using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.GetCategories;
 using Renty.Application.Queries;
 using Renty.Domain.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Renty.Application.Handlers
 {
     public class GetCategoriesHandler : IRequestHandler<GetCategoriesQuery, OperationResult<GetCategoriesResponse>>
     {
         private readonly IPropertiesCategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-        public GetCategoriesHandler(IPropertiesCategoryRepository categoryRepository)
+        public GetCategoriesHandler(IPropertiesCategoryRepository categoryRepository, IMapper mapper)
         {
             _categoryRepository = categoryRepository;
+            _mapper = mapper;
         }
+
         /// <summary>
         /// Получение всех категорий
         /// </summary>
@@ -28,20 +33,10 @@ namespace Renty.Application.Handlers
         {
             var categories = await _categoryRepository.GetAllActiveAsync(cancellationToken);
 
-            // Черновой вариант маппинга
-
             if (categories.Any())
             {
-                var categoriesDto = categories.Select(c => new CategoryDto
-                {
-                    Id = c.Id,
-                    Slug = c.Slug,
-                    Name = c.Name,
-                    Description = c.Description,
-                    ImageUrl = c.ImageUrl,
-                }).ToList();
-
-                return OperationResult<GetCategoriesResponse>.Success(new GetCategoriesResponse {Categories = categoriesDto});
+                var categoriesDto = _mapper.Map<List<CategoryDto>>(categories);
+                return OperationResult<GetCategoriesResponse>.Success(new GetCategoriesResponse { Categories = categoriesDto });
             }
 
             return OperationResult<GetCategoriesResponse>.Fail("Categories not found");

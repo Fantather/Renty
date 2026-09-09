@@ -80,15 +80,36 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     .Take(request.PageSize)
                     .ProjectTo<PropertyListItem>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
+                
 
-                // та самая строка в дто
+                // избранное
+                var favoriteSlugs = new HashSet<string>();
+                if (request.UserId.HasValue && propertiesDto.Any())
+                {
+                    var propertySlugs = propertiesDto.Select(p => p.Slug).ToList();
+
+                    var favoritesFromDb = await _context.Favorites
+                        .Where(f => f.UserId == request.UserId.Value && propertySlugs.Contains(f.Property.Slug))
+                        .Select(f => f.Property.Slug)
+                        .ToListAsync(cancellationToken);
+
+                    favoriteSlugs = new HashSet<string>(favoritesFromDb);
+                }
+
+                //вывод длительности и избранного в DTO
                 foreach (var dto in propertiesDto)
                 {
                     dto.Duration = durationString;
+
+                    if (request.UserId.HasValue)
+                    {
+                        dto.IsFavorite = favoriteSlugs.Contains(dto.Slug);
+                    }
                 }
 
                 return OperationResult<GetPropertiesResponse>.Success(
-                    new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto });
+                    new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto }
+                    );
             }
             catch (Exception ex)
             {
