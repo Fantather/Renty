@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using Renty.Domain.Models.Locations;
-using Renty.Domain.Models.Media;
-using Renty.Domain.Models.Properties.Anemities;
 using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.GetCities;
+using Renty.Application.DTOs.GetProperty;
 using Renty.Domain.Models;
+using Renty.Domain.Models.Locations;
+using Renty.Domain.Models.Media;
+using Renty.Domain.Models.Properties;
+using Renty.Domain.Models.Properties.Anemities;
 
 namespace Renty.Application.Mappers.Common
 {
@@ -12,13 +14,10 @@ namespace Renty.Application.Mappers.Common
     {
         public CommonProfile()
         {
-            CreateMap<City, CityDto>();
+            CreateMap<Room, RoomDto>();
+            CreateMap<Tag, TagDto>();
             CreateMap<PropertiesCategory, CategoryDto>();
-
-            // Если ImageDto содержит просто URL
             CreateMap<PropertyImage, ImageDto>();
-
-            // Для удобств
             CreateMap<Anemities, AmenitiesDto>();
         }
     }
