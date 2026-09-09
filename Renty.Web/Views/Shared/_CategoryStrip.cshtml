@@ -1,10 +1,23 @@
 @model CategoryStripViewModel
+@{
+    var baseRoute = new Dictionary<string, string>();
+
+    if (!string.IsNullOrEmpty(Model.Filter?.Destination)) baseRoute["destination"] = Model.Filter.Destination;
+    if (Model.Filter?.CheckInDate != null) baseRoute["checkInDate"] = Model.Filter.CheckInDate.Value.ToString("yyyy-MM-dd");
+    if (Model.Filter?.CheckOutDate != null) baseRoute["checkOutDate"] = Model.Filter.CheckOutDate.Value.ToString("yyyy-MM-dd");
+    if (Model.Filter?.AdultCount > 0) baseRoute["adultCount"] = Model.Filter.AdultCount.ToString()!;
+    if (Model.Filter?.ChildCount > 0) baseRoute["childCount"] = Model.Filter.ChildCount.ToString()!;
+    if (Model.Filter?.InfantCount > 0) baseRoute["infantCount"] = Model.Filter.InfantCount.ToString()!;
+    if (Model.Filter?.PetCount > 0) baseRoute["petCount"] = Model.Filter.PetCount.ToString()!;
+}
 
 <nav class="category-strip">
-    @foreach (var category in Model.Categories)
+    @foreach (CategoryViewModel category in Model.Categories)
     {
-        var isActive = category.Slug == Model.SelectedSlug;
-        <a href="?categorySlug=@category.Slug" class="category-strip__item @(isActive ? "is-active" : "")">
+        bool isActive = category.Slug == Model.SelectedSlug;
+        var routeValues = new Dictionary<string, string>(baseRoute) { ["categorySlug"] = category.Slug };
+
+        <a asp-action="Index" asp-all-route-data="routeValues" class="category-strip__item @(isActive ? "is-active" : "")">
             <icon name="@category.IconName" class="category-strip__icon" />
             <span class="category-strip__label">@category.Name</span>
         </a>

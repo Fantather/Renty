@@ -4,5 +4,6 @@ namespace Renty.Web.Models.Shared
     {
         public List<CategoryViewModel> Categories { get; set; } = new();
         public string? SelectedSlug { get; set; }
+        public PropertyFilterViewModel? Filter { get; set; }
     }
 }
