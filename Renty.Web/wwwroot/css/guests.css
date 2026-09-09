@@ -6,7 +6,7 @@
     width: 340px;
     flex-direction: column;
     gap: 0;
-    padding: 4px 24px;
+    padding: 20px 24px;
 }
 
 .guests-popover__row {
