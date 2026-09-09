@@ -4,7 +4,7 @@ using Renty.Application.Common;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 
-namespace Renty.Application.Handlers
+namespace Renty.Application.Handlers.ReviewHandlers
 {
     /// <summary>
     /// Обработчик команды <see cref="CreateReviewCommand"/>.

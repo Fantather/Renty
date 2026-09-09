@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Renty.Infrastructure.Services
+namespace Renty.Infrastructure.Services.CountryStateCityAPI
 {
     public class CountryStateCityAPI
     {

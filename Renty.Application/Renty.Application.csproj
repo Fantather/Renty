@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\Register\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Mappers\Categories\" />
     <Folder Include="Mappers\Cities\" />
     <Folder Include="Mappers\Login\" />

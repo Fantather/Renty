@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Renty.Application.Handlers.legacy;
-using Renty.Application.Mappers.Propertires;
+using Renty.Application.Handlers.PropertyHandlers;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
 using Renty.Infrastructure.Seeders;
@@ -21,12 +20,16 @@ builder.Services.AddMediatR(cfg => {
 //    options.DefaultScheme = IdentityConstants.ApplicationScheme;
 //    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 //})
-//.AddCookie()
+//.AddCookie(options =>
+//{
+//    options.LoginPath = "/Account/Login";
+//})
 //.AddGoogle(options =>
 //{
 //    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
 //    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
 //});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
         x => x.UseNetTopologySuite()));
@@ -34,6 +37,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // При попытке войти без подтверждения email
+    // будет возвращать result.IsNotAllowed = true
+    options.SignIn.RequireConfirmedEmail = true;
+});
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    // Время жизни токена подтверждения email
+    options.TokenLifespan = TimeSpan.FromHours(24);
+});
 
 // Регистрация репозиториев в DI
 builder.Services.AddInfrastructure();
