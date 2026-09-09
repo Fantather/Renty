@@ -10,13 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Renty.Application.Handlers
+
+
+namespace Renty.Application.Handlers.PropertyHandlers
 {
-    public class GetPropertiesHandler : IRequestHandler<GetPropertiesQuery, OperationResult<GetPropertiesResponse>>
+    public class OLDGetPropertiesHandler : IRequestHandler<GetPropertiesQuery, OperationResult<GetPropertiesResponse>>
     {
         private readonly IPropertyRepository _propertyRepository;
 
-        public GetPropertiesHandler(IPropertyRepository propertyRepository)
+        public OLDGetPropertiesHandler(IPropertyRepository propertyRepository)
         {
             _propertyRepository = propertyRepository;
             

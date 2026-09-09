@@ -24,6 +24,7 @@ namespace Renty.Domain.Models.Properties
 
         public int BathroomsCount { get; set; } = 0;
 
+        public int RoomsCount { get; set; } = 1;
         // Количество этажей в здании
         // (Для квартиры - этажность всего дома, для частного дома - количество этажей в доме)
         public int FloorsCount { get; set; } = 1;

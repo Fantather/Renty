@@ -24,6 +24,21 @@ namespace Renty.Infrastructure.Migrations
             NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "postgis");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("ApplicationUserLanguages", b =>
+                {
+                    b.Property<Guid>("LanguagesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("LanguagesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserLanguages", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("Id")
@@ -262,6 +277,30 @@ namespace Renty.Infrastructure.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Regions", (string)null);
+                });
+
+            modelBuilder.Entity("Renty.Domain.Models.LookupsTables.Languages", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("Renty.Domain.Models.Media.PropertyImage", b =>
@@ -561,12 +600,20 @@ namespace Renty.Infrastructure.Migrations
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("RoomsCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
                     b.HasKey("Id");
 
                     b.HasIndex("PropertyId")
                         .IsUnique();
 
-                    b.ToTable("PropertyDetails", (string)null);
+                    b.ToTable("PropertyDetails", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_PropertyDetails_RoomsCount_Minimum", "\"RoomsCount\" >= (\"BedroomsCount\" + \"BathroomsCount\")");
+                        });
                 });
 
             modelBuilder.Entity("Renty.Domain.Models.Properties.PropertyTag", b =>
@@ -846,7 +893,16 @@ namespace Renty.Infrastructure.Migrations
                     b.Property<Guid?>("HomeCountryId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Info")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
                     b.Property<bool>("IsTravellingWithPet")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsVerified")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
@@ -878,6 +934,10 @@ namespace Renty.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("ResponseSpeed")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -1013,6 +1073,21 @@ namespace Renty.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews", (string)null);
+                });
+
+            modelBuilder.Entity("ApplicationUserLanguages", b =>
+                {
+                    b.HasOne("Renty.Domain.Models.LookupsTables.Languages", null)
+                        .WithMany()
+                        .HasForeignKey("LanguagesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Renty.Domain.Models.User.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1172,9 +1247,9 @@ namespace Renty.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Renty.Domain.Models.User.ApplicationUser", "Host")
-                        .WithMany()
+                        .WithMany("Properties")
                         .HasForeignKey("HostId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Renty.Domain.Models.PropertiesCategory", null)
@@ -1389,6 +1464,8 @@ namespace Renty.Infrastructure.Migrations
                     b.Navigation("Bookings");
 
                     b.Navigation("Favorites");
+
+                    b.Navigation("Properties");
 
                     b.Navigation("Reviews");
                 });

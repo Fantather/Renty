@@ -13,12 +13,10 @@ namespace Renty.Application.Handlers.LoginHandlers
     public class LoginHandler : IRequestHandler<LoginCommand, OperationResult<LoginResponse>>
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginHandler(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public LoginHandler(SignInManager<ApplicationUser> signInManager)
         {
             _signInManager = signInManager;
-            _userManager = userManager;
         }
         public async Task<OperationResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {

@@ -5,6 +5,7 @@ using Renty.Web.Models;
 using Renty.Web.Models.Home;
 using Renty.Web.Models.Shared;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Renty.Web.Controllers
 {
@@ -33,13 +34,23 @@ namespace Renty.Web.Controllers
                 }).ToList();
             }
 
-            
+            Guid? currentUserId = null;
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                
+                var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (Guid.TryParse(userIdString, out Guid parsedId))
+                {
+                    currentUserId = parsedId;
+                }
+            }
             var propertiesQuery = new GetPropertiesQuery
             {
                 CategorySlug = filter.CategorySlug,
                 Page = 1,
-                PageSize = 20 
-                // UserId = ... (нужен айди пользователя)
+                PageSize = 20,
+                UserId = currentUserId 
             };
 
             var propertiesResult = await _mediator.Send(propertiesQuery);

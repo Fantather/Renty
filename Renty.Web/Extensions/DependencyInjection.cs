@@ -1,6 +1,7 @@
 ﻿using Renty.Domain.Interfaces;
 using Renty.Infrastructure.Repository;
 using Renty.Infrastructure.Services;
+using Renty.Infrastructure.Services.CountryStateCityAPI;
 
 namespace Renty.Web.DI
 {
@@ -8,11 +9,17 @@ namespace Renty.Web.DI
     {
         public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration config)
         {
-            // Биндинг значениями из конфигурации appsettings.json с свойствами класса
+            // Биндинг значениями из конфигурации appsettings.json/secret.json с свойствами класса
             services.Configure<CountryStateCityApiOptions>(
                 config.GetSection(CountryStateCityApiOptions.SectionName));
 
             services.AddSingleton<CountryStateCityAPI>();
+
+            services.Configure<EmailConfiguration>(
+                config.GetSection
+                ("EmailConfiguration"));
+
+            services.AddSingleton<IEmailSender, EmailSender>();
 
             return services;
         }

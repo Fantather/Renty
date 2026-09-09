@@ -12,7 +12,10 @@ namespace Renty.Infrastructure.Configurations.Properties
         public void Configure(EntityTypeBuilder<PropertyDetails> builder)
         {
             builder.ToTable("PropertyDetails");
-
+            builder.ToTable(t => t.HasCheckConstraint(
+            "CK_PropertyDetails_RoomsCount_Minimum",
+            "\"RoomsCount\" >= (\"BedroomsCount\" + \"BathroomsCount\")"
+        ));
             builder.HasKey(pd => pd.Id);
 
             // Свойства
@@ -27,6 +30,10 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.Property(pd => pd.BathroomsCount)
                 .IsRequired();
+            
+            builder.Property(pd => pd.RoomsCount)
+                .IsRequired()
+                .HasDefaultValue(1);
 
             builder.Property(pd => pd.FloorsCount)
                 .IsRequired()
@@ -34,6 +41,8 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             builder.Property(pd => pd.Floor)
                 .IsRequired(false);
+
+
         }
     }
 }

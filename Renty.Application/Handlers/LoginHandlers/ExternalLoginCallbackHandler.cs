@@ -36,7 +36,7 @@ namespace Renty.Application.Handlers.LoginHandlers
 
             // Попопытка залогинить пользователя по внешнему провайдеру 
             // Если пользователь уже входил через Google раньше — он будет найден по ProviderKey
-            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, true);
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
 
             ApplicationUser user;
 
@@ -78,7 +78,7 @@ namespace Renty.Application.Handlers.LoginHandlers
                 await _userManager.AddLoginAsync(user, info);
 
                 // После создания привязки логиним пользователя вручную
-                await _signInManager.SignInAsync(user, isPersistent: true);
+                await _signInManager.SignInAsync(user, isPersistent: false);
             }
 
             return OperationResult<ExternalLoginCallbackResponse>.Success(new ExternalLoginCallbackResponse { ReturnUrl = request.ReturnUrl ?? "/" });

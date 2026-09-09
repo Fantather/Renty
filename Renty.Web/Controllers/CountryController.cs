@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Renty.Infrastructure.Services;
+using Renty.Infrastructure.Services.CountryStateCityAPI;
 
 namespace Renty.Web.Controllers
 {

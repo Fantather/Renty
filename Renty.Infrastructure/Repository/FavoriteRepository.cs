@@ -2,9 +2,7 @@
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Renty.Infrastructure.Repository
 {

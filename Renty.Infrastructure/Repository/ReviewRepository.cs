@@ -16,8 +16,9 @@ namespace Renty.Infrastructure.Repository
         {
             return await _dbSet
                 .Where(r => r.PropertyId == propertyId)
-
-                .Include(r => r.User)
+                .Include(r => r.User)            
+                .Include(r => r.Property)
+                    .ThenInclude(p => p.Host)    
                 .AsNoTracking()
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync(ct);
@@ -28,7 +29,7 @@ namespace Renty.Infrastructure.Repository
             return await _dbSet
                 .Where(r => r.UserId == userId)
 
-                .Include(r => r.Property)
+                .Include(r => r.Property).ThenInclude(p => p.Host)
                 .AsNoTracking()
                 .OrderByDescending(r => r.CreatedAt)
                 .ToListAsync(ct);
