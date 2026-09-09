@@ -7,23 +7,12 @@ using Renty.Domain.Models.Properties;
 using Renty.Domain.Models.Properties.Anemities;
 using Renty.Domain.Models.User;
 
-namespace Renty.Application.Mappers
+namespace Renty.Application.Mappers.Properties
 {
     public class PropertyDetailsProfile : Profile
     {
         public PropertyDetailsProfile()
         {
-
-            CreateMap<ApplicationUser, HostDto>()
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
-
-                .ForMember(dest => dest.Languages, opt => opt.MapFrom(src =>
-                    src.Languages != null && src.Languages.Any()
-                        ? string.Join(", ", src.Languages.Select(l => l.Name))
-                        : string.Empty))
-
-                .ForMember(dest => dest.ResponseSpeed, opt => opt.MapFrom(src => src.ResponseSpeed ?? "Неизвестно"));
-
 
             CreateMap<Room, RoomDto>();
             CreateMap<Tag, TagDto>();

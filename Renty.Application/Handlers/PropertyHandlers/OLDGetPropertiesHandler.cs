@@ -10,11 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-<<<<<<<< HEAD:Renty.Application/Handlers/legacy/OLDGetPropertiesHandler.cs
-namespace Renty.Application.Handlers.legacy
-========
+
+
 namespace Renty.Application.Handlers.PropertyHandlers
->>>>>>>> 90fc256da83eab1c237127360920e0bb6ee506a3:Renty.Application/Handlers/PropertyHandlers/OLDGetPropertiesHandler.cs
 {
     public class OLDGetPropertiesHandler : IRequestHandler<GetPropertiesQuery, OperationResult<GetPropertiesResponse>>
     {
