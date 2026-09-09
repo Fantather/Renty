@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Renty.Application.Handlers;
+using Renty.Application.Handlers.legacy;
+using Renty.Application.Mappers.Propertires;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
 using Renty.Infrastructure.Seeders;
@@ -41,7 +42,7 @@ builder.Services.AddInfrastructure();
 builder.Services.AddServices(builder.Configuration);
 
 // Регистрация AutoMapper и добавление профилей из сборки Renty.Application
-builder.Services.AddAutoMapper(tcp => { }, typeof(Renty.Application.Mappers.PropertyProfile));
+builder.Services.AddAutoMapper(tcp => { }, typeof(PropertyProfile));
 
 var app = builder.Build();
 
@@ -77,6 +78,7 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
+        await LanguagesSeeder.SeedAsync(context);
         // Локации(города, так как мне нужно протестировать)
         await CountrySeeder.SeedAsync(context);
 

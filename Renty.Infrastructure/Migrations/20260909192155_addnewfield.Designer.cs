@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Renty.Infrastructure.Data;
 namespace Renty.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260909192155_addnewfield")]
+    partial class addnewfield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -612,7 +615,7 @@ namespace Renty.Infrastructure.Migrations
 
                     b.ToTable("PropertyDetails", null, t =>
                         {
-                            t.HasCheckConstraint("CK_PropertyDetails_RoomsCount_Minimum", "\"RoomsCount\" >= (\"BedroomsCount\" + \"BathroomsCount\")");
+                            t.HasCheckConstraint("CK_PropertyDetails_RoomsCount_Minimum", "\"RoomsCount\" >= (\"BedsCount\" + \"BedroomsCount\" + \"BathroomsCount\")");
                         });
                 });
 

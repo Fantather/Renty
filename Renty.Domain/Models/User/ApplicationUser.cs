@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Renty.Domain.Models.Locations;
+using Renty.Domain.Models.LookupsTables;
+using Renty.Domain.Models.Orders;
+using Renty.Domain.Models.Properties;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
-using Renty.Domain.Models.Orders;
-using Renty.Domain.Models.Locations;
 
 namespace Renty.Domain.Models.User
 {
@@ -46,6 +48,8 @@ namespace Renty.Domain.Models.User
             Reviews = new List<Review>();
             Bookings = new List<Booking>();
             Favorites = new List<Favorite>();
+            Languages = new List<Languages>();
+            Properties = new List<Property>();
         }
         //полное имя пользователя
         public string FirstName { get; set; } = string.Empty;
@@ -66,10 +70,19 @@ namespace Renty.Domain.Models.User
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public bool IsVerified { get; set; } = false;
+
+        public string? ResponseSpeed { get; set; }
+
+        public string? Info { get; set; }
+
+   
         //Коллекции
+        public virtual ICollection<Languages> Languages { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
-        public virtual ICollection<Favorite> Favorites { get; set; } 
+        public virtual ICollection<Favorite> Favorites { get; set; }
+        public virtual ICollection<Property> Properties { get; set; } 
 
     }
 }

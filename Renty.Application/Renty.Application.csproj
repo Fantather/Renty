@@ -23,6 +23,13 @@
     <ProjectReference Include="..\Renty.Infrastructure\Renty.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappers\Categories\" />
+    <Folder Include="Mappers\Cities\" />
+    <Folder Include="Mappers\Login\" />
+    <Folder Include="Mappers\Reviews\" />
+  </ItemGroup>
+
 
 
 </Project>

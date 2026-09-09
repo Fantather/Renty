@@ -64,6 +64,11 @@ namespace Renty.Infrastructure.Configurations.Users
                 .HasForeignKey(r => r.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(u => u.Properties)
+                .WithOne(p => p.Host) 
+                .HasForeignKey(p => p.HostId) 
+                .OnDelete(DeleteBehavior.Cascade); 
+
             builder.HasMany(u => u.Bookings)
                 .WithOne(b => b.User)
                 .HasForeignKey(b => b.UserId)
@@ -73,6 +78,15 @@ namespace Renty.Infrastructure.Configurations.Users
                 .WithOne(f => f.User)
                 .HasForeignKey(f => f.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property(u => u.IsVerified)
+                            .HasDefaultValue(false);
+
+            builder.Property(u => u.ResponseSpeed)
+                .HasMaxLength(100); 
+
+            builder.Property(u => u.Info)
+                .HasMaxLength(2000);
         }
     }
 }

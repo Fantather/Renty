@@ -2,7 +2,7 @@
 using Renty.Application.DTOs.GetProperties;
 using Renty.Domain.Models.Properties;
 
-namespace Renty.Application.Mappers
+namespace Renty.Application.Mappers.Propertires
 {
     public class PropertyProfile : Profile
     {

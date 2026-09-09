@@ -127,6 +127,7 @@ namespace Renty.Infrastructure.Seeders
                         BedsCount = 2,
                         BedroomsCount = 1,
                         BathroomsCount = 1,
+                        RoomsCount = 2,
                         FloorsCount = 24,
                         Floor = 18
                     },
@@ -247,6 +248,7 @@ namespace Renty.Infrastructure.Seeders
                         BedsCount = 1,
                         BedroomsCount = 1,
                         BathroomsCount = 1,
+                        RoomsCount = 2,
                         FloorsCount = 5,
                         Floor = 3
                     },

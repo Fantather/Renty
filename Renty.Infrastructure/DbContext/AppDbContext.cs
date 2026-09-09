@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Models;
 using Renty.Domain.Models.Locations;
+using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Media;
 using Renty.Domain.Models.Messages;
 using Renty.Domain.Models.Orders;
@@ -31,7 +32,7 @@ namespace Renty.Infrastructure.Data
         public DbSet<RoomType> RoomType { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PropertiesCategory> PropertiesCategory { get; set; }
-
+        public DbSet<Languages> Languages { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
