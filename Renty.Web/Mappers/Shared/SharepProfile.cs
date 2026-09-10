@@ -34,15 +34,7 @@ namespace Renty.Web.Mappers.Shared
                 .ForMember(dest => dest.AuthorAvatarUrl, opt => opt.MapFrom(src => src.Author.AvatarUrl))
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Content))
-                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
-
-                //в моделях таких полей нет
-                .ForMember(dest => dest.CleanlinessComment, opt => opt.Ignore())
-                .ForMember(dest => dest.AccuracyComment, opt => opt.Ignore())
-                .ForMember(dest => dest.CheckInComment, opt => opt.Ignore())
-                .ForMember(dest => dest.CommunicationComment, opt => opt.Ignore())
-                .ForMember(dest => dest.LocationComment, opt => opt.Ignore())
-                .ForMember(dest => dest.ValueComment, opt => opt.Ignore());
+                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt));
         }
     }
 }
