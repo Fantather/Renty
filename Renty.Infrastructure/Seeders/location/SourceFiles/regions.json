@@ -1,0 +1,20 @@
+[
+  {
+    "country_iso2": "UA",
+    "region_code": "OD",
+    "name": "Odesa Oblast",
+    "name_ru": "Одесская область"
+  },
+  {
+    "country_iso2": "UA",
+    "region_code": "KY",
+    "name": "Kyiv Oblast",
+    "name_ru": "Киевская область"
+  },
+  {
+    "country_iso2": "US",
+    "region_code": "NY",
+    "name": "New York",
+    "name_ru": "Нью-Йорк"
+  }
+]

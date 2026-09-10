@@ -5,6 +5,13 @@ namespace Renty.Domain.Interfaces
 {
     public interface ICityRepository : IGenericRepository<City>
     {
+        /// <summary>
+        /// Получить по имени город
+        /// </summary>
+        /// <param name="cityName">Имя города</param>
+        /// <param name="ct">Токен отмены</param>
+        /// <returns></returns>
+        Task<City?> GetCityByNameAsync(string cityName, CancellationToken ct = default);
         //Он будет принимать название города в виде строки и возвращать мне список городов в которых есть квартиры из БД
         /// <summary>
         /// Auto-complete поиск для Алексея. Принимает название города в виде строки и возвращает список городов, в которых есть квартиры из базы данных.
@@ -19,6 +26,7 @@ namespace Renty.Domain.Interfaces
         /// </summary>
         /// <param name="ct">Токен отмены</param>
         /// <returns>Список городов</returns>
+        /// 
         Task<IEnumerable<City>> GetCitiesWithApartmentsAsync(CancellationToken ct = default);
         /// <summary>
         ///  Возвращает список городов по идентификатору страны.

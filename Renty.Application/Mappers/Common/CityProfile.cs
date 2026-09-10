@@ -12,6 +12,7 @@ namespace Renty.Application.Mappers.Common
 
                 .ForMember(dest => dest.CityId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.CityNameRu, opt => opt.MapFrom(src => src.NameRu))
 
 
                 .ForMember(dest => dest.RegionName, opt => opt.MapFrom(src => src.Region != null ? src.Region.Name : null))

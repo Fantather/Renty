@@ -14,6 +14,13 @@ namespace Renty.Infrastructure.Repository
         public CityRepository(AppDbContext context) : base(context)
         {
         }
+        public async Task<City?> GetCityByNameAsync(string cityName, CancellationToken ct = default)
+        {
+            return await _dbSet
+                .Include(c => c.Country) 
+                .FirstOrDefaultAsync(c => c.Name.ToLower() == cityName.ToLower() ||
+                                         (c.NameRu != null && c.NameRu.ToLower() == cityName.ToLower()), ct);
+        }
         /// <summary>
         ///  Возвращает список городов по идентификатору страны.
         /// </summary>

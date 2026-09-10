@@ -1,0 +1,16 @@
+[
+  {
+    "iso2": "UA",
+    "name": "Ukraine",
+    "name_ru": "Украина",
+    "currency": "UAH",
+    "phone_code": "+380"
+  },
+  {
+    "iso2": "US",
+    "name": "United States",
+    "name_ru": "США",
+    "currency": "USD",
+    "phone_code": "+1"
+  }
+]

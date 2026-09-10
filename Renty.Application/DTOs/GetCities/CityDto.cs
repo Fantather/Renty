@@ -12,6 +12,7 @@ namespace Renty.Application.DTOs.GetCities
     {
         public Guid CityId { get; set; }
         public string CityName { get; set; } = null!;
+        public string? CityNameRu { get; set; }
         public string? RegionName { get; set; }
         public string CountryName { get; set; } = null!;
     }

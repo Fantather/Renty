@@ -12,7 +12,7 @@ namespace Renty.Domain.Models.Locations
         public Guid Id { get; set; } = Guid.CreateVersion7();
 
         public string Name { get; set; } = string.Empty;
-
+        public string? NameRu { get; set; } // Русское название
         // Связь со страной
         public Guid CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]

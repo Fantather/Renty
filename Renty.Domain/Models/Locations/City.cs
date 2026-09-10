@@ -21,6 +21,7 @@ namespace Renty.Domain.Models.Locations
         public Guid CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]
         public virtual Country Country { get; set; }
+        public string? NameRu { get; set; } // Русское название
 
         // Координаты центра города (для отображения на карте при поиске)
         public decimal? Latitude { get; set; }

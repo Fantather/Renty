@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Renty.Application.Handlers.PropertyHandlers;
+using Renty.Application.Mappers.Properties;
+using Renty.Application.Services;
+using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
 using Renty.Infrastructure.Seeders;
+using Renty.Infrastructure.Seeders.location;
 using Renty.Web.DI;
-using Renty.Application.Mappers.Properties;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddMediatR(cfg => {
-    cfg.RegisterServicesFromAssembly(typeof(OLDGetPropertiesHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetPropertiesHandler).Assembly);
 });
 
 builder.Services.AddAuthentication(options =>
@@ -52,7 +54,6 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
     // Время жизни токена подтверждения email
     options.TokenLifespan = TimeSpan.FromHours(24);
 });
-
 // Регистрация репозиториев в DI
 builder.Services.AddInfrastructure();
 
@@ -97,9 +98,9 @@ using (var scope = app.Services.CreateScope())
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         await LanguagesSeeder.SeedAsync(context);
-        // Локации(города, так как мне нужно протестировать)
-        await CountrySeeder.SeedAsync(context);
-
+        // Локации
+        var basePath = Path.Combine(AppContext.BaseDirectory, "Seeders", "location", "SourceFiles");
+        await LocationSeeder.SeedLocationsAsync(context, basePath);
         // Пользователи, админ, два одессита и киевлянин
         await IdentitySeeder.SeedAdminAsync(userManager, roleManager);
         await IdentitySeeder.SeedTestUsersAsync(userManager, context);
@@ -115,7 +116,8 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine(ex.Message);
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ошибка при сидировании базы данных.");
     }
 }
 app.Run();

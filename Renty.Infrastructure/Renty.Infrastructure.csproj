@@ -33,4 +33,11 @@
     <ProjectReference Include="..\Renty.Domain\Renty.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Seeders\location\SourceFiles\" />
+	  <None Update="Seeders\location\SourceFiles\*.json">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+  </ItemGroup>
+
 </Project>

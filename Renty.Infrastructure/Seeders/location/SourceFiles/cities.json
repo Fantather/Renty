@@ -1,0 +1,26 @@
+[
+  {
+    "country_iso2": "UA",
+    "region_code": "OD",
+    "name": "Odesa",
+    "name_ru": "Одесса",
+    "latitude": 46.482526,
+    "longitude": 30.7233095
+  },
+  {
+    "country_iso2": "UA",
+    "region_code": "KY",
+    "name": "Kyiv",
+    "name_ru": "Киев",
+    "latitude": 50.4501,
+    "longitude": 30.5234
+  },
+  {
+    "country_iso2": "US",
+    "region_code": "NY",
+    "name": "New York City",
+    "name_ru": "Нью-Йорк",
+    "latitude": 40.7128,
+    "longitude": -74.0060
+  }
+]

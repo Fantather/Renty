@@ -15,6 +15,10 @@ namespace Renty.Infrastructure.Configurations.Locations
             builder.HasIndex(r => r.CountryId);
             builder.HasIndex(r => r.Name);
             builder.HasIndex(r => r.IsActive);
+            builder.HasIndex(c => c.NameRu);
+            builder.Property(c => c.NameRu)
+                .HasMaxLength(100)
+                .IsRequired(false);
 
             builder.Property(r => r.Name)
                 .IsRequired()

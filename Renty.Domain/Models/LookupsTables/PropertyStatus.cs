@@ -14,6 +14,8 @@ namespace Renty.Domain.Models.LookupsTables
 
     public enum PropertyStatusEnum
     {
+        [Description("Черновик")]
+        Draft = 0,
         [Description("Активен")]
         Active = 1,
         [Description("Неактивен")]

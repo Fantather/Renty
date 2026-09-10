@@ -1,4 +1,5 @@
-﻿using Renty.Domain.Interfaces;
+﻿using Renty.Application.Services;
+using Renty.Domain.Interfaces;
 using Renty.Infrastructure.Repository;
 using Renty.Infrastructure.Services;
 using Renty.Infrastructure.Services.CountryStateCityAPI;
@@ -34,6 +35,7 @@ namespace Renty.Web.DI
             services.AddScoped<IFavoriteRepository, FavoriteRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<ILocationResolverService, LocationResolverService>();
 
             return services;
         }
