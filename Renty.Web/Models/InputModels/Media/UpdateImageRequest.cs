@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Renty.Web.Models.Lelik.Media
+namespace Renty.Web.Models.InputModels.Media
 {
     /// <summary>
     /// вот тут уже заполнить их данными
-    /// </summary>  
+    /// </summary>
     public class UpdateImageRequest
     {
         [Required]
@@ -32,6 +28,4 @@ namespace Renty.Web.Models.Lelik.Media
         //модели позволяют не привязывать фото к конкретной комнате, а просто закинуть в квартирку
         public Guid? RoomId { get; set; }
     }
-
-
 }

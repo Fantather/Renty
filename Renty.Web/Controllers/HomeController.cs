@@ -45,12 +45,17 @@ namespace Renty.Web.Controllers
                     currentUserId = parsedId;
                 }
             }
+            var guestCount = (filter.AdultCount ?? 0) + (filter.ChildCount ?? 0) + (filter.InfantCount ?? 0) + (filter.PetCount ?? 0);
+
             var propertiesQuery = new GetPropertiesQuery
             {
                 CategorySlug = filter.CategorySlug,
+                CheckInDate = filter.CheckInDate?.ToDateTime(TimeOnly.MinValue),
+                CheckOutDate = filter.CheckOutDate?.ToDateTime(TimeOnly.MinValue),
+                GuestCount = guestCount > 0 ? guestCount : null,
                 Page = 1,
                 PageSize = 20,
-                UserId = currentUserId 
+                UserId = currentUserId
             };
 
             var propertiesResult = await _mediator.Send(propertiesQuery);
@@ -79,7 +84,8 @@ namespace Renty.Web.Controllers
                 CategoryStrip = new CategoryStripViewModel
                 {
                     Categories = categoriesVm,
-                    SelectedSlug = filter.CategorySlug
+                    SelectedSlug = filter.CategorySlug,
+                    Filter = filter
                 },
                 Filter = filter,
             };

@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace Renty.Web.Models.Lelik.Media
+namespace Renty.Web.Models.InputModels.Media
 {
     /// <summary>
     /// вот тут просто с фронта загрузить кучу фото
-    /// </summary>  
+    /// </summary>
     public class UploadPropertyImagesInputModel
     {
         [Required]
@@ -13,5 +13,5 @@ namespace Renty.Web.Models.Lelik.Media
         [Required(ErrorMessage = "Выберите хотя бы одно фото")]
         //формат файов что был отправлен через  форму. Просто сперва загрузили
         public List<IFormFile> Images { get; set; } = new();
-}
+    }
 }

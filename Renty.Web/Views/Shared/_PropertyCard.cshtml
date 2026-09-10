@@ -5,7 +5,7 @@
         <a asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.Slug" class="property-card__image-link">
             <img src="@Model.ImageUrls.First()" alt="@Model.City, @Model.Country" class="property-card__image" />
         </a>
-        <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")" aria-label="Toggle favorite">
+        <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")">
             <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
         </button>
     </div>
