@@ -1,0 +1,24 @@
+@{
+    var guestCounters = new[]
+    {
+        new { Key = "adult", Title = "Взрослые", Subtitle = "От 13 лет" },
+        new { Key = "child", Title = "Дети", Subtitle = "Возраст от 2 до 12" },
+        new { Key = "infant", Title = "Младенцы", Subtitle = "Младше 2" },
+        new { Key = "pet", Title = "Домашние животные", Subtitle = "Путешествуете с животным-помощником?" },
+    };
+}
+
+@foreach (var counter in guestCounters)
+{
+    <div class="guests-popover__row" data-counter="@counter.Key">
+        <div class="guests-popover__info">
+            <p class="guests-popover__title">@counter.Title</p>
+            <p class="guests-popover__subtitle">@counter.Subtitle</p>
+        </div>
+        <div class="guests-popover__counter">
+            <button type="button" class="guests-popover__btn guests-popover__btn--minus">−</button>
+            <span class="guests-popover__count">0</span>
+            <button type="button" class="guests-popover__btn guests-popover__btn--plus">+</button>
+        </div>
+    </div>
+}

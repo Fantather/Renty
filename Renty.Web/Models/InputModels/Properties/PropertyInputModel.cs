@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace Renty.Web.Models.Lelik
+namespace Renty.Web.Models.InputModels.Properties
 {
     /// <summary>
     /// Основная модель для создания нового объявления
@@ -32,6 +32,10 @@ namespace Renty.Web.Models.Lelik
         [Required(ErrorMessage = "Адрес обязателен")]
         public string Address { get; set; } = string.Empty;
 
+        public string? Street { get; set; }
+
+        public string? District { get; set; }
+
         // Координаты для карты
         [Range(-90, 90)]
         public double Latitude { get; set; }
@@ -50,7 +54,7 @@ namespace Renty.Web.Models.Lelik
 
         public string? HouseRules { get; set; }
 
-        // Заполняем что есть в нашей квартирке. Так как я не привязівала комнаті к прям созданию типа комнаті, то оно так  
+        // Заполняем что есть в нашей квартирке. Так как я не привязівала комнаті к прям созданию типа комнаті, то оно так
         [Range(1, 50, ErrorMessage = "Количество гостей должно быть от 1 до 50")]
         public int MaxGuests { get; set; }
         public int BedsCount { get; set; }
@@ -65,29 +69,8 @@ namespace Renty.Web.Models.Lelik
         //теги квартиры .\Renty.Domain\Models\Properties\PropertyTag.cs
         public List<Guid> TagIds { get; set; } = new();
 
-        // комнаты, надо добавить хотя бы студию камон
-        [MinLength(1, ErrorMessage = "Добавьте хотя бы одну комнату")]
+        // комнаты создаются отдельно, тут необязательны
         public List<CreateRoomInputModel> Rooms { get; set; } = new();
 
-    }
-
-    /// <summary>
-    /// Вложенная модель для создания комнаты внутри квартиры
-    /// </summary>
-    public class CreateRoomInputModel
-    {
-        [Required(ErrorMessage = "Выберите тип комнаты")]
-        public Guid RoomTypeId { get; set; }
-
-        [Required(ErrorMessage = "Укажите название (например, 'Главная спальня')")]
-        public string Name { get; set; } = string.Empty;
-
-        [Range(0, 10, ErrorMessage = "Некорректное количество спальных мест")]
-        public int BedsCount { get; set; }
-
-        [Range(1, 1000, ErrorMessage = "Укажите площадь")]
-        public decimal Area { get; set; }
-
-        public bool IsSharedSpace { get; set; } = false;
     }
 }
