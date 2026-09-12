@@ -1,3 +1,5 @@
+using Renty.Web.Models.Shared;
+
 namespace Renty.Web.Models.Properties
 {
     // Данные для страницы деталей квартиры (Properties/Details.cshtml)

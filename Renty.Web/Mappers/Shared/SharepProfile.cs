@@ -3,6 +3,7 @@ using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.GetProperty;
 using Renty.Application.DTOs.GetReviews;
 using Renty.Web.Models.Properties;
+using Renty.Web.Models.Shared;
 
 
 namespace Renty.Web.Mappers.Shared

@@ -1,0 +1,13 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Цена";
+}
+
+<h1>Теперь установите цены</h1>
+
+<form method="post" asp-action="SavePropertyPricing" asp-route-id="@ViewData["PropertyId"]">
+    <input-field asp-for="PricePerNight" type="number" placeholder="Базовая цена" />
+    <input-field asp-for="WeekendPricePercent" type="number" placeholder="Наценка на выходные, %" />
+
+    <button type="submit">Далее</button>
+</form>

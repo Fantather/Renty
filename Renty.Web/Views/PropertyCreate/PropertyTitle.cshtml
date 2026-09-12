@@ -1,0 +1,12 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Название";
+}
+
+<h1>Придумайте, как будет называться ваше объявление</h1>
+
+<form method="post" asp-action="SavePropertyTitle" asp-route-id="@ViewData["PropertyId"]">
+    <input-field asp-for="Name" placeholder="Название" />
+
+    <button type="submit">Далее</button>
+</form>

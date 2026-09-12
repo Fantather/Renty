@@ -1,0 +1,10 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Публикация";
+}
+
+<h1>Поздравляем! Пора опубликовать объявление</h1>
+
+<form method="post" asp-action="Publish" asp-route-id="@ViewData["PropertyId"]">
+    <button type="submit">Опубликовать</button>
+</form>

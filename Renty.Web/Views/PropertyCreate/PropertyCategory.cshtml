@@ -1,0 +1,19 @@
+@model Renty.Web.Models.PropertyCreate.CategoryPageViewModel
+@{
+    ViewData["Title"] = "Тип жилья";
+}
+
+<h1>Что из перечисленного точнее описывает ваше жильё?</h1>
+
+<form method="post" asp-action="SavePropertyCategory" asp-route-id="@ViewData["PropertyId"]">
+    @foreach (var category in Model.Categories)
+    {
+        <label>
+            <input type="radio" asp-for="Property.CategoryId" value="@category.Id" />
+            @category.Name
+        </label>
+        <br />
+    }
+
+    <button type="submit">Далее</button>
+</form>

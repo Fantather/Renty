@@ -7,7 +7,7 @@
     <div class="property-create-card">
         <h1 class="property-create-card__title">Подтвердите адрес</h1>
 
-        <form class="property-create-card__form">
+        <form class="property-create-card__form" method="post" asp-action="SavePropertyAddress">
             <div class="search-field">
                 <input type="text" id="search" class="input-field__input" placeholder="Начните вводить адрес" autocomplete="off" />
                 <div id="search-popover" class="popover-panel search-field__results" hidden></div>
@@ -19,7 +19,7 @@
             <input-field asp-for="CityId" placeholder="Город" />
             <input-field asp-for="CountryId" placeholder="Страна" />
 
-            <button type="button" class="property-create-card__submit">Далее</button>
+            <button type="submit" class="property-create-card__submit">Далее</button>
         </form>
     </div>
 </div>

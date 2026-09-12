@@ -1,0 +1,19 @@
+@model Renty.Web.Models.PropertyCreate.AmenitiesPageViewModel
+@{
+    ViewData["Title"] = "Удобства";
+}
+
+<h1>Расскажите гостям, какие удобства есть в вашем жилье</h1>
+
+<form method="post" asp-action="SavePropertyAmenities" asp-route-id="@ViewData["PropertyId"]">
+    @foreach (var amenity in Model.Amenities)
+    {
+        <label>
+            <input type="checkbox" name="AmenityIds" value="@amenity.Id" />
+            @amenity.Name
+        </label>
+        <br />
+    }
+
+    <button type="submit">Далее</button>
+</form>

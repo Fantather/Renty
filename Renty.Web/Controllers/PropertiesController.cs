@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Renty.Web.Models.Properties;
+using Renty.Web.Models.Shared;
 
 namespace Renty.Web.Controllers
 {

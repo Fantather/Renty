@@ -1,0 +1,20 @@
+@model Renty.Web.Models.InputModels.Media.UploadPropertyImagesInputModel
+@{
+    ViewData["Title"] = "Фото";
+}
+
+<h1>Загрузите фото жилья</h1>
+
+<form method="post" enctype="multipart/form-data" asp-action="SavePropertyPhotos" asp-route-id="@Model.PropertyId">
+    <input type="hidden" asp-for="PropertyId" />
+    <input type="file" asp-for="Images" multiple accept="image/*" />
+    <span asp-validation-for="Images"></span>
+
+    <div id="photos-preview"></div>
+
+    <button type="submit">Далее</button>
+</form>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/photos.js" asp-append-version="true"></script>
+}

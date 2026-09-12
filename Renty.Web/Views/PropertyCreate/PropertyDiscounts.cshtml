@@ -1,0 +1,34 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Скидки";
+}
+
+<h1>Добавьте скидки</h1>
+
+<form method="post" asp-action="SavePropertyDiscounts" asp-route-id="@ViewData["PropertyId"]">
+    <label>
+        <input type="checkbox" asp-for="Discounts.NewListingDiscountEnabled" />
+        Скидка для нового объявления
+    </label>
+    <input-field asp-for="Discounts.NewListingDiscountPercent" type="number" placeholder="Процент скидки" />
+
+    <label>
+        <input type="checkbox" asp-for="Discounts.LastMinuteDiscountEnabled" />
+        Скидка за бронирование в последнюю минуту
+    </label>
+    <input-field asp-for="Discounts.LastMinuteDiscountPercent" type="number" placeholder="Процент скидки" />
+
+    <label>
+        <input type="checkbox" asp-for="Discounts.WeeklyDiscountEnabled" />
+        Скидка на неделю
+    </label>
+    <input-field asp-for="Discounts.WeeklyDiscountPercent" type="number" placeholder="Процент скидки" />
+
+    <label>
+        <input type="checkbox" asp-for="Discounts.MonthlyDiscountEnabled" />
+        Скидка на месяц
+    </label>
+    <input-field asp-for="Discounts.MonthlyDiscountPercent" type="number" placeholder="Процент скидки" />
+
+    <button type="submit">Далее</button>
+</form>

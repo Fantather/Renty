@@ -1,0 +1,24 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Отличительные черты";
+    var options = new[] { "Тихое", "Уникальное", "Для семей с детьми", "Стильное", "В центре", "Простор" };
+}
+
+<h1>Выберите одну или две отличительные черты</h1>
+
+<form method="post" asp-action="SavePropertyHighlights" asp-route-id="@ViewData["PropertyId"]">
+    @foreach (var option in options)
+    {
+        <label>
+            <input type="checkbox" name="Highlights" value="@option" />
+            @option
+        </label>
+        <br />
+    }
+
+    <button type="submit">Далее</button>
+</form>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/highlights.js" asp-append-version="true"></script>
+}

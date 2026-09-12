@@ -3,6 +3,7 @@ using Renty.Domain.Interfaces;
 using Renty.Infrastructure.Repository;
 using Renty.Infrastructure.Services;
 using Renty.Infrastructure.Services.CountryStateCityAPI;
+using Renty.Infrastructure.Services.GoogleGeocoding;
 
 namespace Renty.Web.DI
 {
@@ -22,6 +23,9 @@ namespace Renty.Web.DI
 
             services.AddSingleton<IEmailSender, EmailSender>();
 
+            services.Configure<GeocodingOptions>(config.GetSection(GeocodingOptions.SectionName));
+            services.AddHttpClient<IGoogleGeocodingService, GoogleGeocodingService>();
+
             return services;
         }
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration? config = null)
@@ -30,6 +34,7 @@ namespace Renty.Web.DI
             services.AddScoped<IPropertyRepository, PropertyRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IRegionRepository, RegionRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IAmenityRepository, AmenitiesRepository>();
             services.AddScoped<IFavoriteRepository, FavoriteRepository>();

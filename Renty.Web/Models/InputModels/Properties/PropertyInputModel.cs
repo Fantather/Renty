@@ -12,7 +12,7 @@ namespace Renty.Web.Models.InputModels.Properties
     {
         // Базовая информация
         [Required(ErrorMessage = "Название обязательно")]
-        [StringLength(100, MinimumLength = 10, ErrorMessage = "Название должно быть от 10 до 100 символов")]
+        [StringLength(100, ErrorMessage = "Название должно быть не длиннее 100 символов")]
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Описание обязательно")]

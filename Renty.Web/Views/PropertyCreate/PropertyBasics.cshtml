@@ -1,0 +1,22 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Основная информация";
+}
+
+<h1>Поделитесь основной информацией о жилье</h1>
+
+<form method="post" asp-action="SavePropertyBasics" asp-route-id="@ViewData["PropertyId"]">
+    <label asp-for="MaxGuests">Максимальное количество гостей</label>
+    <input-field asp-for="MaxGuests" type="number" placeholder="Гости" />
+
+    <label asp-for="BedroomsCount">Спальни</label>
+    <input-field asp-for="BedroomsCount" type="number" placeholder="Спальни" />
+
+    <label asp-for="BedsCount">Кровати</label>
+    <input-field asp-for="BedsCount" type="number" placeholder="Кровати" />
+
+    <label asp-for="BathroomsCount">Ванные</label>
+    <input-field asp-for="BathroomsCount" type="number" placeholder="Ванные" />
+
+    <button type="submit">Далее</button>
+</form>

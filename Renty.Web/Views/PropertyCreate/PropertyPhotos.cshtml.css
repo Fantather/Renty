@@ -1,0 +1,4 @@
+#photos-preview img {
+    max-width: 150px;
+    height: auto;
+}

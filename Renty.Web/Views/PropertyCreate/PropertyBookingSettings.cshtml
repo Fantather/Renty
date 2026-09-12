@@ -1,0 +1,20 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Параметры бронирования";
+}
+
+<h1>Выберите параметры бронирования</h1>
+
+<form method="post" asp-action="SavePropertyBookingSettings" asp-route-id="@ViewData["PropertyId"]">
+    <label>
+        <input type="radio" asp-for="InstantBookEnabled" value="false" />
+        Одобрять первые бронирования вручную (рекомендуется)
+    </label>
+    <br />
+    <label>
+        <input type="radio" asp-for="InstantBookEnabled" value="true" />
+        Включить мгновенное бронирование
+    </label>
+
+    <button type="submit">Далее</button>
+</form>
