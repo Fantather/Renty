@@ -10,11 +10,3 @@ if (loginTrigger) {
         loginModal.open();
     });
 }
-
-var logoutButton = document.getElementById('logoutButton');
-if (logoutButton) {
-    logoutButton.addEventListener('click', function () {
-        // TODO: реальный выход, когда подключим Identity
-        mainMenu.close();
-    });
-}

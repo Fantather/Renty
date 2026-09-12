@@ -1,6 +1,5 @@
 @{
-    // TODO: заменить на реальную проверку, когда подключим Identity — например User.Identity?.IsAuthenticated ?? false
-    var isAuthenticated = false;
+    var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
 }
 
 <div class="main-menu">
@@ -12,7 +11,9 @@
         <a class="main-menu__item" asp-controller="PropertyCreate" asp-action="PropertyAddress">Сдать жильё</a>
         @if (isAuthenticated)
         {
-            <button type="button" class="main-menu__item" id="logoutButton">Выйти</button>
+            <form method="post" asp-controller="Account" asp-action="Logout">
+                <button type="submit" class="main-menu__item">Выйти</button>
+            </form>
         }
         else
         {

@@ -33,7 +33,7 @@ namespace Renty.Infrastructure.Seeders
                     EmailConfirmed = true
                 };
 
-                var result = await userManager.CreateAsync(adminUser, "zfY8d4bKWjY");
+                var result = await userManager.CreateAsync(adminUser, "zfY8d4bKWjY!");
 
                 if (result.Succeeded)
                 {

@@ -20,10 +20,10 @@
 
         <div class="auth-card__divider"><span>или</span></div>
 
-        <button type="button" class="auth-card__google-btn" disabled>
+        <a class="auth-card__google-btn" asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google">
             <icon name="star" class="auth-card__google-icon" />
             Продолжить с Google
-        </button>
+        </a>
 
         <p class="auth-card__footer">Нет аккаунта? <a asp-controller="Account" asp-action="Register">Зарегистрироваться</a></p>
     </div>

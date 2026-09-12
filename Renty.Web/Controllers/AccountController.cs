@@ -163,7 +163,7 @@ namespace Renty.Web.Controllers
         {
             var principal = HttpContext.User;
             await _mediator.Send(new LogoutCommand(principal));
-            return RedirectToAction(nameof(Login));
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion

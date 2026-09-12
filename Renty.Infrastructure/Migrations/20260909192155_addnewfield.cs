@@ -17,6 +17,10 @@ namespace Renty.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: 1);
 
+            migrationBuilder.Sql(
+                "UPDATE \"PropertyDetails\" SET \"RoomsCount\" = \"BedsCount\" + \"BedroomsCount\" + \"BathroomsCount\" " +
+                "WHERE \"BedsCount\" + \"BedroomsCount\" + \"BathroomsCount\" > \"RoomsCount\";");
+
             migrationBuilder.AddCheckConstraint(
                 name: "CK_PropertyDetails_RoomsCount_Minimum",
                 table: "PropertyDetails",
