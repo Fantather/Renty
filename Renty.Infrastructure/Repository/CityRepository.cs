@@ -148,6 +148,22 @@ namespace Renty.Infrastructure.Repository
             await _context.SaveChangesAsync(ct);
             return true;
         }
+
+        public async Task<City?> GetCityByNameAndCountryAsync(string cityName, Guid countryId, CancellationToken ct = default)
+        {
+            if (string.IsNullOrWhiteSpace(cityName))
+            {
+                return null;
+            }
+
+            var term = cityName.ToLower();
+
+            return await _dbSet
+                .FirstOrDefaultAsync(c =>
+                    c.CountryId == countryId &&
+                    (c.Name.ToLower() == term || (c.NameRu != null && c.NameRu.ToLower() == term)),
+                    ct);
+        }
     }
 }
 

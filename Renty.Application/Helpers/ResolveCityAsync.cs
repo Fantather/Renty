@@ -45,8 +45,7 @@ namespace Renty.Application.Services
         {
             var name = string.IsNullOrWhiteSpace(cityName) ? "Unknown" : cityName;
             var cities = await _cityRepository.GetCitiesByCountryAsync(countryId, ct);
-            var city = cities.FirstOrDefault(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase) ||
-                                                 (!string.IsNullOrEmpty(c.NameRu) && c.NameRu.Equals(name, StringComparison.OrdinalIgnoreCase)));
+            var city = await _cityRepository.GetCityByNameAndCountryAsync(name, countryId, ct);
 
             if (city == null)
             {
@@ -76,5 +75,7 @@ namespace Renty.Application.Services
 
             return city;
         }
+
+
     }
 }
