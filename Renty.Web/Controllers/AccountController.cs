@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using Renty.Application.Commands.LoginCommands;
 using Renty.Application.Commands.LogoutCommands;
 using Renty.Application.Commands.PasswordCommands;
@@ -140,22 +141,18 @@ namespace Renty.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewData["ReturnUrl"] = returnUrl;
-                return View(model);
+                var modelErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                return Json(new { success = false, error = string.Join(" ", modelErrors) });
             }
 
             var result = await _mediator.Send(new LoginCommand(model.Email, model.Password, ReturnUrl: returnUrl));
 
             if (!result.IsSuccess)
             {
-                foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error);
-
-                ViewData["ReturnUrl"] = returnUrl;
-                return View(model);
+                return Json(new { success = false, error = string.Join(" ", result.Errors) });
             }
 
-            return LocalRedirect(result.Data.ReturnUrl);
+            return Json(new { success = true, returnUrl = result.Data.ReturnUrl });
         }
 
         [HttpPost]
