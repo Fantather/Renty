@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/css/calendar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/guests.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/forms.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Renty.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -34,7 +35,7 @@
                         </li>
                     </ul>
 
-                    <partial name="_AccountMenu" />
+                    <partial name="_MainMenu" />
                 </div>
             </div>
         </nav>
@@ -55,7 +56,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/account-menu/account-menu.js" type="module" asp-append-version="true"></script>
+    <script src="~/js/main-menu/main-menu.js" type="module" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

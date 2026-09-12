@@ -24,10 +24,10 @@ namespace Renty.Web.Models.InputModels.Properties
 
         //  Локация
         [Required(ErrorMessage = "Страна обязательна")]
-        public Guid CountryId { get; set; }
+        public string CountryId { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Город обязателен")]
-        public Guid CityId { get; set; }
+        public string CityId { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Адрес обязателен")]
         public string Address { get; set; } = string.Empty;
@@ -42,6 +42,9 @@ namespace Renty.Web.Models.InputModels.Properties
         [Range(-180, 180)]
         public double Longitude { get; set; }
 
+        // показывать гостям точную метку или примерный район, пока гость не забронирует
+        public bool ShowExactLocation { get; set; } = true;
+
         // денежная информация
         [Required(ErrorMessage = "Укажите цену за ночь")]
         [Range(1, 1000000, ErrorMessage = "Цена должна быть больше нуля")]
@@ -49,10 +52,17 @@ namespace Renty.Web.Models.InputModels.Properties
 
         public string Currency { get; set; } = "UAH";
 
+        // наценка на пятницу/субботу в процентах ("Коэффициент выходных")
+        [Range(0, 100, ErrorMessage = "Наценка должна быть от 0 до 100%")]
+        public int? WeekendPricePercent { get; set; }
+
         public TimeSpan? CheckInTime { get; set; }
         public TimeSpan? CheckOutTime { get; set; }
 
         public string? HouseRules { get; set; }
+
+        // false = сначала подтверждаем бронирования вручную, true = мгновенное бронирование
+        public bool InstantBookEnabled { get; set; } = false;
 
         // Заполняем что есть в нашей квартирке. Так как я не привязівала комнаті к прям созданию типа комнаті, то оно так
         [Range(1, 50, ErrorMessage = "Количество гостей должно быть от 1 до 50")]
@@ -69,8 +79,14 @@ namespace Renty.Web.Models.InputModels.Properties
         //теги квартиры .\Renty.Domain\Models\Properties\PropertyTag.cs
         public List<Guid> TagIds { get; set; } = new();
 
+        // отличительные черты для описания (не PropertyTag) — фиксированный набор, максимум 2
+        public List<string> Highlights { get; set; } = new();
+
         // комнаты создаются отдельно, тут необязательны
         public List<CreateRoomInputModel> Rooms { get; set; } = new();
+
+        // можно задать скидки
+        public DiscountsInputModel Discounts { get; set; } = new();
 
     }
 }
