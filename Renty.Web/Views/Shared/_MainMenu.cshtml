@@ -1,0 +1,22 @@
+@{
+    // TODO: заменить на реальную проверку, когда подключим Identity — например User.Identity?.IsAuthenticated ?? false
+    var isAuthenticated = false;
+}
+
+<div class="main-menu">
+    <button type="button" class="main-menu__trigger" id="mainMenuTrigger">
+        <icon name="star" class="main-menu__trigger-icon" />
+    </button>
+
+    <div class="popover-panel main-menu__popover" id="mainMenuPopover" hidden>
+        <a class="main-menu__item" asp-controller="PropertyCreate" asp-action="Address">Сдать жильё</a>
+        @if (isAuthenticated)
+        {
+            <button type="button" class="main-menu__item" id="logoutButton">Выйти</button>
+        }
+        else
+        {
+            <button type="button" class="main-menu__item" id="loginTrigger">Войти или зарегистрироваться</button>
+        }
+    </div>
+</div>

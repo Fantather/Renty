@@ -1,0 +1,40 @@
+.property-create-page {
+    display: flex;
+    justify-content: center;
+    padding: 48px 16px;
+}
+
+.property-create-card {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 32px;
+}
+
+.property-create-card__title {
+    margin: 0 0 24px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.property-create-card__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.property-create-card__submit {
+    margin-top: 24px;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.property-create-card__submit:hover {
+    background-color: var(--color-accent-hover);
+}

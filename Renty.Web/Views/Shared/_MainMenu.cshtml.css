@@ -1,8 +1,8 @@
-.account-menu {
+.main-menu {
     position: relative;
 }
 
-.account-menu__trigger {
+.main-menu__trigger {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,16 +15,16 @@
     cursor: pointer;
 }
 
-.account-menu__trigger:hover {
+.main-menu__trigger:hover {
     background-color: var(--color-hover);
 }
 
-::deep .account-menu__trigger-icon {
+::deep .main-menu__trigger-icon {
     width: 18px;
     height: 18px;
 }
 
-.account-menu__popover {
+.main-menu__popover {
     top: calc(100% + 8px);
     right: 0;
     flex-direction: column;
@@ -34,7 +34,7 @@
     min-width: 220px;
 }
 
-.account-menu__item {
+.main-menu__item {
     display: block;
     width: 100%;
     border: none;
@@ -47,6 +47,6 @@
     cursor: pointer;
 }
 
-.account-menu__item:hover {
+.main-menu__item:hover {
     background-color: var(--color-hover);
 }
