@@ -36,3 +36,15 @@ body {
 html {
     scroll-behavior: smooth;
 }
+
+.user-fact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-fact__icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+}
