@@ -33,6 +33,7 @@ namespace Renty.Infrastructure.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<PropertiesCategory> PropertiesCategory { get; set; }
         public DbSet<Languages> Languages { get; set; }
+        public DbSet<UserFact> UserFacts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

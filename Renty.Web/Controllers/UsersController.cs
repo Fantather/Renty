@@ -41,9 +41,9 @@ namespace Renty.Web.Controllers
                 },
                 Reviews = new List<ReviewViewModel>
                 {
-                    new() { AuthorName = "Cosima Therese", Rating = 5, Text = "Мы сразу почувствовали себя очень комфортно в этом жилье, как дома.", CreatedAt = DateTime.UtcNow.AddDays(-6) },
-                    new() { AuthorName = "Christian", Rating = 5, Text = "Красивый дом в нашем районе, где моя семья остановилась во время поездки в Париж.", CreatedAt = DateTime.UtcNow.AddDays(-14) },
-                    new() { AuthorName = "Omar", Rating = 5, Text = "Очень хорошо. Мы смогли осмотреть достопримечательности и провести несколько дней.", CreatedAt = DateTime.UtcNow.AddDays(-21) },
+                    new() { AuthorName = "Cosima Therese", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Мы сразу почувствовали себя очень комфортно в этом жилье, как дома.", CreatedAt = DateTime.UtcNow.AddDays(-6) },
+                    new() { AuthorName = "Christian", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Красивый дом в нашем районе, где моя семья остановилась во время поездки в Париж.", CreatedAt = DateTime.UtcNow.AddDays(-14) },
+                    new() { AuthorName = "Omar", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Очень хорошо. Мы смогли осмотреть достопримечательности и провести несколько дней.", CreatedAt = DateTime.UtcNow.AddDays(-21) },
                 },
             };
 
