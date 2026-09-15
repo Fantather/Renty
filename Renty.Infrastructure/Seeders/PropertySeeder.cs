@@ -21,14 +21,18 @@ namespace Renty.Infrastructure.Seeders
             {
                 return;
             }
-           
 
-            // Получаем зависимости
+
+            // зависимости
             var hostOdesa = await context.Users.FirstOrDefaultAsync(u => u.UserName == "izya-troff");
             var hostKyiv = await context.Users.FirstOrDefaultAsync(u => u.UserName == "psyduck-user");
 
-            var odesa = await context.Cities.FirstOrDefaultAsync(c => c.Name == "Одесса");
-            var kyiv = await context.Cities.FirstOrDefaultAsync(c => c.Name == "Киев");
+            // поиск городов
+            var odesa = await context.Cities.FirstOrDefaultAsync(c =>
+                c.Name == "Odesa" || c.Name == "Odessa" || c.NameRu == "Одесса" || c.Name == "Одесса");
+
+            var kyiv = await context.Cities.FirstOrDefaultAsync(c =>
+                c.Name == "Kyiv" || c.NameRu == "Киев" || c.Name == "Киев");
 
             var catSea = await context.PropertiesCategory.FirstOrDefaultAsync(c => c.Name == "У моря");
             var catCenter = await context.PropertiesCategory.FirstOrDefaultAsync(c => c.Name == "В центре города");

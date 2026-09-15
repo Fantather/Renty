@@ -10,7 +10,6 @@ namespace Renty.Application.Mappers.Properties
     {
         public PropertyProfile()
         {
-            
 
 
             CreateMap<Property, PropertyListItem>()

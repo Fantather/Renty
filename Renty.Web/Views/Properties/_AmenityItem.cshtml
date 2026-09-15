@@ -1,6 +1,9 @@
 @model AmenityViewModel
 
-<div class="amenity-item">
-    <icon name="@Model.IconName" class="amenity-item__icon" />
-    <span>@Model.Name</span>
-</div>
+@if (Model != null)
+{
+    <div class="amenity-item">
+        <icon name="@Model.IconName" class="amenity-item__icon" />
+        <span>@Model.Name</span>
+    </div>
+}

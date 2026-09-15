@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using Renty.Application.DTOs.GetProperties;
+using Renty.Application.DTOs.GetProperty;
 using Renty.Domain.Models.User;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 
 namespace Renty.Application.Mappers.Common

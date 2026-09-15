@@ -35,7 +35,11 @@ namespace Renty.Web.Mappers.Properties
                 .ForMember(dest => dest.BookedRanges, opt => opt.MapFrom(src =>
                     src.BookedRanges != null
                         ? src.BookedRanges.Select(b => new ValueTuple<DateTime, DateTime>(b.From, b.To)).ToList()
-                        : new List<(DateTime, DateTime)>()));
+                        : new List<(DateTime, DateTime)>()))
+
+                .ForMember(dest => dest.GoogleMapsApiKey, opt => opt.Ignore());
+
+
         }
     }
 }
