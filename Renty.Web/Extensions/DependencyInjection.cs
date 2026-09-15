@@ -1,4 +1,5 @@
-﻿using Renty.Application.Services;
+﻿using Renty.Application.Helpers;
+using Renty.Application.Services;
 using Renty.Domain.Interfaces;
 using Renty.Infrastructure.Repository;
 using Renty.Infrastructure.Services;
@@ -33,7 +34,7 @@ namespace Renty.Web.DI
             {
                 client.Timeout = TimeSpan.FromSeconds(30);
             });
-
+            services.AddScoped<OwnedPropertyService>();
             return services;
         }
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration? config = null)
@@ -49,6 +50,8 @@ namespace Renty.Web.DI
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<ILocationResolverService, LocationResolverService>();
+            services.AddScoped<IPropertyImageRepository, PropertyImageRepository>();
+
 
             return services;
         }
