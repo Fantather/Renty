@@ -104,13 +104,6 @@
     border-bottom: 1px solid var(--color-border);
 }
 
-.property-overview__host-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 .property-description__text {
     white-space: pre-line;
     display: -webkit-box;
@@ -224,16 +217,6 @@
 .btn-outline {
     align-self: flex-start;
     margin-top: 16px;
-    padding: 10px 20px;
-    border: 1px solid var(--color-text);
-    border-radius: var(--radius-sm);
-    background: none;
-    color: var(--color-text);
-    cursor: pointer;
-}
-
-.btn-outline:hover {
-    background-color: var(--color-hover);
 }
 
 .property-details__sidebar {
@@ -357,54 +340,11 @@
     color: var(--color-text-muted);
 }
 
-.btn-primary {
-    padding: 14px;
-    border: none;
-    border-radius: var(--radius-md);
-    background-color: var(--color-accent);
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.btn-primary:hover {
-    background-color: var(--color-accent-hover);
-}
-
 .booking-card__note {
     margin: 0;
     text-align: center;
     color: var(--color-text-muted);
     font-size: 0.85rem;
-}
-
-.modal-panel {
-    position: relative;
-    width: 100%;
-    max-width: 640px;
-    max-height: 80vh;
-    overflow-y: auto;
-    background-color: var(--color-surface);
-    border-radius: var(--radius-lg);
-    padding: 32px;
-}
-
-.modal-panel__close {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: none;
-    border-radius: 50%;
-    color: var(--color-text);
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.modal-panel__close:hover {
-    background-color: var(--color-hover);
 }
 
 /* Для галереи */
