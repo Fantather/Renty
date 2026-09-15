@@ -60,5 +60,16 @@ namespace Renty.Domain.Interfaces
         /// <returns>Возвращает true, если состояние было успешно изменено, иначе false.</returns>
         Task<bool> ChangeState(string name, bool isActive, CancellationToken ct = default);
 
+        /// <summary>
+        /// Получить город по его названию и идентификатору страны.
+        /// запрос для поиска конкретного города
+        /// </summary>
+        /// <param name="cityName">Название города</param>
+        /// <param name="countryId">Идентификатор страны</param>
+        /// <param name="ct">Токен отмены</param>
+        /// <returns>Город или null</returns>
+        Task<City?> GetCityByNameAndCountryAsync(string cityName, Guid countryId, CancellationToken ct = default);
+
+
     }
 }
