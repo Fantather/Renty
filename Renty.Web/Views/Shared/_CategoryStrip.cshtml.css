@@ -5,7 +5,7 @@
     padding: 4px 0;
 }
 
-.category-strip__item {
+::deep .category-strip__item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -18,7 +18,7 @@
     font-size: 0.85rem;
 }
 
-.category-strip__item.is-active {
+::deep .category-strip__item.is-active {
     color: var(--color-text);
     border-bottom-color: var(--color-text);
 }
