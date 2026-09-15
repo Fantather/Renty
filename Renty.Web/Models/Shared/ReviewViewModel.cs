@@ -1,4 +1,4 @@
-namespace Renty.Web.Models.Properties
+namespace Renty.Web.Models.Shared
 {
     // Один отзыв гостя
     public class ReviewViewModel

@@ -13,5 +13,6 @@ namespace Renty.Domain.ServiceModels.Locations
         public string CityName { get; set; } = string.Empty;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string? StreetName { get; set; }
     }
 }

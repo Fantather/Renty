@@ -40,7 +40,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
         {
             var dto = request.Data;
 
-            //если не пришло с фронтенда координаты - сперва надо спросить их в бд
+            //если не пришло с фронтенда координаты, если пришел город - сперва надо спросить их в бд
             if ((!dto.Latitude.HasValue || !dto.Longitude.HasValue) && !string.IsNullOrWhiteSpace(dto.CityName))
             {
                 var existingCity = await _cityRepository.GetCityByNameAsync(dto.CityName, cancellationToken);
@@ -57,6 +57,17 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     }
                 }
             }
+
+            //уно реверс, если пришли координаты, но не пришел город
+            if (dto.Latitude.HasValue && dto.Longitude.HasValue && string.IsNullOrWhiteSpace(dto.CityName))
+            {
+                var reverseResult = await _geocodingService.GetAddressByCoordinatesAsync(dto.Latitude.Value, dto.Longitude.Value);
+                if (reverseResult != null)
+                {
+                    _mapper.Map(reverseResult, dto); 
+                }
+            }
+
             //если нет и в бд тогда дергать апи гугла
             if (!dto.Latitude.HasValue || !dto.Longitude.HasValue || string.IsNullOrWhiteSpace(dto.CityName))
             {
@@ -67,12 +78,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 }
 
                 // Заполняем DTO
-                dto.Latitude = geocodeResult.Latitude;
-                dto.Longitude = geocodeResult.Longitude;
-                dto.CityName = string.IsNullOrWhiteSpace(dto.CityName) ? geocodeResult.CityName : dto.CityName;
-                dto.CountryName = string.IsNullOrWhiteSpace(dto.CountryName) ? geocodeResult.CountryName : dto.CountryName;
-                dto.CountryCode = string.IsNullOrWhiteSpace(dto.CountryCode) ? geocodeResult.CountryCode : dto.CountryCode;
-                dto.District = string.IsNullOrWhiteSpace(dto.District) ? geocodeResult.RegionName : dto.District;
+                _mapper.Map(geocodeResult, dto);
             }
 
 
