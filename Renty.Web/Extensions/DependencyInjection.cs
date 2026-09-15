@@ -4,6 +4,7 @@ using Renty.Infrastructure.Repository;
 using Renty.Infrastructure.Services;
 using Renty.Infrastructure.Services.CountryStateCityAPI;
 using Renty.Infrastructure.Services.GoogleGeocoding;
+using Renty.Infrastructure.Services.PlacesAPI;
 
 namespace Renty.Web.DI
 {
@@ -25,6 +26,13 @@ namespace Renty.Web.DI
 
             services.Configure<GeocodingOptions>(config.GetSection(GeocodingOptions.SectionName));
             services.AddHttpClient<IGoogleGeocodingService, GoogleGeocodingService>();
+
+            services.Configure<PlacesAPIOptions>(config.GetSection(PlacesAPIOptions.SectionName));
+
+            services.AddHttpClient<IAddressAutocompleteService, PlacesAPIService>(client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(30);
+            });
 
             return services;
         }

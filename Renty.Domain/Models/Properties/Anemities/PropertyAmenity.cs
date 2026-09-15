@@ -8,7 +8,7 @@ namespace Renty.Domain.Models.Properties.Anemities
     /// </summary>
     public class PropertyAmenity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.CreateVersion7();
 
         public Guid PropertyId { get; set; }
         [ForeignKey(nameof(PropertyId))]
