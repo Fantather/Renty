@@ -215,6 +215,7 @@ namespace Renty.Infrastructure.Repository
                 .Include(p => p.Category)
                 .Include(p => p.PropertyImages)
                 .Include(p => p.PropertyAmenities)
+                .ThenInclude(pa => pa.Amenity)
                 .Include(p => p.PropertyTags)
                     .ThenInclude(pt => pt.Tag)
                 .Include(p => p.Reviews)

@@ -44,7 +44,7 @@ namespace Renty.Web.Controllers
             // мапинг
             var vm = _mapper.Map<PropertyDetailsViewModel>(result.Data);
 
-            // апи ключ карты
+            // апи ключ кар
             vm.GoogleMapsApiKey = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
 
             return View(vm);

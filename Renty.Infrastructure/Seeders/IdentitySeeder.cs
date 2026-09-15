@@ -30,7 +30,9 @@ namespace Renty.Infrastructure.Seeders
                     Email = adminEmail,
                     FirstName = "Renty",
                     LastName = "Boss",
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    AvatarUrl = "https://static.wikitide.net/1d6chanwiki/thumb/e/e5/Warhammer_-_Emperor_of_Mankind%2C_by_GENZOMAN.jpg/400px-Warhammer_-_Emperor_of_Mankind%2C_by_GENZOMAN.jpg"
+
                 };
 
                 var result = await userManager.CreateAsync(adminUser, "zfY8d4bKWjY!");
@@ -46,9 +48,14 @@ namespace Renty.Infrastructure.Seeders
             UserManager<ApplicationUser> userManager,
             AppDbContext context)
         {
-            var ukraine = await context.Countries.FirstOrDefaultAsync(c => c.Name == "Украина");
-            var kyiv = await context.Cities.FirstOrDefaultAsync(c => c.Name == "Киев");
-            var odesa = await context.Cities.FirstOrDefaultAsync(c => c.Name == "Одесса");
+            var ukraine = await context.Countries.FirstOrDefaultAsync(c =>
+            c.Name == "Ukraine" || c.NameRu == "Украина" || c.Name == "Украина");
+
+            var kyiv = await context.Cities.FirstOrDefaultAsync(c =>
+                c.Name == "Kyiv" || c.NameRu == "Киев" || c.Name == "Киев");
+
+            var odesa = await context.Cities.FirstOrDefaultAsync(c =>
+                c.Name == "Odesa" || c.Name == "Odessa" || c.NameRu == "Одесса" || c.Name == "Одесса");
 
             // Проверяем, что локации существуют, иначе привязать пользователей не получится
             if (ukraine == null || kyiv == null || odesa == null)
@@ -67,7 +74,8 @@ namespace Renty.Infrastructure.Seeders
                     LastName = "Трофимивич",
                     EmailConfirmed = true,
                     HomeCountryId = ukraine.Id,
-                    HomeCityId = odesa.Id
+                    HomeCityId = odesa.Id,
+                    AvatarUrl="https://headsupfortails.com/cdn/shop/articles/Welcoming_a_Cat_to_a_New_Home.jpg?v=1741258295"
                 },
                 new ApplicationUser
                 {
@@ -77,7 +85,10 @@ namespace Renty.Infrastructure.Seeders
                     LastName = "Саацбаум",
                     EmailConfirmed = true,
                     HomeCountryId = ukraine.Id,
-                    HomeCityId = odesa.Id
+                    HomeCityId = odesa.Id,
+                    AvatarUrl = "https://static.wikia.nocookie.net/phineasandferbrussia/images/6/66/Perry_the_Platypus_Fullbody.png/revision/latest?cb=20130501181056&path-prefix=ru"
+
+
                 },
                 new ApplicationUser
                 {
@@ -87,7 +98,8 @@ namespace Renty.Infrastructure.Seeders
                     LastName = "Даксон",
                     EmailConfirmed = true,
                     HomeCountryId = ukraine.Id,
-                    HomeCityId = kyiv.Id
+                    HomeCityId = kyiv.Id,
+                    AvatarUrl = "https://static.wikia.nocookie.net/pokemon/images/3/3f/0054Psyduck.png/revision/latest?cb=20260616122621&path-prefix=ru"
                 }
             };
 

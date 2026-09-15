@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Renty.Application.DTOs.GetProperty;
 using Renty.Domain.Models.Properties;
+using Renty.Domain.Models.User;
 using System.Linq;
 
 namespace Renty.Application.Mappers.Properties
@@ -9,6 +10,14 @@ namespace Renty.Application.Mappers.Properties
     {
         public PropertyDetailsProfile()
         {
+            CreateMap<ApplicationUser, HostDto>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ForMember(dest => dest.Languages, opt => opt.MapFrom(src =>
+                    src.Languages != null && src.Languages.Any()
+                        ? string.Join(", ", src.Languages.Select(l => l.Name))
+                        : string.Empty))
+                .ForMember(dest => dest.ResponseSpeed, opt => opt.MapFrom(src => src.ResponseSpeed ?? "Неизвестно"));
+
             CreateMap<Property, GetPropertyDetailsResponse>()
                 // Переименования полей
                 .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Name))
@@ -33,6 +42,8 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.PropertyImages))
                 .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
 
+                // Маппинг хоста
+                .ForMember(dest => dest.Host, opt => opt.MapFrom(src => src.Host))
                 // Маппинг отзывы 
                 .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews))
 
