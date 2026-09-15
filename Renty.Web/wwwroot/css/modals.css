@@ -1,6 +1,3 @@
-/* Shared between _LoginModal.cshtml and Properties/Details.cshtml (amenities modal) —
-   same CSS Isolation reason as .auth-card in auth.css: each view's .cshtml.css is scoped
-   separately, so a class used by more than one view has to live here instead. */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -10,4 +7,33 @@
     justify-content: center;
     background-color: var(--color-overlay);
     padding: 16px;
+}
+
+.modal-panel {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+}
+
+.modal-panel__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    color: var(--color-text);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.modal-panel__close:hover {
+    background-color: var(--color-hover);
 }

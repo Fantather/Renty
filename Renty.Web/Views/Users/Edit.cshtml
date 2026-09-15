@@ -1,0 +1,160 @@
+@model EditUserProfileViewModel
+@using Renty.Domain.Models.LookupsTables
+@{
+    List<LanguageOptionViewModel> currentLanguages = Model.AvailableLanguages
+            .Where(lang => Model.Input.LanguageIds.Contains(lang.Id))
+            .ToList();
+}
+
+<article>
+    <form asp-controller="Users" asp-action="Edit" method="post">
+    <div class="edit-profile__layout">
+        <div class="edit-profile__avatar-col">
+            <div class="edit-profile__avatar-wrap">
+                <partial name="_Avatar" model="new AvatarViewModel { Url = Model.Input.AvatarUrl, Name = Model.Input.FirstName, SizePx = 160 }" />
+                <button type="button" class="edit-profile__avatar-btn" data-field="avatar">
+                    <icon name="camera" class="edit-profile__avatar-btn-icon" />
+                    Добавить
+                </button>
+            </div>
+        </div>
+
+        <div class="edit-profile__content">
+            <h1 class="edit-profile__title">Мой профиль</h1>
+            <div class="edit-profile__note">Хозяева и гости могут просматривать ваш профиль. Он также может отображаться на разных страницах Renty, что помогает нам поддерживать атмосферу доверия в сообществе.</div>
+
+            <div class="edit-profile__facts-container">
+                <button type="button" id="languagesTrigger">
+                    <icon name="star" class="edit-profile__row-icon" />
+                    <span id="languagesRowLabel">Языки, на которых я говорю: @string.Join(", ", currentLanguages.Select(l => l.Name))</span>
+                    <icon name="chevron-right" class="edit-profile__row-chevron" />
+                </button>
+
+                @for (int i = 0; i < Model.Input.Facts.Count; i++)
+                {
+                    UserFactInputModel fact = Model.Input.Facts[i];
+                    string label = fact.Type.GetDescription();
+
+                    if (fact.Type == UserFactTypeEnum.Generation)
+                    {
+                        <button type="button" id="generationTrigger" hidden="@(Model.Input.ShowGeneration ? null : "hidden")">
+                            <icon name="@fact.IconName" class="edit-profile__row-icon" />
+                            <span id="factLabel-@i" data-label="@label">@label: @fact.Value</span>
+                            <icon name="chevron-right" class="edit-profile__row-chevron" />
+                        </button>
+                    }
+                    else
+                    {
+                        UserFactMeta meta = fact.Type.GetMeta();
+                        <button type="button" class="edit-profile__fact-trigger" data-value-id="factValue-@i" data-label-id="factLabel-@i" data-title="@meta.Title" data-hint="@meta.Hint" data-maxlength="@meta.MaxLength" data-label="@label">
+                            <icon name="@fact.IconName" class="edit-profile__row-icon" />
+                            <span id="factLabel-@i" data-label="@label">@label: @fact.Value</span>
+                            <icon name="chevron-right" class="edit-profile__row-chevron" />
+                        </button>
+                    }
+                }
+
+                <button type="button" id="homeCityTrigger">
+                    <icon name="star" class="edit-profile__row-icon" />
+                    <span id="homeCityRowLabel">Где я живу: @Model.Input.HomeCityDisplay</span>
+                    <icon name="chevron-right" class="edit-profile__row-chevron" />
+                </button>
+            </div>
+            <div class="edit-profile__about">
+                <h2>Обо мне</h2>
+                <span id="infoText">@Model.Input.Info</span>
+                <button type="button" class="edit-profile__fact-trigger btn-outline" data-value-id="infoValueInput" data-label-id="infoText" data-title="О себе" data-hint="Гости и хозяева хотят знать, с кем имеют дело. Помогите им, расскажите о себе." data-maxlength="500">Редактировать рассказ о себе</button>
+            </div>
+
+            <div class="edit-profile__footer">
+                <button type="submit" class="btn-primary">Готово</button>
+            </div>
+        </div>
+    </div>
+
+        <input type="hidden" asp-for="Input.FirstName" />
+        <input type="hidden" asp-for="Input.LastName" />
+        <input type="hidden" asp-for="Input.AvatarUrl" />
+        <input type="hidden" id="homeCityIdInput" asp-for="Input.HomeCityId" />
+        <input type="hidden" id="homeCityDisplayInput" asp-for="Input.HomeCityDisplay" />
+        <input type="hidden" id="infoValueInput" asp-for="Input.Info" />
+
+        <div id="languageIdsContainer">
+            @foreach (Guid languageId in Model.Input.LanguageIds)
+            {
+                <input type="hidden" name="Input.LanguageIds" value="@languageId" />
+            }
+        </div>
+
+        @for (int i = 0; i < Model.Input.Facts.Count; i++)
+        {
+            <input type="hidden" asp-for="Input.Facts[i].Type" />
+            <input type="hidden" id="factValue-@i" asp-for="Input.Facts[i].Value" />
+        }
+
+        <input type="hidden" id="showGenerationInput" asp-for="Input.ShowGeneration" />
+
+    </form>
+
+    
+    <div class="modal-overlay" id="factModal" hidden>
+        <div class="modal-panel">
+            <button type="button" class="modal-panel__close" id="factModalClose">✕</button>
+            <h2 id="factModalTitle"></h2>
+            <p id="factModalHint"></p>
+            <div class="edit-profile__fact-input-wrap">
+                <textarea id="factModalInput" class="edit-profile__fact-input"></textarea>
+                <span id="factModalCounter" class="edit-profile__fact-counter"></span>
+            </div>
+            <button type="button" class="btn-primary" id="factModalSave">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="generationModal" hidden>
+        <div class="modal-panel">
+            <button type="button" class="modal-panel__close" id="generationModalClose">✕</button>
+            <h2>В каких годах вы родились</h2>
+            <p>Не волнуйтесь, точную дату никто не увидит.</p>
+            <div class="edit-profile__toggle-row">
+                <div>
+                    <p>Показывать десятилетие моего рождения</p>
+                    <span>@(Model.Input.Facts.First(f => f.Type == UserFactTypeEnum.Generation).Type.GetDescription()) @Model.Input.Facts.First(f => f.Type == UserFactTypeEnum.Generation).Value</span>
+                </div>
+                <input type="checkbox" id="generationToggle" />
+            </div>
+            <button type="button" class="btn-primary" id="generationModalSave">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="languagesModal" hidden>
+        <div class="modal-panel">
+            <button type="button" class="modal-panel__close" id="languagesModalClose">✕</button>
+            <h2>Языки, на которых вы говорите</h2>
+            <input type="text" id="languagesSearch" class="edit-profile__fact-input edit-profile__fact-input-search" placeholder="Поиск языка" />
+            <div class="edit-profile__language-list">
+                @foreach (var lang in Model.AvailableLanguages)
+                {
+                    <label class="edit-profile__option-row" data-name="@lang.Name">
+                        <span>@lang.Name</span>
+                        <input type="checkbox" class="language-checkbox checkbox" value="@lang.Id" data-name="@lang.Name" checked="@(Model.Input.LanguageIds.Contains(lang.Id) ? "checked" : null)" />
+                    </label>
+                }
+            </div>
+            <button type="button" class="btn-primary" id="languagesModalSave">Сохранить</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="homeCityModal" hidden>
+        <div class="modal-panel">
+            <button type="button" class="modal-panel__close" id="homeCityModalClose">✕</button>
+            <h2>Где вы живете</h2>
+            <input type="text" id="homeCitySearch" class="edit-profile__fact-input edit-profile__fact-input-search" placeholder="Поиск города" />
+            <div id="homeCityResults" class="edit-profile__language-list"></div>
+            <button type="button" class="btn-primary" id="homeCityModalSave" disabled>Сохранить</button>
+        </div>
+    </div>
+</article>
+
+@section Scripts {
+    <script type="module" src="~/js/users/edit-profile.js" asp-append-version="true"></script>
+}
