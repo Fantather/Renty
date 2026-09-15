@@ -53,22 +53,21 @@ namespace Renty.Web.Controllers
         [HttpGet("properties/{slug}/price")]
         public async Task<IActionResult> Price(string slug, DateOnly checkIn, DateOnly checkOut)
         {
-            var nights = checkOut.DayNumber - checkIn.DayNumber;
-            if (nights <= 0)
+            var query = new CalculatePriceQuery
             {
-                return BadRequest("Некорректные даты бронирования.");
+                Slug = slug,
+                CheckIn = checkIn,
+                CheckOut = checkOut
+            };
+
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Errors);
             }
 
-            // TODO: Заменить на вызов MediatR, когда будет готов обработчик расчета скидок
-            // var query = new CalculatePriceQuery { Slug = slug, CheckIn = checkIn, CheckOut = checkOut };
-            // var result = await _mediator.Send(query);
-            // return Json(result.Data);
-
-            // Временная заглушка, чтобы не ломать фронтенд до реализации логики скидок
-            var mockPricePerNight = 63m;
-            var total = nights * mockPricePerNight;
-
-            return Json(new { nights, pricePerNight = mockPricePerNight, total });
+            return Json(result.Data);
         }
     }
 }

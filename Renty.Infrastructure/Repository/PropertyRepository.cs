@@ -219,7 +219,8 @@ namespace Renty.Infrastructure.Repository
                 .Include(p => p.PropertyTags)
                     .ThenInclude(pt => pt.Tag)
                 .Include(p => p.Reviews)
-                .ThenInclude(r => r.User);
+                .ThenInclude(r => r.User)
+                .Include(p => p.Discounts);
         }
 
     }

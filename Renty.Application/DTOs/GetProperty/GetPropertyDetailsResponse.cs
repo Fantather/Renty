@@ -85,5 +85,6 @@ namespace Renty.Application.DTOs.GetProperty
         // Удобства
         public List<AmenitiesDto> Amenities { get; set; } = new();
         public List<BookedRangeDto> BookedRanges { get; set; } = new();
+        public List<DiscountDto> Discounts { get; set; } = new List<DiscountDto>();
     }
 }

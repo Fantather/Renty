@@ -51,7 +51,7 @@ namespace Renty.Web.DI
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<ILocationResolverService, LocationResolverService>();
             services.AddScoped<IPropertyImageRepository, PropertyImageRepository>();
-
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
 
             return services;
         }

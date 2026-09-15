@@ -22,6 +22,8 @@ namespace Renty.Application.Mappers.Common
             CreateMap<PropertiesCategory, CategoryDto>();
             CreateMap<PropertyImage, ImageDto>();
             CreateMap<Anemities, AmenitiesDto>();
+            CreateMap<Discount, DiscountDto>();
+
             CreateMap<ApplicationUser, AuthorDto>()
                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
 
@@ -34,5 +36,6 @@ namespace Renty.Application.Mappers.Common
                         : string.Empty))
                 .ForMember(dest => dest.ResponseSpeed, opt => opt.MapFrom(src => src.ResponseSpeed ?? "Неизвестно"));
         }
+
     }
 }
