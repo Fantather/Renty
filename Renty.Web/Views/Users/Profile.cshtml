@@ -1,0 +1,106 @@
+@model UserProfileViewModel
+@{
+    ViewData["Title"] = Model.FullName;
+}
+
+<article class="user-profile">
+
+    <div class="user-profile__layout">
+
+        <aside class="user-profile__card">
+            <div class="user-profile__top-row">
+                <div class="user-profile__avatar-wrap">
+                    <img src="@Model.AvatarUrl" alt="@Model.FullName" class="user-profile__avatar" />
+                    @if (Model.IsVerified)
+                    {
+                        <span class="user-profile__verified-badge"><icon name="star" /></span>
+                    }
+                </div>
+
+                <div class="user-profile__stats">
+                    <div class="user-profile__stat">
+                        <strong>@Model.ReviewsCount</strong>
+                        <span>отзывов</span>
+                    </div>
+                    <div class="user-profile__stat">
+                        <strong>@Model.Rating.ToString("0.00")</strong>
+                        <span>рейтинг</span>
+                    </div>
+                    <div class="user-profile__stat">
+                        <strong>@Model.MonthsOnPlatform</strong>
+                        <span>месяцев на Renty</span>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="user-profile__name">@Model.FullName</h1>
+            @if (Model.IsSuperHost)
+            {
+                <p class="user-profile__superhost"><icon name="star" /> Суперхозяин</p>
+            }
+            @if (!string.IsNullOrEmpty(Model.HomeCity))
+            {
+                <p class="user-profile__location">@Model.HomeCity, @Model.HomeCountry</p>
+            }
+        </aside>
+
+        <div class="user-profile__main">
+            <div class="user-profile__header-row">
+                <h2>Обо мне</h2>
+                @if (Model.IsOwner)
+                {
+                    <a asp-controller="Users" asp-action="Edit" class="btn-outline">Редактировать</a>
+                }
+            </div>
+
+            <div class="user-profile__facts">
+                @if (Model.Languages.Any())
+                {
+                    <div class="user-fact">
+                        <icon name="star" class="user-fact__icon" />
+                        <span>На каких языках говорю: @string.Join(", ", Model.Languages)</span>
+                    </div>
+                }
+                @foreach (var fact in Model.Facts)
+                {
+                    <partial name="_FactItem" model="fact" />
+                }
+                @if (Model.IsVerified)
+                {
+                    <div class="user-fact">
+                        <icon name="star" class="user-fact__icon" />
+                        <span>Личность подтверждена</span>
+                    </div>
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Info))
+            {
+                <p class="user-profile__about">@Model.Info</p>
+            }
+        </div>
+    </div>
+
+    @if (Model.Reviews.Any())
+    {
+        <section class="user-profile__reviews">
+            <h2><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount отзывов</h2>
+            <div class="user-profile__reviews-grid">
+                @foreach (var review in Model.Reviews)
+                {
+                    <div class="review-card">
+                        <div class="review-card__header">
+                            <img class="review-card__avatar" src="@review.AuthorAvatarUrl" alt="@review.AuthorName" />
+                            <div>
+                                <p class="review-card__author">@review.AuthorName</p>
+                                <p class="review-card__date">@review.CreatedAt.ToString("d MMMM yyyy")</p>
+                            </div>
+                        </div>
+                        <p class="review-card__text">@review.Text</p>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+</article>

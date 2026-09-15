@@ -50,6 +50,7 @@ namespace Renty.Domain.Models.User
             Favorites = new List<Favorite>();
             Languages = new List<Languages>();
             Properties = new List<Property>();
+            Facts = new List<UserFact>();
         }
         //полное имя пользователя
         public string FirstName { get; set; } = string.Empty;
@@ -72,17 +73,20 @@ namespace Renty.Domain.Models.User
 
         public bool IsVerified { get; set; } = false;
 
+        public bool IsSuperHost { get; set; } = false;
+
         public string? ResponseSpeed { get; set; }
 
         public string? Info { get; set; }
 
-   
+
         //Коллекции
         public virtual ICollection<Languages> Languages { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Favorite> Favorites { get; set; }
-        public virtual ICollection<Property> Properties { get; set; } 
+        public virtual ICollection<Property> Properties { get; set; }
+        public virtual ICollection<UserFact> Facts { get; set; }
 
     }
 }

@@ -82,11 +82,20 @@ namespace Renty.Infrastructure.Configurations.Users
             builder.Property(u => u.IsVerified)
                             .HasDefaultValue(false);
 
+            builder.Property(u => u.IsSuperHost)
+                .IsRequired()
+                .HasDefaultValue(false);
+
             builder.Property(u => u.ResponseSpeed)
-                .HasMaxLength(100); 
+                .HasMaxLength(100);
 
             builder.Property(u => u.Info)
                 .HasMaxLength(2000);
+
+            builder.HasMany(u => u.Facts)
+                .WithOne(f => f.User)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

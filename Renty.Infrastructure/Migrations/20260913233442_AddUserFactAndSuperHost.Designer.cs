@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Renty.Infrastructure.Data;
 namespace Renty.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260913233442_AddUserFactAndSuperHost")]
+    partial class AddUserFactAndSuperHost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -471,49 +474,6 @@ namespace Renty.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("PropertyAmenities", (string)null);
-                });
-
-            modelBuilder.Entity("Renty.Domain.Models.Properties.Discount", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("CurrentUses")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("DaysBeforeCheckIn")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true);
-
-                    b.Property<int?>("MaxUses")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("MinNights")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Percentage")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(5, 2)")
-                        .HasDefaultValue(20.00m);
-
-                    b.Property<Guid>("PropertyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PropertyId");
-
-                    b.ToTable("Discounts", (string)null);
                 });
 
             modelBuilder.Entity("Renty.Domain.Models.Properties.Property", b =>
@@ -1326,17 +1286,6 @@ namespace Renty.Infrastructure.Migrations
                     b.Navigation("Property");
                 });
 
-            modelBuilder.Entity("Renty.Domain.Models.Properties.Discount", b =>
-                {
-                    b.HasOne("Renty.Domain.Models.Properties.Property", "Property")
-                        .WithMany("Discounts")
-                        .HasForeignKey("PropertyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Property");
-                });
-
             modelBuilder.Entity("Renty.Domain.Models.Properties.Property", b =>
                 {
                     b.HasOne("Renty.Domain.Models.PropertiesCategory", "Category")
@@ -1545,8 +1494,6 @@ namespace Renty.Infrastructure.Migrations
 
                     b.Navigation("Details")
                         .IsRequired();
-
-                    b.Navigation("Discounts");
 
                     b.Navigation("Favorites");
 
