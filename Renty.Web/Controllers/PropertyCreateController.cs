@@ -1,14 +1,25 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Renty.Application.Commands.PropertyCommands;
+using Renty.Application.Common;
+using Renty.Application.Queries.Property;
+using Renty.Domain.Models.User;
 using Renty.Web.Models.InputModels.Media;
 using Renty.Web.Models.InputModels.Properties;
 using Renty.Web.Models.PropertyCreate;
 using Renty.Web.Models.Shared;
+using System.Security.Claims;
 
 namespace Renty.Web.Controllers
 {
     [Route("create-property")]
     public class PropertyCreateController : Controller
     {
+        private readonly IMediator _mediator;
+        public PropertyCreateController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
         [HttpGet("address")]
         public IActionResult PropertyAddress()
         {
@@ -26,8 +37,15 @@ namespace Renty.Web.Controllers
         // Заглушка: PropertiesCategory — это темы для фильтра на главной ("Красивые виды",
         // "У моря" и т.п.), не тип жилья. Настоящий справочник типов жилья ещё не существует.
         [HttpGet("category/{id:guid}")]
-        public IActionResult PropertyCategory(Guid id)
+        public async Task<IActionResult> PropertyCategory(Guid id)
         {
+
+            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
+
+            // Если ошибка возвращаем на первый шаг
+            if (!result.IsSuccess)
+                return RedirectToAction(nameof(SavePropertyAddress));
+
             ViewData["PropertyId"] = id;
             var vm = new CategoryPageViewModel
             {
@@ -38,6 +56,10 @@ namespace Renty.Web.Controllers
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Гостевой дом" },
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Гостиница" },
                 },
+                Property = new PropertyInputModel
+                {
+                    CategoryId = result.Data!.CategoryId!.Value
+                }
             };
 
             return View(vm);
@@ -45,8 +67,10 @@ namespace Renty.Web.Controllers
 
         // TODO: сохранить CategoryId квартиры.
         [HttpPost("category/{id:guid}")]
-        public IActionResult SavePropertyCategory(Guid id, CategoryPageViewModel model)
+        public async Task<IActionResult> SavePropertyCategory(Guid id, CategoryPageViewModel model)
         {
+            //var result = await _mediator.Send(new SavePropertyCategoryCommand(model.Property.PropertyId, ))
+
             return RedirectToAction(nameof(PropertyBasics), new { id });
         }
 
@@ -210,5 +234,7 @@ namespace Renty.Web.Controllers
                 new { title = "Пример, Одесса", address = "ул. Примерная, 1", street = "ул. Примерная", district = "Приморский", cityId = "Одесса", countryId = "Украина" },
             });
         }
+
+        private Guid CurrentUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 }

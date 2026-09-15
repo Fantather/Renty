@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Renty.Infrastructure.Data;
 namespace Renty.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260915194855_discounts_upd")]
+    partial class discounts_upd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -958,11 +961,6 @@ namespace Renty.Infrastructure.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
-                    b.Property<bool>("IsSuperHost")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<bool>("IsTravellingWithPet")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -1147,32 +1145,6 @@ namespace Renty.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews", (string)null);
-                });
-
-            modelBuilder.Entity("Renty.Domain.Models.User.UserFact", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserFacts", (string)null);
                 });
 
             modelBuilder.Entity("ApplicationUserLanguages", b =>
@@ -1511,17 +1483,6 @@ namespace Renty.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Renty.Domain.Models.User.UserFact", b =>
-                {
-                    b.HasOne("Renty.Domain.Models.User.ApplicationUser", "User")
-                        .WithMany("Facts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Renty.Domain.Models.Locations.Country", b =>
                 {
                     b.Navigation("Cities");
@@ -1586,8 +1547,6 @@ namespace Renty.Infrastructure.Migrations
             modelBuilder.Entity("Renty.Domain.Models.User.ApplicationUser", b =>
                 {
                     b.Navigation("Bookings");
-
-                    b.Navigation("Facts");
 
                     b.Navigation("Favorites");
 

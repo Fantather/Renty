@@ -79,5 +79,15 @@ namespace Renty.Infrastructure.Repository
             return await query.AsNoTracking().ToListAsync(ct);
         }
 
+        /// <summary>
+        /// Проверяет сущестрование удобств по айди из списка айди.
+        /// </summary>
+        /// <param name="ids">Список айди удобств.</param>
+        /// <param name="ct">Токен отмены для асинхронной операции.</param>
+        /// <returns>Список всех найденных удобств.</returns>
+        public async Task<IEnumerable<Guid>> GetExistingIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default)
+        {
+            return await _dbSet.Where(a => a.IsActive && ids.Contains(a.Id)).Select(a=>a.Id).ToListAsync(ct);
+        }
     }
 }

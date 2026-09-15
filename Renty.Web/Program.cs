@@ -8,6 +8,7 @@ using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
 using Renty.Infrastructure.Seeders;
 using Renty.Infrastructure.Seeders.location;
+using Renty.Infrastructure.Services.PlacesAPI;
 using Renty.Web.DI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.CallbackPath = "/signin-google";
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -63,6 +65,8 @@ builder.Services.AddServices(builder.Configuration);
 // Регистрация AutoMapper и добавление профилей из сборки Renty.Application
 builder.Services.AddAutoMapper(tcp => { }, typeof(PropertyProfile));
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,6 +79,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -84,6 +90,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
 
 using (var scope = app.Services.CreateScope())
 {

@@ -10,6 +10,7 @@ namespace Renty.Web.Models.InputModels.Properties
     /// </remarks>
     public class PropertyInputModel
     {
+        public Guid PropertyId { get; set; }
         // Базовая информация
         [Required(ErrorMessage = "Название обязательно")]
         [StringLength(100, ErrorMessage = "Название должно быть не длиннее 100 символов")]

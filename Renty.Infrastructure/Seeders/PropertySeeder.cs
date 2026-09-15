@@ -379,7 +379,7 @@ namespace Renty.Infrastructure.Seeders
                 LocationRating = location2,
                 CheckInRating = checkIn2,
                 ValueRating = value2,
-                Comment = $"Отличная квартира с потрясающим видом на море! Останавливался в квартире и остался очень доволен. Рекомендую!",
+                Comment = comment2,
                 CreatedAt = DateTime.UtcNow.AddDays(-index * 3)
             };
 
