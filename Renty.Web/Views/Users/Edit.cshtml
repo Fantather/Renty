@@ -24,7 +24,7 @@
             <div class="edit-profile__note">Хозяева и гости могут просматривать ваш профиль. Он также может отображаться на разных страницах Renty, что помогает нам поддерживать атмосферу доверия в сообществе.</div>
 
             <div class="edit-profile__facts-container">
-                <button type="button" id="languagesTrigger">
+                <button type="button" class="btn-reset" id="languagesTrigger">
                     <icon name="star" class="edit-profile__row-icon" />
                     <span id="languagesRowLabel">Языки, на которых я говорю: @string.Join(", ", currentLanguages.Select(l => l.Name))</span>
                     <icon name="chevron-right" class="edit-profile__row-chevron" />
@@ -37,7 +37,7 @@
 
                     if (fact.Type == UserFactTypeEnum.Generation)
                     {
-                        <button type="button" id="generationTrigger" hidden="@(Model.Input.ShowGeneration ? null : "hidden")">
+                        <button type="button" class="btn-reset" id="generationTrigger" hidden="@(Model.Input.ShowGeneration ? null : "hidden")">
                             <icon name="@fact.IconName" class="edit-profile__row-icon" />
                             <span id="factLabel-@i" data-label="@label">@label: @fact.Value</span>
                             <icon name="chevron-right" class="edit-profile__row-chevron" />
@@ -46,7 +46,7 @@
                     else
                     {
                         UserFactMeta meta = fact.Type.GetMeta();
-                        <button type="button" class="edit-profile__fact-trigger" data-value-id="factValue-@i" data-label-id="factLabel-@i" data-title="@meta.Title" data-hint="@meta.Hint" data-maxlength="@meta.MaxLength" data-label="@label">
+                        <button type="button" class="edit-profile__fact-trigger btn-reset" data-value-id="factValue-@i" data-label-id="factLabel-@i" data-title="@meta.Title" data-hint="@meta.Hint" data-maxlength="@meta.MaxLength" data-label="@label">
                             <icon name="@fact.IconName" class="edit-profile__row-icon" />
                             <span id="factLabel-@i" data-label="@label">@label: @fact.Value</span>
                             <icon name="chevron-right" class="edit-profile__row-chevron" />
@@ -54,7 +54,7 @@
                     }
                 }
 
-                <button type="button" id="homeCityTrigger">
+                <button type="button" class="btn-reset" id="homeCityTrigger">
                     <icon name="star" class="edit-profile__row-icon" />
                     <span id="homeCityRowLabel">Где я живу: @Model.Input.HomeCityDisplay</span>
                     <icon name="chevron-right" class="edit-profile__row-chevron" />
@@ -127,7 +127,7 @@
     </div>
 
     <div class="modal-overlay" id="languagesModal" hidden>
-        <div class="modal-panel">
+        <div class="modal-panel modal-panel--sm">
             <button type="button" class="modal-panel__close" id="languagesModalClose">✕</button>
             <h2>Языки, на которых вы говорите</h2>
             <input type="text" id="languagesSearch" class="edit-profile__fact-input edit-profile__fact-input-search" placeholder="Поиск языка" />

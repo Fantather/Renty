@@ -20,6 +20,14 @@
     padding: 32px;
 }
 
+.modal-panel--sm {
+    max-width: 480px;
+}
+
+.modal-panel--lg {
+    max-width: 680px;
+}
+
 .modal-panel__close {
     position: absolute;
     top: 16px;

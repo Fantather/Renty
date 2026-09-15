@@ -55,7 +55,7 @@
     margin-bottom: 24px;
 }
 
-::deep button:not(.btn-primary, .btn-outline, .modal-panel__close, .edit-profile__option-row, .edit-profile__avatar-btn) {
+::deep .btn-reset {
     border: none;
     background: none;
     padding: 0;
@@ -167,11 +167,6 @@
     text-align: left;
     cursor: pointer;
 }
-
-#languagesModal .modal-panel {
-    max-width: 480px;
-}
-
 
 ::deep .edit-profile__city-check {
     position: relative;

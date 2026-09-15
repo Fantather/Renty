@@ -1,6 +1,8 @@
+@using System.Text.Json
 @model UserProfileViewModel
 @{
     ViewData["Title"] = Model.FullName;
+    var reviewsJsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 }
 
 <article class="user-profile">
@@ -85,22 +87,23 @@
     {
         <section class="user-profile__reviews">
             <h2><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount отзывов</h2>
-            <div class="user-profile__reviews-grid">
-                @foreach (var review in Model.Reviews)
-                {
-                    <div class="review-card">
-                        <div class="review-card__header">
-                            <img class="review-card__avatar" src="@review.AuthorAvatarUrl" alt="@review.AuthorName" />
-                            <div>
-                                <p class="review-card__author">@review.AuthorName</p>
-                                <p class="review-card__date">@review.CreatedAt.ToString("d MMMM yyyy")</p>
-                            </div>
-                        </div>
-                        <p class="review-card__text">@review.Text</p>
-                    </div>
-                }
-            </div>
+            <div class="user-profile__reviews-grid" id="reviewsList"></div>
+            <button type="button" id="loadMoreReviewsBtn" class="btn-outline">Показать ещё</button>
         </section>
     }
 
+    <div id="allReviewsModal" class="modal-overlay" hidden>
+        <div class="modal-panel">
+            <button type="button" id="closeReviewsModalBtn" class="modal-panel__close">×</button>
+            <h2>Отзывы</h2>
+            <div class="user-profile__reviews-grid" id="allReviewsList"></div>
+        </div>
+    </div>
+
 </article>
+
+<script type="application/json" id="initialReviewsData">@Html.Raw(JsonSerializer.Serialize(Model.Reviews, reviewsJsonOptions))</script>
+
+@section Scripts {
+    <script type="module" src="~/js/users/profile.js" asp-append-version="true"></script>
+}
