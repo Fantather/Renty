@@ -10,7 +10,7 @@
         <aside class="user-profile__card">
             <div class="user-profile__top-row">
                 <div class="user-profile__avatar-wrap">
-                    <img src="@Model.AvatarUrl" alt="@Model.FullName" class="user-profile__avatar" />
+                    <partial name="_Avatar" model="new AvatarViewModel { Url = Model.AvatarUrl, Name = Model.FullName, SizePx = 64 }" />
                     @if (Model.IsVerified)
                     {
                         <span class="user-profile__verified-badge"><icon name="star" /></span>

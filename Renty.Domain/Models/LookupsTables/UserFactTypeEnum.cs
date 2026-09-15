@@ -23,6 +23,8 @@ namespace Renty.Domain.Models.LookupsTables
         [Description("История моей жизни")]
         LifeStory = 8,
         [Description("Что я безумно люблю")]
-        WhatILove = 9
+        WhatILove = 9,
+        [Description("Где мне всегда хотелось побывать")]
+        WhereIWantToGo = 10
     }
 }

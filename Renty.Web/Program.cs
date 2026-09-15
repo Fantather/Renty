@@ -62,10 +62,13 @@ builder.Services.AddInfrastructure();
 // Регистрация сервисов в DI
 builder.Services.AddServices(builder.Configuration);
 
-// Регистрация AutoMapper и добавление профилей из сборки Renty.Application
-builder.Services.AddAutoMapper(tcp => { }, typeof(PropertyProfile));
-
-
+// Регистрация AutoMapper 
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.LicenseKey = builder.Configuration["MapperLisence:Key"];
+},
+typeof(Renty.Application.Mappers.Properties.PropertyProfile),
+typeof(Renty.Web.Mappers.Shared.SharedProfile));
 
 var app = builder.Build();
 
@@ -79,7 +82,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseSession();
+//app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

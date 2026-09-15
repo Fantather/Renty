@@ -42,7 +42,7 @@
                     <h2>Жильё в аренду, хозяин — @Model.Host.FullName</h2>
                     <p>@Model.MaxGuests гостей · @Model.Bedrooms спальня · @Model.Beds кроватей · @Model.Bathrooms ванная комната</p>
                 </div>
-                <img src="@Model.Host.AvatarUrl" alt="@Model.Host.FullName" class="property-overview__host-avatar" />
+                <partial name="_Avatar" model="new AvatarViewModel { Url = Model.Host.AvatarUrl, Name = Model.Host.FullName, SizePx = 56 }" />
             </section>
 
             <section class="property-description">
