@@ -23,7 +23,7 @@ namespace Renty.Web.Controllers
         {
             var cities = await _CSCAPI.GetCitiesBySearchTerm(searchTerm);
 
-            return View(nameof(Index),cities);
+            return Json(cities);
         }
 
         [HttpGet("country_iso2={country_iso2:alpha}")]

@@ -1,0 +1,14 @@
+@model AvatarViewModel
+@{
+    var initial = string.IsNullOrEmpty(Model.Name) ? "?" : Model.Name[0].ToString().ToUpper();
+    var fontSizePx = Model.SizePx / 2;
+}
+
+@if (!string.IsNullOrEmpty(Model.Url))
+{
+    <img class="avatar" style="width:@(Model.SizePx)px; height:@(Model.SizePx)px" src="@Model.Url" alt="@Model.Name" />
+}
+else
+{
+    <div class="avatar avatar--placeholder" style="width:@(Model.SizePx)px; height:@(Model.SizePx)px; font-size:@(fontSizePx)px"><span>@initial</span></div>
+}
