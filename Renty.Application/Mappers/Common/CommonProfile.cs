@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.GetCities;
 using Renty.Application.DTOs.GetProperty;
@@ -17,6 +17,7 @@ namespace Renty.Application.Mappers.Common
     {
         public CommonProfile()
         {
+            CreateMap<RoomType, RoomTypeDto>();
             CreateMap<Room, RoomDto>();
             CreateMap<Tag, TagDto>();
             CreateMap<PropertiesCategory, CategoryDto>();

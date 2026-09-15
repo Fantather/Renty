@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Properties;
@@ -214,6 +214,8 @@ namespace Renty.Infrastructure.Repository
                 .Include(p => p.Country)
                 .Include(p => p.Category)
                 .Include(p => p.PropertyImages)
+                .Include(p => p.Rooms)
+                .ThenInclude(r => r.RoomType)
                 .Include(p => p.PropertyAmenities)
                 .ThenInclude(pa => pa.Amenity)
                 .Include(p => p.PropertyTags)
