@@ -55,4 +55,4 @@ namespace Renty.Infrastructure.Seeders
             return true;
         }
     }
-}
+}     

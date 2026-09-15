@@ -87,6 +87,7 @@ namespace Renty.Domain.Models.Properties
 
         // Навигационные свойства
         public virtual PropertyDetails Details { get; set; } = new PropertyDetails();
+        public virtual ICollection<Discount> Discounts { get; set; } = new List<Discount>();
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
         public virtual ICollection<PropertyAmenity> PropertyAmenities { get; set; } = new List<PropertyAmenity>();
