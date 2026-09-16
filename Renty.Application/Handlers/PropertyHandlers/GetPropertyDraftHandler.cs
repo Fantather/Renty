@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Common;
 using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.CreateProperty;
@@ -20,7 +20,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
         }
         public async Task<OperationResult<PropertyDraftDto>> Handle(GetPropertyDraftQuery request, CancellationToken cancellationToken)
         {
-            var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.PropertyId, request.CurrentUserId);
+            var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.PropertyId, request.CurrentUserId, cancellationToken);
 
             if (!result.IsSuccess)
                 return OperationResult<PropertyDraftDto>.Fail(result.Errors.ToArray());

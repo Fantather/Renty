@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.GetCities;
 using Renty.Application.DTOs.GetProperty;
@@ -17,11 +17,14 @@ namespace Renty.Application.Mappers.Common
     {
         public CommonProfile()
         {
+            CreateMap<RoomType, RoomTypeDto>();
             CreateMap<Room, RoomDto>();
             CreateMap<Tag, TagDto>();
             CreateMap<PropertiesCategory, CategoryDto>();
             CreateMap<PropertyImage, ImageDto>();
             CreateMap<Anemities, AmenitiesDto>();
+            CreateMap<Discount, DiscountDto>();
+
             CreateMap<ApplicationUser, AuthorDto>()
                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
 
@@ -34,5 +37,6 @@ namespace Renty.Application.Mappers.Common
                         : string.Empty))
                 .ForMember(dest => dest.ResponseSpeed, opt => opt.MapFrom(src => src.ResponseSpeed ?? "Неизвестно"));
         }
+
     }
 }

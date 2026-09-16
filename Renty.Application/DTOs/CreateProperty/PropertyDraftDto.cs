@@ -68,7 +68,8 @@ namespace Renty.Application.DTOs.CreateProperty
         // отличительные черты для описания (не PropertyTag) — фиксированный набор, максимум 2
         public List<string> Highlights { get; set; } = new();
 
-        public List<ImageDto> Images { get; set; } = new();
+        // изображения с указанием последовательности
+        public List<OrderedImageDto> Images { get; set; } = new();
 
         // можно задать скидки
         public DiscountsInputDto? Discounts { get; set; }

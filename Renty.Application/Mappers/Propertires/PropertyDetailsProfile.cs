@@ -42,6 +42,9 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.PropertyImages))
                 .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
 
+                // Маппинг коллекции скидок с фильтрацией 
+                .ForMember(dest => dest.Discounts, opt => opt.MapFrom(src =>
+                    src.Discounts != null ? src.Discounts.Where(d => d.IsActive) : null))
                 // Маппинг хоста
                 .ForMember(dest => dest.Host, opt => opt.MapFrom(src => src.Host))
                 // Маппинг отзывы 

@@ -41,5 +41,6 @@ namespace Renty.Web.Models.Properties
 
         // Занятые даты — чтобы календарь бронирования знал, что заблокировать
         public List<(DateTime From, DateTime To)> BookedRanges { get; set; } = new();
+        public List<DiscountViewModel> Discounts { get; set; } = new List<DiscountViewModel>();
     }
 }

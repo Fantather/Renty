@@ -36,6 +36,8 @@ namespace Renty.Web.Mappers.Shared
                 .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.Rating))
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Content))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt));
+
+            CreateMap<DiscountDto, DiscountViewModel>();
         }
     }
 }

@@ -1,8 +1,11 @@
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.Common;
+using Renty.Application.DTOs.CreateProperty;
 using Renty.Application.Queries.Property;
+using Renty.Domain.Enums;
 using Renty.Domain.Models.User;
 using Renty.Web.Models.InputModels.Media;
 using Renty.Web.Models.InputModels.Properties;
@@ -17,10 +20,12 @@ namespace Renty.Web.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IConfiguration _configuration;
-        public PropertyCreateController(IMediator mediator, IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public PropertyCreateController(IMediator mediator, IConfiguration configuration, IWebHostEnvironment env)
         {
             _mediator = mediator;
             _configuration = configuration;
+            _env = env;
         }
         [HttpGet("address")]
         public IActionResult PropertyAddress()
@@ -86,29 +91,60 @@ namespace Renty.Web.Controllers
         [HttpPost("category/{id:guid}")]
         public async Task<IActionResult> SavePropertyCategory(Guid id, CategoryPageViewModel model)
         {
-            //var result = await _mediator.Send(new SavePropertyCategoryCommand(model.Property.PropertyId, ))
+            var result = await _mediator.Send(new SavePropertyCategoryCommand(model.Property.PropertyId, CurrentUserId(), model.Property.CategoryId));
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                return View(model);
+            }
 
             return RedirectToAction(nameof(PropertyBasics), new { id });
         }
 
         [HttpGet("basics/{id:guid}")]
-        public IActionResult PropertyBasics(Guid id)
+        public async Task<IActionResult> PropertyBasics(Guid id)
         {
+            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
+
+            if (!result.IsSuccess)
+                return RedirectToAction(nameof(SavePropertyAddress));
+
             ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            return View(new PropertyInputModel
+            {
+                MaxGuests = result.Data!.MaxGuests!.Value,
+                BathroomsCount = result.Data!.BathroomsCount!.Value,
+                BedsCount = result.Data!.BedsCount!.Value,
+                BedroomsCount = result.Data!.BedroomsCount!.Value
+            });
         }
 
         // TODO: сохранить MaxGuests/BedroomsCount/BedsCount/BathroomsCount в PropertyDetails квартиры в БД.
         [HttpPost("basics/{id:guid}")]
-        public IActionResult SavePropertyBasics(Guid id, PropertyInputModel model)
+        public async Task<IActionResult> SavePropertyBasics(Guid id, PropertyInputModel model)
         {
+            var result = await _mediator.Send(new SavePropertyBasicsCommand(id, CurrentUserId(), model.MaxGuests, model.BedroomsCount, model.BedsCount, model.BathroomsCount));
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                return View(model);
+            }
+
+
             return RedirectToAction(nameof(PropertyAmenities), new { id });
         }
 
         // Заглушка: реального Query/Handler над IAmenityRepository ещё нет.
         [HttpGet("amenities/{id:guid}")]
-        public IActionResult PropertyAmenities(Guid id)
+        public async Task<IActionResult> PropertyAmenities(Guid id)
         {
+            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
+
+            if (!result.IsSuccess)
+                return RedirectToAction(nameof(SavePropertyAddress));
+
             ViewData["PropertyId"] = id;
             var vm = new AmenitiesPageViewModel
             {
@@ -119,6 +155,10 @@ namespace Renty.Web.Controllers
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000103"), Name = "Кухня", Description = "Базовая кухня в наличии", IconName = "star" },
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000104"), Name = "Стиральная машина", Description = "Стиральная машина для гостей", IconName = "star" },
                 },
+                Property = new PropertyInputModel
+                {
+                    AmenityIds = result.Data!.AmenityIds
+                }
             };
 
             return View(vm);
@@ -126,21 +166,74 @@ namespace Renty.Web.Controllers
 
         // TODO: сохранить AmenityIds квартиры.
         [HttpPost("amenities/{id:guid}")]
-        public IActionResult SavePropertyAmenities(Guid id, PropertyInputModel model)
+        public async Task<IActionResult> SavePropertyAmenities(Guid id, PropertyInputModel model)
         {
+            var result = await _mediator.Send(new SavePropertyAmenitiesCommand(id,CurrentUserId(),model.AmenityIds));
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ",result.Errors));
+                return View(model);
+            }
+
             return RedirectToAction(nameof(PropertyPhotos), new { id });
         }
 
         [HttpGet("photos/{id:guid}")]
-        public IActionResult PropertyPhotos(Guid id)
+        public async Task<IActionResult> PropertyPhotos(Guid id)
         {
-            return View(new UploadPropertyImagesInputModel { PropertyId = id });
+            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
+
+            if (!result.IsSuccess)
+                return RedirectToAction(nameof(SavePropertyAddress));
+
+            var images = result.Data!.Images
+                .OrderBy(i => i.DisplayOrder)
+                .Select(i => new ExistingImageInputModel
+            {
+                Id = i.ImageId,
+                ImageUrl = i.ImageUrl
+            }).ToList();
+
+            return View(new UploadPropertyImagesInputModel { 
+                PropertyId = id, 
+                ExistingImages = images
+            });
         }
 
         // TODO: реально сохранить фото и создать PropertyImage для этой квартиры.
         [HttpPost("photos/{id:guid}")]
-        public IActionResult SavePropertyPhotos(Guid id, UploadPropertyImagesInputModel model)
+        public async Task<IActionResult> SavePropertyPhotos(Guid id, UploadPropertyImagesInputModel model)
         {
+
+            var orderedImages = model.OrderedImages
+                .Select(oi => new OrderedImageRef
+                {
+                    Type = oi.Type == "Existing"
+                    ? OrderedImageType.Existing
+                    : OrderedImageType.New,
+                    Id = oi.Id,
+                    FileIndex = oi.FileIndex
+                }).ToList();
+
+            var result = await _mediator.Send(new SavePropertyImagesCommand(id,CurrentUserId(), _env.WebRootPath, orderedImages ,model.Images));
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+
+                var resultImages = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
+                model.ExistingImages = resultImages.Data!.Images
+                    .OrderBy(i => i.DisplayOrder)
+                    .Select(i => new ExistingImageInputModel
+                {
+                    Id = i.ImageId,
+                    ImageUrl = i.ImageUrl
+                }).ToList();
+
+                return View(model);
+            }
+
             return RedirectToAction(nameof(PropertyTitle), new { id });
         }
 
