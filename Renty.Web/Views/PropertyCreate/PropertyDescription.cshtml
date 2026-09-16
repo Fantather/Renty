@@ -3,11 +3,13 @@
     ViewData["Title"] = "Описание";
 }
 
-<h1>Составьте описание</h1>
+<div class="property-description-page">
+    <h1 class="property-description-page__title">Составьте описание</h1>
+    <p class="property-description-page__subtitle">Расскажите, что делает ваше жильё особенным.</p>
 
-<form method="post" asp-action="SavePropertyDescription" asp-route-id="@ViewData["PropertyId"]">
-    <textarea asp-for="Description" placeholder="Расскажите, что делает ваше жильё особенным"></textarea>
-    <span asp-validation-for="Description"></span>
+    <form method="post" asp-action="SavePropertyDescription" asp-route-id="@ViewData["PropertyId"]">
+        <input-field asp-for="Description" max-length="2000" multiline="true" />
 
-    <button type="submit">Далее</button>
-</form>
+        <button type="submit" class="property-description-next">Далее</button>
+    </form>
+</div>

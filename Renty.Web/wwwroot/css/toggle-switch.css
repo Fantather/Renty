@@ -1,0 +1,38 @@
+/* Переключатель вкл/выкл (input[type=checkbox] + видимая "пилюля") */
+.discount-toggle {
+    position: relative;
+    display: inline-flex;
+    cursor: pointer;
+}
+
+.discount-toggle__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.discount-toggle__track {
+    width: 44px;
+    height: 24px;
+    border-radius: 999px;
+    background-color: var(--color-border);
+    transition: background-color 0.15s;
+}
+
+.discount-toggle__knob {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: transform 0.15s;
+}
+
+.discount-toggle__input:checked + .discount-toggle__track {
+    background-color: var(--color-text);
+}
+
+.discount-toggle__input:checked + .discount-toggle__track .discount-toggle__knob {
+    transform: translateX(20px);
+}

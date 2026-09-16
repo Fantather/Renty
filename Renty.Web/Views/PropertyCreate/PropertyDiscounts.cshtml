@@ -3,32 +3,80 @@
     ViewData["Title"] = "Скидки";
 }
 
-<h1>Добавьте скидки</h1>
+<div class="property-discounts-page">
+    <h1 class="property-discounts-page__title">Добавьте скидки</h1>
+    <p class="property-discounts-page__subtitle">Привлеките внимание гостей, чтобы быстрее получить первые бронирования и отзывы.</p>
 
-<form method="post" asp-action="SavePropertyDiscounts" asp-route-id="@ViewData["PropertyId"]">
-    <label>
-        <input type="checkbox" asp-for="Discounts.NewListingDiscountEnabled" />
-        Скидка для нового объявления
-    </label>
-    <input-field asp-for="Discounts.NewListingDiscountPercent" type="number" placeholder="Процент скидки" />
+    <form method="post" asp-action="SavePropertyDiscounts" asp-route-id="@ViewData["PropertyId"]">
+        <div class="discount-card-list">
+            <div class="discount-card">
+                <div class="discount-card__percent">
+                    <input type="number" asp-for="Discounts.NewListingDiscountPercent" class="discount-card__percent-input" />
+                    <span>%</span>
+                </div>
+                <div class="discount-card__info">
+                    <span class="discount-card__title">Акция «Новое объявление»</span>
+                    <p class="discount-card__description">Предложите скидку на первые 3 бронирования</p>
+                </div>
+                <label class="discount-toggle">
+                    <input type="checkbox" asp-for="Discounts.NewListingDiscountEnabled" class="discount-toggle__input" />
+                    <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                </label>
+            </div>
 
-    <label>
-        <input type="checkbox" asp-for="Discounts.LastMinuteDiscountEnabled" />
-        Скидка за бронирование в последнюю минуту
-    </label>
-    <input-field asp-for="Discounts.LastMinuteDiscountPercent" type="number" placeholder="Процент скидки" />
+            <div class="discount-card">
+                <div class="discount-card__percent">
+                    <input type="number" asp-for="Discounts.LastMinuteDiscountPercent" class="discount-card__percent-input" />
+                    <span>%</span>
+                </div>
+                <div class="discount-card__info">
+                    <span class="discount-card__title">Скидка последней минуты</span>
+                    <p class="discount-card__description">Для бронирований, оформленных менее чем за 14 дней до прибытия</p>
+                </div>
+                <label class="discount-toggle">
+                    <input type="checkbox" asp-for="Discounts.LastMinuteDiscountEnabled" class="discount-toggle__input" />
+                    <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                </label>
+            </div>
 
-    <label>
-        <input type="checkbox" asp-for="Discounts.WeeklyDiscountEnabled" />
-        Скидка на неделю
-    </label>
-    <input-field asp-for="Discounts.WeeklyDiscountPercent" type="number" placeholder="Процент скидки" />
+            <div class="discount-card">
+                <div class="discount-card__percent">
+                    <input type="number" asp-for="Discounts.WeeklyDiscountPercent" class="discount-card__percent-input" />
+                    <span>%</span>
+                </div>
+                <div class="discount-card__info">
+                    <span class="discount-card__title">Недельная скидка</span>
+                    <p class="discount-card__description">Для поездок длительностью от 7 ночей</p>
+                </div>
+                <label class="discount-toggle">
+                    <input type="checkbox" asp-for="Discounts.WeeklyDiscountEnabled" class="discount-toggle__input" />
+                    <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                </label>
+            </div>
 
-    <label>
-        <input type="checkbox" asp-for="Discounts.MonthlyDiscountEnabled" />
-        Скидка на месяц
-    </label>
-    <input-field asp-for="Discounts.MonthlyDiscountPercent" type="number" placeholder="Процент скидки" />
+            <div class="discount-card discount-card--has-error">
+                <div class="discount-card__row">
+                    <div class="discount-card__percent">
+                        <input type="number" asp-for="Discounts.MonthlyDiscountPercent" class="discount-card__percent-input" />
+                        <span>%</span>
+                    </div>
+                    <div class="discount-card__info">
+                        <span class="discount-card__title">Месячная скидка</span>
+                        <p class="discount-card__description">Для поездок длительностью от 28 ночей</p>
+                    </div>
+                    <label class="discount-toggle">
+                        <input type="checkbox" asp-for="Discounts.MonthlyDiscountEnabled" class="discount-toggle__input" />
+                        <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                    </label>
+                </div>
+                <p class="discount-card__error" id="monthlyDiscountError" hidden></p>
+            </div>
+        </div>
 
-    <button type="submit">Далее</button>
-</form>
+        <button type="submit" class="property-discounts-next">Далее</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/discounts.js" asp-append-version="true"></script>
+}

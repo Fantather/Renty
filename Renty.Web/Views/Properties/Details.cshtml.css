@@ -21,7 +21,7 @@
     height: 14px;
 }
 
-/* Gallery: one big image on the left, a 2x2 grid of thumbnails on the right */
+/* Галерея: одно большое фото слева, справа сетка превью 2x2 */
 .property-gallery {
     display: grid;
     grid-template-columns: 2fr 1fr;

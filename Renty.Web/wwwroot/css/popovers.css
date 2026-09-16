@@ -1,4 +1,4 @@
-/* Shared across components — not CSS-isolated, so any view's popover can use it */
+/* Базовые стили попап-панели */
 .popover-panel {
     position: absolute;
     top: calc(100% + 12px);

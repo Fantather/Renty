@@ -3,10 +3,13 @@
     ViewData["Title"] = "Название";
 }
 
-<h1>Придумайте, как будет называться ваше объявление</h1>
+<div class="property-title-page">
+    <h1 class="property-title-page__title">Придумайте, как будет называться ваше объявление</h1>
+    <p class="property-title-page__subtitle">Краткое название — то, что нужно. Не беспокойтесь, вы всегда сможете отредактировать его позже.</p>
 
-<form method="post" asp-action="SavePropertyTitle" asp-route-id="@ViewData["PropertyId"]">
-    <input-field asp-for="Name" placeholder="Название" />
+    <form method="post" asp-action="SavePropertyTitle" asp-route-id="@ViewData["PropertyId"]">
+        <input-field asp-for="Name" placeholder="Название" max-length="100" multiline="true" />
 
-    <button type="submit">Далее</button>
-</form>
+        <button type="submit" class="property-title-next">Далее</button>
+    </form>
+</div>

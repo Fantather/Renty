@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\icons\NewFolder\**" />
+    <Content Remove="wwwroot\icons\NewFolder\**" />
+    <EmbeddedResource Remove="wwwroot\icons\NewFolder\**" />
+    <None Remove="wwwroot\icons\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="14.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="10.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.11" />

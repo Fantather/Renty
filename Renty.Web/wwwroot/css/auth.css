@@ -1,5 +1,5 @@
-/* Shared between Register.cshtml and _LoginModal.cshtml — same reason: CSS Isolation
-   scopes each view's own .cshtml.css separately, so this can't live in either one. */
+/* Общий для Register.cshtml и _LoginModal.cshtml — та же причина: CSS Isolation
+   скоупит .cshtml.css каждой вьюхи отдельно, поэтому это не может жить ни в одном из них. */
 .auth-card {
     width: 100%;
     max-width: 400px;
@@ -34,8 +34,8 @@
     background-color: var(--color-hover);
 }
 
-/* Global stylesheet — no CSS Isolation scope attribute exists here, so unlike in a
-   .cshtml.css file, this needs no ::deep to reach the <icon> tag helper's output. */
+/* Глобальный стиль — тут нет scope-атрибута CSS Isolation, поэтому, в отличие от
+   .cshtml.css файла, не нужен ::deep, чтобы достучаться до вывода таг-хелпера <icon>. */
 .auth-card__google-icon {
     width: 18px;
     height: 18px;

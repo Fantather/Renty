@@ -1,11 +1,17 @@
-import { createPopover } from './popover.js';
+import { createDismissible } from './popover.js';
 
 export function createSearchField({ inputId, popoverId, searchUrl, onSelect, iconFor }) {
     var input = document.getElementById(inputId);
-    var dismissible = createPopover(inputId, popoverId, function () {
-        renderResults(input.value);
-    }, 'focus');
+    var dismissible = createDismissible(popoverId);
     var resultsPanel = dismissible.root;
+
+    document.addEventListener('click', function (e) {
+        if (!resultsPanel.contains(e.target) && e.target !== input) dismissible.close();
+    }, true);
+
+    input.addEventListener('focus', function () {
+        renderResults(input.value);
+    });
 
     var debounceTimer;
     input.addEventListener('input', function () {
@@ -30,6 +36,12 @@ export function createSearchField({ inputId, popoverId, searchUrl, onSelect, ico
         results.forEach(function (item) {
             resultsPanel.appendChild(buildItem(item));
         });
+
+        if (results.length > 0) {
+            dismissible.open();
+        } else {
+            dismissible.close();
+        }
     }
 
     function buildItem(item) {

@@ -1,5 +1,5 @@
 import { createPopover } from '../shared/popover.js';
-import { createGuestCounter } from '../shared/guest-counter.js';
+import { createCounter } from '../shared/counter.js';
 
 var guestsDismissible = createPopover('guestsSegment', 'guestsPopover', null);
 var guestsPopover = guestsDismissible.root;
@@ -19,8 +19,8 @@ var initialCounts = {
     pet: parseInt(countInputs.pet.value, 10) || 0,
 };
 
-createGuestCounter({
-    rows: guestsPopover.querySelectorAll('.guests-popover__row'),
+createCounter({
+    rows: guestsPopover.querySelectorAll('.counter-row'),
     initialCounts: initialCounts,
     onChange: function (counts) {
         countInputs.adult.value = counts.adult;

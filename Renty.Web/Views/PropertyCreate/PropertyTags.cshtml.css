@@ -1,0 +1,25 @@
+.property-tags-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 16px;
+}
+
+.property-tags-page__title {
+    margin: 0 0 32px;
+    font-size: 1.75rem;
+}
+
+.property-tags-next {
+    margin-top: 24px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.property-tags-next:hover {
+    background-color: var(--color-accent-hover);
+}

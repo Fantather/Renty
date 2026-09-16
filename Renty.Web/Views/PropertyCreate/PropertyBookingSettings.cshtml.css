@@ -1,0 +1,78 @@
+.property-booking-settings-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 48px 16px;
+}
+
+.property-booking-settings-page__title {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.property-booking-settings-page__subtitle {
+    margin: 8px 0 32px;
+    color: var(--color-text-muted);
+}
+
+.booking-option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+::deep .booking-option {
+    position: relative;
+    display: block;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+::deep .booking-option:hover {
+    background-color: var(--color-hover);
+}
+
+::deep .booking-option.is-selected {
+    border-width: 2px;
+    border-color: var(--color-text);
+    padding: 19px;
+}
+
+::deep .booking-option__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+::deep .booking-option__title {
+    font-weight: 600;
+}
+
+::deep .booking-option__badge {
+    display: block;
+    margin-top: 2px;
+    color: #2e7d32;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+::deep .booking-option__description {
+    margin: 8px 0 0;
+    color: var(--color-text-muted);
+}
+
+.property-booking-settings-next {
+    margin-top: 24px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.property-booking-settings-next:hover {
+    background-color: var(--color-accent-hover);
+}

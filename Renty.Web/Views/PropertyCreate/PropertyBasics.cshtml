@@ -1,22 +1,34 @@
 @model Renty.Web.Models.InputModels.Properties.PropertyInputModel
 @{
     ViewData["Title"] = "Основная информация";
+
+    var basicsCounters = new List<CounterRowViewModel>
+    {
+        new() { Key = "maxGuests", Title = "Гости", Min = 1 },
+        new() { Key = "bedrooms", Title = "Спальни" },
+        new() { Key = "beds", Title = "Кровати" },
+        new() { Key = "bathrooms", Title = "Ванные" },
+    };
 }
 
-<h1>Поделитесь основной информацией о жилье</h1>
+<div class="property-basics-page">
+    <h1 class="property-basics-page__title">Поделитесь основной информацией о жилье</h1>
+    <p class="property-basics-page__subtitle">Детали (например, типы кроватей) вы добавите позже.</p>
 
-<form method="post" asp-action="SavePropertyBasics" asp-route-id="@ViewData["PropertyId"]">
-    <label asp-for="MaxGuests">Максимальное количество гостей</label>
-    <input-field asp-for="MaxGuests" type="number" placeholder="Гости" />
+    <form method="post" asp-action="SavePropertyBasics" asp-route-id="@ViewData["PropertyId"]">
+        <input type="hidden" asp-for="MaxGuests" />
+        <input type="hidden" asp-for="BedroomsCount" />
+        <input type="hidden" asp-for="BedsCount" />
+        <input type="hidden" asp-for="BathroomsCount" />
 
-    <label asp-for="BedroomsCount">Спальни</label>
-    <input-field asp-for="BedroomsCount" type="number" placeholder="Спальни" />
+        <div class="property-basics-counters">
+            <partial name="_CounterRows" model="basicsCounters" />
+        </div>
 
-    <label asp-for="BedsCount">Кровати</label>
-    <input-field asp-for="BedsCount" type="number" placeholder="Кровати" />
+        <button type="submit" class="property-basics-next">Далее</button>
+    </form>
+</div>
 
-    <label asp-for="BathroomsCount">Ванные</label>
-    <input-field asp-for="BathroomsCount" type="number" placeholder="Ванные" />
-
-    <button type="submit">Далее</button>
-</form>
+@section Scripts {
+    <script type="module" src="~/js/property-create/basics.js" asp-append-version="true"></script>
+}

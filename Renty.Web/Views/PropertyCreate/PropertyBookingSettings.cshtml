@@ -3,18 +3,29 @@
     ViewData["Title"] = "Параметры бронирования";
 }
 
-<h1>Выберите параметры бронирования</h1>
+<div class="property-booking-settings-page">
+    <h1 class="property-booking-settings-page__title">Выберите параметры бронирования</h1>
+    <p class="property-booking-settings-page__subtitle">Настройки можно поменять в любой момент.</p>
 
-<form method="post" asp-action="SavePropertyBookingSettings" asp-route-id="@ViewData["PropertyId"]">
-    <label>
-        <input type="radio" asp-for="InstantBookEnabled" value="false" />
-        Одобрять первые бронирования вручную (рекомендуется)
-    </label>
-    <br />
-    <label>
-        <input type="radio" asp-for="InstantBookEnabled" value="true" />
-        Включить мгновенное бронирование
-    </label>
+    <form method="post" asp-action="SavePropertyBookingSettings" asp-route-id="@ViewData["PropertyId"]">
+        <div class="booking-option-list">
+            <label class="booking-option">
+                <input type="radio" class="booking-option__input" asp-for="InstantBookEnabled" value="false" />
+                <span class="booking-option__title">Одобрять бронирования вручную</span>
+                <span class="booking-option__badge">Рекомендуется</span>
+                <p class="booking-option__description">Вначале можно принимать решение по каждому запросу отдельно, а затем включить мгновенное бронирование, чтобы гости не ждали вашего ответа.</p>
+            </label>
+            <label class="booking-option">
+                <input type="radio" class="booking-option__input" asp-for="InstantBookEnabled" value="true" />
+                <span class="booking-option__title">Включить мгновенное бронирование</span>
+                <p class="booking-option__description">Гости смогут бронировать автоматически, без вашего подтверждения.</p>
+            </label>
+        </div>
 
-    <button type="submit">Далее</button>
-</form>
+        <button type="submit" class="property-booking-settings-next">Далее</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/booking-settings.js" asp-append-version="true"></script>
+}

@@ -77,11 +77,8 @@ namespace Renty.Web.Models.InputModels.Properties
         // удобства
         public List<Guid> AmenityIds { get; set; } = new();
 
-        //теги квартиры .\Renty.Domain\Models\Properties\PropertyTag.cs
+        // теги квартиры .\Renty.Domain\Models\Properties\PropertyTag.cs — максимум 2
         public List<Guid> TagIds { get; set; } = new();
-
-        // отличительные черты для описания (не PropertyTag) — фиксированный набор, максимум 2
-        public List<string> Highlights { get; set; } = new();
 
         // комнаты создаются отдельно, тут необязательны
         public List<CreateRoomInputModel> Rooms { get; set; } = new();

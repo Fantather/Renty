@@ -1,0 +1,25 @@
+.property-amenities-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 16px;
+}
+
+.property-amenities-page__title {
+    margin: 0 0 32px;
+    font-size: 1.75rem;
+}
+
+.property-amenities-next {
+    margin-top: 24px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.property-amenities-next:hover {
+    background-color: var(--color-accent-hover);
+}

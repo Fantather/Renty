@@ -1,0 +1,19 @@
+@model IEnumerable<CounterRowViewModel>
+
+@foreach (var counter in Model)
+{
+    <div class="counter-row" data-counter="@counter.Key" data-counter-min="@counter.Min">
+        <div class="counter-row__info">
+            <p class="counter-row__title">@counter.Title</p>
+            @if (!string.IsNullOrEmpty(counter.Subtitle))
+            {
+                <p class="counter-row__subtitle">@counter.Subtitle</p>
+            }
+        </div>
+        <div class="counter-row__controls">
+            <button type="button" class="counter-row__btn counter-row__btn--minus">−</button>
+            <span class="counter-row__count">@counter.Min</span>
+            <button type="button" class="counter-row__btn counter-row__btn--plus">+</button>
+        </div>
+    </div>
+}

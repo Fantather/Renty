@@ -1,0 +1,31 @@
+@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@{
+    ViewData["Title"] = "Точное место";
+}
+
+<div class="property-location-page">
+    <h1 class="property-location-page__title">Указатель в нужном месте?</h1>
+    <p class="property-location-page__subtitle">Гости увидят адрес, только когда оформят бронирование.</p>
+
+    <form method="post" asp-action="SavePropertyLocation" asp-route-id="@ViewData["PropertyId"]">
+        <input type="hidden" asp-for="Latitude" id="latitudeInput" />
+        <input type="hidden" asp-for="Longitude" id="longitudeInput" />
+
+        <div class="location-map" id="locationMap"
+             data-lat="@Model.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+             data-lng="@Model.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+             data-api-key="@ViewData["GoogleMapsApiKey"]">
+            <div class="location-map__canvas" id="locationMapCanvas"></div>
+            <div class="location-map__pin">
+                <icon name="home-pin" />
+            </div>
+            <div class="location-map__hint">Двигайте карту, чтобы установить метку в нужном месте</div>
+        </div>
+
+        <button type="submit" class="property-location-next">Далее</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/location-picker.js" asp-append-version="true"></script>
+}

@@ -1,4 +1,4 @@
-/* Search bar */
+/* Строка поиска */
 .search-bar {
     display: flex;
     align-items: center;
@@ -76,14 +76,14 @@
 }
 
 ::deep .search-bar__submit-icon {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
 }
 
 /* === Popovers === */
-/* .popover-panel (shared base) now lives in wwwroot/css/site.css — see note there */
+/* .popover-panel лежит в wwwroot/css/popovers.css */
 
-/* Destination */
+/* Направление */
 .destination-popover {
     left: 0;
     flex-direction: column;
@@ -138,9 +138,7 @@
     color: var(--color-text-muted);
 }
 
-/* Calendar — popover positioning only, the calendar visuals themselves
-   (.date-popover__calendar/__month-title/__grid/__weekday/__day/__nav) now
-   live in site.css, shared with Properties/Details.cshtml's inline calendar. */
+/* Календарь — тут только позиционирование попапа, сама визуальная часть лежит в calendar.css */
 .date-popover {
     left: 50%;
     transform: translateX(-50%);

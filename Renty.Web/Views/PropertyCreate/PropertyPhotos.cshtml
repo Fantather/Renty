@@ -3,17 +3,20 @@
     ViewData["Title"] = "Фото";
 }
 
-<h1>Загрузите фото жилья</h1>
+<div class="property-photos-page">
+    <h1 class="property-photos-page__title">Загрузите фото жилья</h1>
+    <p class="property-photos-page__subtitle">Нужно минимум 5 фотографий.</p>
 
-<form method="post" enctype="multipart/form-data" asp-action="SavePropertyPhotos" asp-route-id="@Model.PropertyId">
-    <input type="hidden" asp-for="PropertyId" />
-    <input type="file" asp-for="Images" multiple accept="image/*" />
-    <span asp-validation-for="Images"></span>
+    <form method="post" enctype="multipart/form-data" asp-action="SavePropertyPhotos" asp-route-id="@Model.PropertyId">
+        <input type="hidden" asp-for="PropertyId" />
+        <input type="file" asp-for="Images" multiple accept="image/*" hidden />
+        <input type="file" id="photoPicker" multiple accept="image/*" hidden />
 
-    <div id="photos-preview"></div>
+        <div class="photo-grid" id="photoGrid"></div>
 
-    <button type="submit">Далее</button>
-</form>
+        <button type="submit" class="btn-primary property-photos-next" disabled>Далее</button>
+    </form>
+</div>
 
 @section Scripts {
     <script type="module" src="~/js/property-create/photos.js" asp-append-version="true"></script>

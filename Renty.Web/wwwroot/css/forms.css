@@ -1,4 +1,4 @@
-/* === Input field === */
+/* === Поле ввода === */
 .input-field {
     display: flex;
     flex-direction: column;
@@ -18,6 +18,11 @@
     outline-offset: -1px;
 }
 
+textarea.input-field__input {
+    min-height: 160px;
+    resize: vertical;
+}
+
 .input-field__input.input-validation-error {
     border-color: var(--color-like);
 }
@@ -28,8 +33,14 @@
     margin: 0;
 }
 
+.input-field__counter {
+    align-self: flex-end;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
 
-/* === Search field === */
+
+/* === Поле поиска === */
 .search-field {
     display: flex;
     flex-direction: column;
@@ -42,8 +53,7 @@
     flex-direction: column;
     gap: 0;
     padding: 8px;
-    width: max-content;
-    min-width: 280px;
+    width: 100%;
     max-height: 320px;
     overflow-y: auto;
 }

@@ -1,6 +1,6 @@
-/* Shared between _SearchBar.cshtml (popover) and Properties/Details.cshtml (inline
-   calendar) — same reason as above: a class used by more than one view can't live
-   in either view's own .cshtml.css. */
+/* Общий для _SearchBar.cshtml (попап) и Properties/Details.cshtml (встроенный
+   календарь) — та же причина, что и выше: класс, который используется в нескольких
+   вьюхах, не может жить в .cshtml.css какой-то одной из них. */
 .date-popover__calendar {
     flex: 1;
     min-width: 0;
@@ -68,6 +68,9 @@
     }
 
 .date-popover__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     width: 32px;
     height: 32px;
@@ -76,8 +79,16 @@
     border: 1px solid var(--color-border);
     background-color: var(--color-surface);
     color: var(--color-text);
-    font-size: 1rem;
     cursor: pointer;
+}
+
+.date-popover__nav-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.date-popover__nav--prev .date-popover__nav-icon {
+    transform: rotate(180deg);
 }
 
     .date-popover__nav:hover {

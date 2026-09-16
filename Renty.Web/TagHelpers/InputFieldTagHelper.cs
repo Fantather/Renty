@@ -24,6 +24,8 @@ namespace Renty.Web.TagHelpers
 
         public string Type { get; set; } = "text";
         public string? Placeholder { get; set; }
+        public int? MaxLength { get; set; }
+        public bool Multiline { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -34,11 +36,31 @@ namespace Renty.Web.TagHelpers
             var inputAttributes = new Dictionary<string, object>
             {
                 ["class"] = "input-field__input",
-                ["type"] = Type,
-                ["placeholder"] = Placeholder ?? For.Metadata.DisplayName ?? For.Name,
             };
-            TagBuilder input = _htmlGenerator.GenerateTextBox(ViewContext, For.ModelExplorer, For.Name, For.Model, format: null, htmlAttributes: inputAttributes);
+            if (Placeholder != null)
+            {
+                inputAttributes["placeholder"] = Placeholder;
+            }
+            if (!Multiline)
+            {
+                inputAttributes["type"] = Type;
+            }
+            if (MaxLength.HasValue)
+            {
+                inputAttributes["maxlength"] = MaxLength.Value;
+            }
+
+            TagBuilder input = Multiline
+                ? _htmlGenerator.GenerateTextArea(ViewContext, For.ModelExplorer, For.Name, rows: 0, columns: 0, htmlAttributes: inputAttributes)
+                : _htmlGenerator.GenerateTextBox(ViewContext, For.ModelExplorer, For.Name, For.Model, format: null, htmlAttributes: inputAttributes);
             output.Content.AppendHtml(input);
+
+            if (MaxLength.HasValue)
+            {
+                TagBuilder counter = new TagBuilder("span");
+                counter.AddCssClass("input-field__counter");
+                output.Content.AppendHtml(counter);
+            }
 
             TagBuilder? validationMessage = _htmlGenerator.GenerateValidationMessage(ViewContext, For.ModelExplorer, For.Name, message: null, tag: null, htmlAttributes: new Dictionary<string, object> { ["class"] = "input-field__error" });
             if(validationMessage != null)

@@ -29,7 +29,7 @@
     </button>
 
     <button type="button" class="search-bar__submit">
-        <icon name="star" class="search-bar__submit-icon" />
+        <icon name="magnifier" class="search-bar__submit-icon" />
     </button>
 
 
@@ -37,10 +37,14 @@
     <div class="popover-panel destination-popover" id="destinationPopover" hidden></div>
 
     <div class="popover-panel date-popover" id="datePopover" hidden>
-        <button type="button" class="date-popover__nav" id="prevMonthBtn">‹</button>
+        <button type="button" class="date-popover__nav date-popover__nav--prev" id="prevMonthBtn">
+            <icon name="chevron-right" class="date-popover__nav-icon" />
+        </button>
         <div class="date-popover__calendar" data-month-slot="0"></div>
         <div class="date-popover__calendar" data-month-slot="1"></div>
-        <button type="button" class="date-popover__nav" id="nextMonthBtn">›</button>
+        <button type="button" class="date-popover__nav date-popover__nav--next" id="nextMonthBtn">
+            <icon name="chevron-right" class="date-popover__nav-icon" />
+        </button>
     </div>
     
     <div class="popover-panel guests-popover" id="guestsPopover" hidden>

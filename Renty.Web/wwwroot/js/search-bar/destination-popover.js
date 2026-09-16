@@ -1,6 +1,6 @@
 import { createPopover } from '../shared/popover.js';
 
-// Popover
+// Попап
 var destinationInput = document.getElementById('destinationInput');
 var destinationDismissible = createPopover('destinationInput', 'destinationPopover', function () {
     renderResults(destinationInput.value);
@@ -11,7 +11,7 @@ destinationInput.addEventListener('input', function () {
     renderResults(destinationInput.value);
 });
 
-// Mock data
+// Моковые данные
 // TODO: когда бэкенд будет готов, searchDestinations должна дёргать реальный эндпоинт вместо фильтрации мока.
 var mockDestinations = [
     { id: 'rec-1', title: 'Поблизости', subtitle: 'Узнать, что есть поблизости' },
@@ -35,7 +35,7 @@ async function searchDestinations(query) {
     });
 }
 
-// Rendering
+// Отрисовка
 async function renderResults(query) {
     var results = await searchDestinations(query);
     destinationPopover.innerHTML = '';

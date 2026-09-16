@@ -1,0 +1,27 @@
+@model Renty.Web.Models.PropertyCreate.TagsPageViewModel
+@{
+    ViewData["Title"] = "Отличительные черты";
+}
+
+<div class="property-tags-page">
+    <h1 class="property-tags-page__title">Выберите одну или две отличительные черты</h1>
+
+    <form method="post" asp-action="SavePropertyTags" asp-route-id="@ViewData["PropertyId"]">
+        <div class="option-card-grid">
+            @foreach (var tag in Model.Tags)
+            {
+                <label class="option-card">
+                    <input type="checkbox" class="option-card__input" name="TagIds" value="@tag.Id" />
+                    <icon name="@tag.IconName" class="option-card__icon" />
+                    <span class="option-card__label">@tag.Name</span>
+                </label>
+            }
+        </div>
+
+        <button type="submit" class="property-tags-next">Далее</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/tags.js" asp-append-version="true"></script>
+}

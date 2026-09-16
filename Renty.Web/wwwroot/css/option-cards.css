@@ -1,0 +1,48 @@
+/* Сетка карточек-опций с иконкой — используется на нескольких шагах создания
+   квартиры (тип жилья, удобства), поэтому не CSS-isolated под одну из них. */
+.option-card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.option-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.option-card:hover {
+    background-color: var(--color-hover);
+}
+
+.option-card.is-selected {
+    border-width: 2px;
+    border-color: var(--color-text);
+    padding: 19px;
+}
+
+.option-card__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.option-card__icon {
+    width: 28px;
+    height: 28px;
+}
+
+.option-card__label {
+    font-weight: 600;
+}
+
+.option-card__description {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}

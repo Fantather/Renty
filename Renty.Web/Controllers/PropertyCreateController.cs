@@ -16,9 +16,11 @@ namespace Renty.Web.Controllers
     public class PropertyCreateController : Controller
     {
         private readonly IMediator _mediator;
-        public PropertyCreateController(IMediator mediator)
+        private readonly IConfiguration _configuration;
+        public PropertyCreateController(IMediator mediator, IConfiguration configuration)
         {
             _mediator = mediator;
+            _configuration = configuration;
         }
         [HttpGet("address")]
         public IActionResult PropertyAddress()
@@ -31,35 +33,50 @@ namespace Renty.Web.Controllers
         public IActionResult SavePropertyAddress(PropertyInputModel model)
         {
             var id = Guid.NewGuid();
+            return RedirectToAction(nameof(PropertyLocation), new { id });
+        }
+
+        // Заглушка: SavePropertyAddress пока не геокодит адрес (нет реального сохранения черновика),
+        // поэтому карта стартует с захардкоженного центра, а не с координат введённого адреса.
+        [HttpGet("location/{id:guid}")]
+        public IActionResult PropertyLocation(Guid id)
+        {
+            ViewData["PropertyId"] = id;
+            ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
+
+            return View(new PropertyInputModel { Latitude = 50.4501, Longitude = 30.5234 });
+        }
+
+        // TODO: сохранить Latitude/Longitude квартиры.
+        [HttpPost("location/{id:guid}")]
+        public IActionResult SavePropertyLocation(Guid id, PropertyInputModel model)
+        {
             return RedirectToAction(nameof(PropertyCategory), new { id });
         }
 
         // Заглушка: PropertiesCategory — это темы для фильтра на главной ("Красивые виды",
         // "У моря" и т.п.), не тип жилья. Настоящий справочник типов жилья ещё не существует.
         [HttpGet("category/{id:guid}")]
-        public async Task<IActionResult> PropertyCategory(Guid id)
+        public IActionResult PropertyCategory(Guid id)
         {
-
-            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
-
-            // Если ошибка возвращаем на первый шаг
-            if (!result.IsSuccess)
-                return RedirectToAction(nameof(SavePropertyAddress));
+            // TODO: SavePropertyAddress пока не создаёт черновик в БД (нет ключа Google Geocoding API),
+            // поэтому GetPropertyDraftQuery тут всегда фейлится и рвёт визард на первом шаге.
+            // Отключено, пока SavePropertyAddress не будет реально сохранять черновик.
+            //var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
+            //if (!result.IsSuccess)
+            //    return RedirectToAction(nameof(SavePropertyAddress));
 
             ViewData["PropertyId"] = id;
             var vm = new CategoryPageViewModel
             {
                 Categories = new List<CategoryViewModel>
                 {
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Дом" },
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Name = "Квартира" },
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Гостевой дом" },
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Гостиница" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Дом", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Name = "Квартира", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Гостевой дом", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Гостиница", IconName = "star" },
                 },
-                Property = new PropertyInputModel
-                {
-                    CategoryId = result.Data!.CategoryId!.Value
-                }
+                Property = new PropertyInputModel()
             };
 
             return View(vm);
@@ -97,10 +114,10 @@ namespace Renty.Web.Controllers
             {
                 Amenities = new List<AmenityViewModel>
                 {
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000101"), Name = "Wi-Fi" },
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000102"), Name = "Кондиционер" },
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000103"), Name = "Кухня" },
-                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000104"), Name = "Стиральная машина" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000101"), Name = "Wi-Fi", Description = "Бесплатный Wi-Fi", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000102"), Name = "Кондиционер", Description = "Система охлаждения воздуха", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000103"), Name = "Кухня", Description = "Базовая кухня в наличии", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000104"), Name = "Стиральная машина", Description = "Стиральная машина для гостей", IconName = "star" },
                 },
             };
 
@@ -138,19 +155,33 @@ namespace Renty.Web.Controllers
         [HttpPost("title/{id:guid}")]
         public IActionResult SavePropertyTitle(Guid id, PropertyInputModel model)
         {
-            return RedirectToAction(nameof(PropertyHighlights), new { id });
+            return RedirectToAction(nameof(PropertyTags), new { id });
         }
 
-        [HttpGet("highlights/{id:guid}")]
-        public IActionResult PropertyHighlights(Guid id)
+        // Заглушка: реального Query/Handler над справочником Tag ещё нет.
+        [HttpGet("tags/{id:guid}")]
+        public IActionResult PropertyTags(Guid id)
         {
             ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            var vm = new TagsPageViewModel
+            {
+                Tags = new List<TagViewModel>
+                {
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000201"), Name = "Тихое", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000202"), Name = "Уникальное", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000203"), Name = "Для семей с детьми", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000204"), Name = "Стильное", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000205"), Name = "В центре", IconName = "star" },
+                    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000206"), Name = "Простор", IconName = "star" },
+                },
+            };
+
+            return View(vm);
         }
 
-        // TODO: сохранить особенности квартиры (Highlights) (максимум 2).
-        [HttpPost("highlights/{id:guid}")]
-        public IActionResult SavePropertyHighlights(Guid id, PropertyInputModel model)
+        // TODO: сохранить TagIds квартиры (максимум 2).
+        [HttpPost("tags/{id:guid}")]
+        public IActionResult SavePropertyTags(Guid id, PropertyInputModel model)
         {
             return RedirectToAction(nameof(PropertyDescription), new { id });
         }
@@ -187,7 +218,7 @@ namespace Renty.Web.Controllers
         public IActionResult PropertyPricing(Guid id)
         {
             ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            return View(new PropertyInputModel { WeekendPricePercent = 0 });
         }
 
         // TODO: сохранить PricePerNight/WeekendPricePercent квартиры.

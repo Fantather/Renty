@@ -77,10 +77,14 @@
             <section id="calendar" class="property-calendar">
                 <h2>Выберите даты</h2>
                 <div class="property-calendar__months">
-                    <button type="button" id="calendarPrevBtn" class="date-popover__nav">‹</button>
+                    <button type="button" id="calendarPrevBtn" class="date-popover__nav date-popover__nav--prev">
+                        <icon name="chevron-right" class="date-popover__nav-icon" />
+                    </button>
                     <div class="date-popover__calendar" data-month-slot="0"></div>
                     <div class="date-popover__calendar" data-month-slot="1"></div>
-                    <button type="button" id="calendarNextBtn" class="date-popover__nav">›</button>
+                    <button type="button" id="calendarNextBtn" class="date-popover__nav date-popover__nav--next">
+                        <icon name="chevron-right" class="date-popover__nav-icon" />
+                    </button>
                 </div>
             </section>
 
@@ -107,7 +111,8 @@
                 @if (Model.Latitude.HasValue && Model.Longitude.HasValue)
                 {
                     <div id="propertyMap" class="property-location__map"
-                         data-lat="@Model.Latitude" data-lng="@Model.Longitude"
+                         data-lat="@Model.Latitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                         data-lng="@Model.Longitude.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)"
                          data-name="@Model.Name" data-api-key="@Model.GoogleMapsApiKey"></div>
                     <template id="mapMarkerIconTemplate"><icon name="star" /></template>
                 }
@@ -143,7 +148,7 @@
                             <span class="booking-card__guests-label">Для кого</span>
                             <strong id="guestsText">1 гостей</strong>
                         </span>
-                        <span class="booking-card__guests-chevron">⌄</span>
+                        <icon name="chevron" class="booking-card__guests-chevron" />
                     </button>
                     <div class="popover-panel guests-popover" id="guestsPopover" hidden>
                         <partial name="_GuestsPopoverRows" />
