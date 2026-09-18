@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Common;
 using Renty.Domain.ServiceModels.Places;
 using System;
@@ -12,5 +12,5 @@ namespace Renty.Application.Queries.Autocomplete
     /// </summary>
     /// <param name="Input">Текст поиска</param>
     /// <param name="SessionToken">Сессионный токен для группировки этапов запроса и выбора в поиске автозаполнения</param>
-    public record AutocompleteQuery(string Input, Guid SessionToken) : IRequest<OperationResult<List<AddressSuggestionDto>>>;
+    public record AutocompleteQuery(string Input, string SessionToken) : IRequest<OperationResult<List<AddressSuggestionDto>>>;
 }

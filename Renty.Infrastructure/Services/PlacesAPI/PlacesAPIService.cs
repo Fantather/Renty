@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
 using Renty.Domain.Interfaces;
 using Renty.Domain.ServiceModels.Places;
 using Renty.Infrastructure.Services.PlacesAPI.Models;
@@ -46,7 +46,8 @@ namespace Renty.Infrastructure.Services.PlacesAPI
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttpRequestException($"Google Places autocomplete failed: {response.StatusCode}");
+                Console.WriteLine($"Google Places autocomplete failed: {response.StatusCode}");
+                return new();
             }
 
             var payload = await response.Content.ReadFromJsonAsync<GooglePlacesResponse>(ct);

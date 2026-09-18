@@ -1,4 +1,4 @@
-﻿using Renty.Domain.Models.Locations;
+using Renty.Domain.Models.Locations;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Media;
 using Renty.Domain.Models.Orders;
@@ -36,12 +36,10 @@ namespace Renty.Domain.Models.Properties
         public virtual PropertiesCategory Category { get; set; }
 
         // Адрес и местоположение
-        public string Address { get; set; } = string.Empty;
 
-        public string? Street { get; set; }
-
-        //область
-        public string? District { get; set; }
+        public Guid AddressId { get; set; }
+        [ForeignKey(nameof(AddressId))]
+        public virtual Address Address { get;set; }
 
         public Guid CityId { get; set; }
         [ForeignKey(nameof(CityId))]
@@ -50,11 +48,6 @@ namespace Renty.Domain.Models.Properties
         public Guid CountryId { get; set; }
         [ForeignKey(nameof(CountryId))]
         public virtual Country Country { get; set; }
-
-        // Координаты недвижимости для отображения на карте
-        [Column(TypeName = "geometry (Point, 4326)")]
-        public Point? Location { get; set; }
-
 
         // Цена
         public decimal PricePerNight { get; set; }

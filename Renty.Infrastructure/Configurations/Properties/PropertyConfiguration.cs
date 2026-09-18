@@ -22,8 +22,7 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasIndex(p => p.HostId);
             builder.HasIndex(p => p.CityId);
             builder.HasIndex(p => p.CategoryId);
-            builder.HasIndex(c => c.Location)
-               .HasMethod("gist");
+            
             //builder.HasIndex(p => p.IsActive);
             builder.HasIndex(p => p.PricePerNight);
 
@@ -39,19 +38,6 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.Property(p => p.Description)
                 .IsRequired()
                 .HasMaxLength(5000);
-
-            builder.Property(p => p.Address)
-                .IsRequired()
-                .HasMaxLength(500);
-
-            builder.Property(p => p.Street)
-                .HasMaxLength(200);
-
-            builder.Property(p => p.District)
-                .HasMaxLength(200);
-
-            builder.Property(c => c.Location)
-               .HasColumnType("geometry(Point, 4326)");
 
             builder.Property(p => p.PricePerNight)
                 .HasPrecision(18, 2);
@@ -80,6 +66,11 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasOne(p => p.Category)
                 .WithMany()
                 .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(p => p.Address)
+                .WithMany()
+                .HasForeignKey(p => p.AddressId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(p => p.City)
