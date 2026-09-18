@@ -1,6 +1,5 @@
 using MediatR;
 using Renty.Application.Common;
-using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.CreateProperty;
 using Renty.Application.Helpers;
 using Renty.Application.Queries.Property;
@@ -33,7 +32,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var amenityIds = property.PropertyAmenities.Select(a => a.AmenityId).ToList();
 
-            var images = property.PropertyImages.Select(i => new ImageDto { IsPrimary = i.IsPrimary, ImageUrl = i.ImageUrl, DisplayOrder = i.DisplayOrder, CreatedAt = i.CreatedAt }).ToList();
+            var images = property.PropertyImages.Select(i => new OrderedImageDto { ImageId = i.Id, IsPrimary = i.IsPrimary, ImageUrl = i.ImageUrl, DisplayOrder = i.DisplayOrder }).ToList();
 
 
             var propertyDraft = new PropertyDraftDto

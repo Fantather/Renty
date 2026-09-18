@@ -56,6 +56,22 @@ namespace Renty.Web.Controllers
         [HttpPost("location/{id:guid}")]
         public IActionResult SavePropertyLocation(Guid id, PropertyInputModel model)
         {
+            return RedirectToAction(nameof(PropertyLocationVisibility), new { id });
+        }
+
+        [HttpGet("location-visibility/{id:guid}")]
+        public IActionResult PropertyLocationVisibility(Guid id)
+        {
+            ViewData["PropertyId"] = id;
+            ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
+
+            return View(new PropertyInputModel { Latitude = 50.4501, Longitude = 30.5234, ShowExactLocation = true });
+        }
+
+        // TODO: сохранить ShowExactLocation квартиры.
+        [HttpPost("location-visibility/{id:guid}")]
+        public IActionResult SavePropertyLocationVisibility(Guid id, PropertyInputModel model)
+        {
             return RedirectToAction(nameof(PropertyCategory), new { id });
         }
 
