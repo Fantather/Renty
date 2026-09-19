@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Renty.Application.DTOs.GetProperty;
 using Renty.Domain.Models.Properties;
 using Renty.Domain.Models.User;
@@ -23,6 +23,7 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
                 .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.Country.Name))
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address.FullAddress))
 
                 // Распаковка Details
                 .ForMember(dest => dest.MaxGuests, opt => opt.MapFrom(src => src.Details.MaxGuests))
@@ -56,8 +57,8 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.RatingBreakdown, opt => opt.Ignore())
 
                 // Координаты (если они есть в сущности, укажите MapFrom)
-                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location != null ? src.Location.Y : (double?)null))
-                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location != null ? src.Location.X : (double?)null));
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Latitude : (double?)null))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Longitude : (double?)null));
         }
     }
 }

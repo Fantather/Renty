@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 using NetTopologySuite.Geometries;
 using Renty.Domain.Models;
@@ -54,6 +54,40 @@ namespace Renty.Infrastructure.Seeders
                 Console.WriteLine("Ошибка: Не найдены необходимые зависимости для сидирования квартир.");
                 return;
             }
+
+            var addressOdesa = await context.Set<Address>().FirstOrDefaultAsync(a => a.PlaceId == "seed-odesa-arkadia");
+
+            if (addressOdesa == null)
+            {
+                addressOdesa = new Address
+                {
+                    Id = Guid.CreateVersion7(),
+                    PlaceId = "seed-odesa-arkadia",
+                    FullAddress = "ул. Аркадийское плато, 36",
+                    Street = "Аркадийское плато",
+                    Location = new Point(30.767277773685088, 46.429824395462816) { SRID = 4326 },
+                    CityId = odesa.Id
+                };
+                await context.Set<Address>().AddAsync(addressOdesa);
+                await context.SaveChangesAsync();
+            }
+
+            var addressKyiv = await context.Set<Address>().FirstOrDefaultAsync(a => a.PlaceId == "seed-kyiv-prorizna");
+            if (addressKyiv == null)
+            {
+                addressKyiv = new Address
+                {
+                    Id = Guid.CreateVersion7(),
+                    PlaceId = "seed-kyiv-prorizna",
+                    FullAddress = "8 ул. Прорезная",
+                    Street = "Прорезная",
+                    Location = new Point(30.52030844107298, 50.448625765764874) { SRID = 4326 },
+                    CityId = kyiv.Id
+                };
+                await context.Set<Address>().AddAsync(addressKyiv);
+                await context.SaveChangesAsync();
+            }
+
 
             var counter = 4;
             var propertiesToSeed = new List<Property>();
@@ -115,10 +149,9 @@ namespace Renty.Infrastructure.Seeders
                     Description = "Светлая квартира с прямым видом на море, в двух минутах от пляжа.",
                     HostId = hostOdesa.Id,
                     CategoryId = catSea.Id,
-                    Address = $"ул. Аркадийское плато, 36 (Кв. {index})",
+                    AddressId = addressOdesa.Id,
                     CityId = odesa.Id,
                     CountryId = odesa.CountryId,
-                    Location = new Point(30.767277773685088, 46.429824395462816),
                     PricePerNight = Random.Shared.Next(1000, 5000),
                     Currency = "UAH",
                     Status = PropertyStatusEnum.Active,
@@ -235,10 +268,9 @@ namespace Renty.Infrastructure.Seeders
                     Description = "Стильный лофт в самом центре столицы. Идеально для работы и отдыха.",
                     HostId = hostKyiv.Id,
                     CategoryId = catCenter!.Id,
-                    Address = $"8 ул. Прорезная (Кв. {index})",
+                    AddressId = addressKyiv.Id,
                     CityId = kyiv.Id,
                     CountryId = kyiv.CountryId,
-                    Location = new Point(30.52030844107298, 50.448625765764874),
                     PricePerNight = Random.Shared.Next(1000, 2500),
                     Reviews = reviews,
                     Currency = "UAH",

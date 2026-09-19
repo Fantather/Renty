@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
+using Org.BouncyCastle.Crypto.Engines;
 using Renty.Domain.Interfaces;
 using Renty.Domain.ServiceModels.Locations;
 using Renty.Infrastructure.Services.GoogleGeocoding.Models;
@@ -20,20 +21,20 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             _options = options.Value;
         }
 
-        public async Task<AddressDetailsDto?> GetAddressByCoordinatesAsync(double latitude, double longitude)
+        public async Task<AddressDetailsDto?> GetAddressByCoordinatesAsync(double latitude, double longitude, CancellationToken ct = default)
         {
             var lat = latitude.ToString(CultureInfo.InvariantCulture);
             var lng = longitude.ToString(CultureInfo.InvariantCulture);
 
             var requestUri = $"{_baseUri}?latlng={lat},{lng}&key={_options.GeocodingApiKey}&language=ru";
 
-            var response = await _httpClient.GetAsync(requestUri);
+            var response = await _httpClient.GetAsync(requestUri, ct);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
 
-            var json = await response.Content.ReadAsStringAsync();
+            var json = await response.Content.ReadAsStringAsync(ct);
             var geocodeResponse = JsonSerializer.Deserialize<GoogleGeocodeResponse>(json);
 
             if (geocodeResponse == null || geocodeResponse.Status != "OK" || !geocodeResponse.Results.Any())
@@ -44,6 +45,7 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             var result = geocodeResponse.Results.First();
             var dto = new AddressDetailsDto
             {
+                PlaceId = result.PlaceId,
                 FormattedAddress = result.FormattedAddress,
                 Latitude = latitude,
                 Longitude = longitude
@@ -54,17 +56,17 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             return dto;
         }
 
-        public async Task<AddressDetailsDto?> GetAddressDetailsAsync(string address)
+        public async Task<AddressDetailsDto?> GetAddressDetailsAsync(string address, CancellationToken ct = default)
         {
             var requestUri = $"{_baseUri}?address={Uri.EscapeDataString(address)}&key={_options.GeocodingApiKey}&language=ru";
 
-            var response = await _httpClient.GetAsync(requestUri);
+            var response = await _httpClient.GetAsync(requestUri, ct);
             if (!response.IsSuccessStatusCode)
             {
                 return null;
             }
 
-            var json = await response.Content.ReadAsStringAsync();
+            var json = await response.Content.ReadAsStringAsync(ct);
             var geocodeResponse = JsonSerializer.Deserialize<GoogleGeocodeResponse>(json);
 
             if (geocodeResponse == null || geocodeResponse.Status != "OK" || !geocodeResponse.Results.Any())
@@ -75,6 +77,7 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             var result = geocodeResponse.Results.First();
             var dto = new AddressDetailsDto
             {
+                PlaceId = result.PlaceId,
                 FormattedAddress = result.FormattedAddress,
                 Latitude = result.Geometry.Location.Lat,
                 Longitude = result.Geometry.Location.Lng
@@ -83,6 +86,57 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             ParseAddressComponents(result.AddressComponents, dto);
 
             return dto;
+        }
+
+        public async Task<AddressDetailsDto?> GetAddressDetailsByPlaceIdAsync(string placeId, CancellationToken ct = default)
+        {
+            var requestUri = $"{_baseUri}?place_id={Uri.EscapeDataString(placeId)}&key={_options.GeocodingApiKey}&language=ru";
+
+            var response = await _httpClient.GetAsync(requestUri, ct);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var json = await response.Content.ReadAsStringAsync(ct);
+            var geocodeResponse = JsonSerializer.Deserialize<GoogleGeocodeResponse>(json);
+
+            if (geocodeResponse == null || geocodeResponse.Status != "OK" || !geocodeResponse.Results.Any())
+            {
+                return null;
+            }
+
+            var result = geocodeResponse.Results.First();
+            var dto = new AddressDetailsDto
+            {
+                PlaceId = result.PlaceId,
+                FormattedAddress = result.FormattedAddress,
+                Latitude = result.Geometry.Location.Lat,
+                Longitude = result.Geometry.Location.Lng
+            };
+
+            ParseAddressComponents(result.AddressComponents, dto);
+
+            return dto;
+        }
+
+        public async Task<(double Lat, double Lng)?> GetCityCenterCoordinatesAsync(string cityName, string? countryName, CancellationToken ct = default)
+        {
+            var query = countryName != null ? $"{cityName}, {countryName}" : cityName;
+            var requestUri = $"{_baseUri}?address={Uri.EscapeDataString(query)}&key={_options.GeocodingApiKey}&language=ru";
+
+            var response = await _httpClient.GetAsync(requestUri, ct);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var json = await response.Content.ReadAsStringAsync(ct);
+            var geocodeResponse = JsonSerializer.Deserialize<GoogleGeocodeResponse>(json);
+
+            if (geocodeResponse?.Status != "OK" || !geocodeResponse.Results.Any())
+                return null;
+
+            var location = geocodeResponse.Results.First().Geometry.Location;
+            return (location.Lat, location.Lng);
         }
 
         // Общий приватный метод

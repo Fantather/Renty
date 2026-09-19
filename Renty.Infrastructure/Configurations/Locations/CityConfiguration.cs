@@ -46,6 +46,11 @@ namespace Renty.Infrastructure.Configurations.Locations
                 .WithMany(r => r.Cities)
                 .HasForeignKey(c => c.RegionId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasMany(c => c.Addresses)
+                .WithOne(a => a.City)
+                .HasForeignKey(a => a.CityId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

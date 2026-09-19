@@ -43,10 +43,10 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 Description = property.Description,
                 CountryId = property.CountryId,
                 CityId = property.CityId,
-                Address = property.Address,
-                Street = property.Street,
-                Latitude = property?.Location?.Coordinate.X,
-                Longitude = property?.Location?.Coordinate.Y,
+                Address = property.Address.FullAddress,
+                Street = property.Address.Street,
+                Latitude = property.Address.Location?.Coordinate.Y,
+                Longitude = property.Address.Location?.Coordinate.X,
                 Floor = property?.Details.Floor,
                 FloorsCount = property?.Details.FloorsCount,
                 BathroomsCount = property?.Details.BathroomsCount,
@@ -64,7 +64,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 AmenityIds = amenityIds,
                 Images = images,
                 Discounts = null,
-                District = property?.District,
+                District = property?.Address.District,
                 InstantBookEnabled = null,
                 ShowExactLocation = null
             };

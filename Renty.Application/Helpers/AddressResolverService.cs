@@ -1,0 +1,97 @@
+using Microsoft.Extensions.Logging;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
+using Renty.Application.Common;
+using Renty.Application.DTOs.CreateProperty;
+using Renty.Domain.Interfaces;
+using Renty.Domain.Models.Locations;
+using Renty.Domain.ServiceModels.Locations;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Renty.Application.Helpers
+{
+    public class AddressResolverService
+    {
+        private readonly IAddressRepository _addressRepository;
+        private readonly IGoogleGeocodingService _geocodingService;
+        private readonly ILocationResolverService _locationResolver;
+
+        public AddressResolverService(
+            IAddressRepository addressRepository,
+            IGoogleGeocodingService geocodingService,
+            ILocationResolverService locationResolver)
+        {
+            _addressRepository = addressRepository;
+            _geocodingService = geocodingService;
+            _locationResolver = locationResolver;
+        }
+
+        public async Task<OperationResult<Address>> ResolveAsync(CreatePropertyDto dto, CancellationToken ct)
+        {
+
+            // Если есть placeId
+            if (!string.IsNullOrWhiteSpace(dto.PlaceId))
+            {
+                var existing = await _addressRepository.GetByPlaceIdAsync(dto.PlaceId, ct);
+                if (existing != null)
+                    return OperationResult<Address>.Success(existing);
+                
+            }
+
+            AddressDetailsDto? geoResult;
+
+            if (!string.IsNullOrWhiteSpace(dto.PlaceId))
+            {
+                geoResult = await _geocodingService.GetAddressDetailsByPlaceIdAsync(dto.PlaceId);
+            }
+
+            // Если есть координаты, revers geocode
+            if (dto.Latitude.HasValue && dto.Longitude.HasValue)
+            {
+                geoResult = await _geocodingService.GetAddressByCoordinatesAsync(dto.Latitude.Value, dto.Longitude.Value);
+            }
+            // Если только строка адреса
+            else if (!string.IsNullOrWhiteSpace(dto.RawAddress))
+            {
+                geoResult = await _geocodingService.GetAddressDetailsAsync(dto.RawAddress);
+            }
+            else
+            {
+                return OperationResult<Address>.Fail("Недостаточно данных для определения адреса");
+            }
+
+            if(geoResult == null)
+                return OperationResult<Address>.Fail("Не удалось определить координаты адреса. Укажите точку на карте вручную.");
+
+            // Если появился placeId после geocode
+            if (!string.IsNullOrWhiteSpace(geoResult.PlaceId))
+            {
+                var existing = await _addressRepository.GetByPlaceIdAsync(geoResult.PlaceId, ct);
+                if (existing != null)
+                    return OperationResult<Address>.Success(existing);
+            }
+
+            var country = await _locationResolver.ResolveCountryAsync(geoResult.CountryName, geoResult.CountryCode, ct);
+            var city = await _locationResolver.ResolveCityAsync(dto.CityName, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
+
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+
+            var address = new Address
+            {
+                PlaceId = geoResult.PlaceId ?? dto.PlaceId,
+                FullAddress = geoResult.FormattedAddress,
+                Street = geoResult.StreetName,
+                District = geoResult.RegionName,
+                Location = geometryFactory.CreatePoint(new Coordinate(geoResult.Longitude, geoResult.Latitude)),
+                CityId = city.Id
+            };
+
+            await _addressRepository.AddAsync(address, ct);
+
+            return OperationResult<Address>.Success(address);
+        }
+
+    }
+}

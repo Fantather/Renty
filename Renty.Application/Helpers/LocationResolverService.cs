@@ -1,4 +1,4 @@
-﻿using Renty.Domain.Interfaces;
+using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Locations;
 
 
@@ -9,15 +9,18 @@ namespace Renty.Application.Services
         private readonly ICountryRepository _countryRepository;
         private readonly IRegionRepository _regionRepository;
         private readonly ICityRepository _cityRepository;
+        private readonly IGoogleGeocodingService _geocodingService;
 
         public LocationResolverService(
             ICountryRepository countryRepository,
             IRegionRepository regionRepository,
-            ICityRepository cityRepository)
+            ICityRepository cityRepository,
+            IGoogleGeocodingService geocodingService)
         {
             _countryRepository = countryRepository;
             _regionRepository = regionRepository;
             _cityRepository = cityRepository;
+            _geocodingService = geocodingService;
         }
 
         public async Task<Country> ResolveCountryAsync(string? countryName, string? countryCode, CancellationToken ct = default)
@@ -41,10 +44,9 @@ namespace Renty.Application.Services
             return country;
         }
 
-        public async Task<City> ResolveCityAsync(string? cityName, Guid countryId, double lat, double lng, string? regionName, CancellationToken ct = default)
+        public async Task<City> ResolveCityAsync(string? cityName, Guid countryId, string? countryName, string? regionName, CancellationToken ct = default)
         {
             var name = string.IsNullOrWhiteSpace(cityName) ? "Unknown" : cityName;
-            var cities = await _cityRepository.GetCitiesByCountryAsync(countryId, ct);
             var city = await _cityRepository.GetCityByNameAndCountryAsync(name, countryId, ct);
 
             if (city == null)
@@ -62,13 +64,16 @@ namespace Renty.Application.Services
                     regionId = region.Id;
                 }
 
+                // Запрос координат центра города
+                var cityCoords = await _geocodingService.GetCityCenterCoordinatesAsync(name, countryName, ct);
+
                 city = new City
                 {
                     Name = name,
                     CountryId = countryId,
                     RegionId = regionId,
-                    Latitude = (decimal)lat,
-                    Longitude = (decimal)lng
+                    Latitude = cityCoords.HasValue ? (decimal)cityCoords.Value.Lat : null,
+                    Longitude = cityCoords.HasValue ? (decimal)cityCoords.Value.Lng : null
                 };
                 await _cityRepository.AddAsync(city, ct);
             }

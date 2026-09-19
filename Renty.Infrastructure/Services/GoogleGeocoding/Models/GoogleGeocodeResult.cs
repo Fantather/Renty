@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -7,6 +7,9 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding.Models
 {
     public class GoogleGeocodeResult
     {
+        [JsonPropertyName("place_id")]
+        public string PlaceId { get; set; } = string.Empty;
+
         [JsonPropertyName("address_components")]
         public List<AddressComponent> AddressComponents { get; set; } = new();
 

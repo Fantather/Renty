@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Renty.Domain.Models.Locations
@@ -30,5 +30,7 @@ namespace Renty.Domain.Models.Locations
 
         // вместо удаления
         public bool IsActive { get; set; } = true;
+
+        public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
     }
 }

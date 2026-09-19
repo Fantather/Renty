@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +6,7 @@ namespace Renty.Domain.ServiceModels.Locations
 {
     public class AddressDetailsDto
     {
+        public string? PlaceId { get; set; }
         public string FormattedAddress { get; set; } = string.Empty;
         public string CountryName { get; set; } = string.Empty;
         public string CountryCode { get; set; } = string.Empty;
