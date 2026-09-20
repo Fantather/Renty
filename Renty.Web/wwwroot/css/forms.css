@@ -13,10 +13,10 @@
     font: inherit;
 }
 
-.input-field__input:focus {
-    outline: 2px solid var(--color-accent);
-    outline-offset: -1px;
-}
+    .input-field__input:focus {
+        outline: 2px solid var(--color-accent);
+        outline-offset: -1px;
+    }
 
 textarea.input-field__input {
     min-height: 160px;
@@ -71,26 +71,26 @@ textarea.input-field__input {
     cursor: pointer;
 }
 
-.search-field__item:hover {
-    background-color: var(--color-hover);
-}
+    .search-field__item:hover {
+        background-color: var(--color-hover);
+    }
 
 .search-field__item-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     flex-shrink: 0;
-    border-radius: 50%;
+    border-radius: var(--radius-md);
     background-color: var(--color-bg);
     color: var(--color-text-muted);
 }
 
-.search-field__item-icon svg {
-    width: 16px;
-    height: 16px;
-}
+    .search-field__item-icon svg {
+        width: 35px;
+        height: 35px;
+    }
 
 .search-field__item-title {
     font-weight: 600;

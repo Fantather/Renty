@@ -8,9 +8,9 @@
     </button>
 
     <div class="popover-panel main-menu__popover" id="mainMenuPopover" hidden>
-        <a class="main-menu__item" asp-controller="PropertyCreate" asp-action="PropertyAddress">Сдать жильё</a>
         @if (isAuthenticated)
         {
+            <a class="main-menu__item" asp-controller="PropertyCreate" asp-action="PropertyAddress">Сдать жильё</a>
             <a class="main-menu__item" asp-controller="Users" asp-action="Profile">Профиль</a>
             <form method="post" asp-controller="Account" asp-action="Logout">
                 <button type="submit" class="main-menu__item">Выйти</button>

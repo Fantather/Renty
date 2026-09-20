@@ -10,3 +10,22 @@
     gap: 24px 20px;
     padding-bottom: 24px;
 }
+
+.home-stack__search-row {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 850px) 1fr;
+}
+
+.home-stack__search-bar-wrap {
+    grid-column: 2;
+}
+
+.home-stack__map-button {
+    grid-column: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: end;
+    align-self: center;
+    padding: 8px 16px;
+}
