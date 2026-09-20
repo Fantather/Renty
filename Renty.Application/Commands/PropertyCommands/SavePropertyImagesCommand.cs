@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Renty.Application.Common;
 using Renty.Application.DTOs.CreateProperty;
@@ -17,6 +17,6 @@ namespace Renty.Application.Commands.PropertyCommands
     /// <param name="OrderedImages">Последовательность изображений</param>
 
     /// <param name="Files">Список загруженных файлов</param>
-    public record SavePropertyImagesCommand(Guid PropertyId, Guid CurrentUserId, string WebRootPath, List<OrderedImageRef> OrderedImages, List<IFormFile> Files):IRequest<OperationResult<PropertyImageResponse>>;
+    public record SavePropertyImagesCommand(Guid PropertyId, Guid CurrentUserId, string WebRootPath, List<OrderedImageRef> OrderedImages, List<IFormFile> Files):IRequest<OperationResult<List<OrderedImageDto>>>;
 
 }

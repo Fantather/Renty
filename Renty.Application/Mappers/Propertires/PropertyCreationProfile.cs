@@ -16,7 +16,7 @@ namespace Renty.Application.Mappers.Propertires
             //Геометрия
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
-            CreateMap<CreatePropertyDto, Property>()
+            CreateMap<SavePropertyAddressDto, Property>()
                 //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Title))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RawAddress))
 
@@ -38,7 +38,7 @@ namespace Renty.Application.Mappers.Propertires
 
 
             //для обратного геокодирования
-            CreateMap<AddressDetailsDto, CreatePropertyDto>()
+            CreateMap<AddressDetailsDto, SavePropertyAddressDto>()
                 .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Latitude))
                 .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Longitude))
                 .ForMember(dest => dest.CityName, opt =>

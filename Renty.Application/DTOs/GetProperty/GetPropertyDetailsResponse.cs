@@ -1,4 +1,4 @@
-﻿using Renty.Application.DTOs.Common;
+using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.GetReviews;
 using Renty.Application.DTOs.GetProperties;
 
@@ -50,6 +50,9 @@ namespace Renty.Application.DTOs.GetProperty
         public string? District { get; set; }
         public string? Street { get; set; }
         public string Address { get; set; } = string.Empty;
+        public bool ShowExactLocation { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
         // Координаты местополложения на карте
         //public Point? Point { get; set; }
 

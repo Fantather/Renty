@@ -24,6 +24,9 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
                 .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.Country.Name))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address.FullAddress))
+                .ForMember(dest => dest.ShowExactLocation, opt => opt.MapFrom(src => src.ShowExactLocation))
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Latitude))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address.Longitude))
 
                 // Распаковка Details
                 .ForMember(dest => dest.MaxGuests, opt => opt.MapFrom(src => src.Details.MaxGuests))

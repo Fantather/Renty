@@ -30,5 +30,10 @@ namespace Renty.Infrastructure.Repository
             await _dbSet.AddAsync(address, ct);
             await _context.SaveChangesAsync(ct);
         }
+
+        public async Task<Address?> GetByLocationAsync(double latitude ,double longitude, CancellationToken ct = default)
+        {
+            return await _dbSet.FirstOrDefaultAsync(a => a.Location.Y == latitude && a.Location.X == longitude, ct);
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace Renty.Application.Helpers
             _locationResolver = locationResolver;
         }
 
-        public async Task<OperationResult<Address>> ResolveAsync(CreatePropertyDto dto, CancellationToken ct)
+        public async Task<OperationResult<Address>> ResolveAsync(SavePropertyAddressDto dto, CancellationToken ct = default)
         {
 
             // Если есть placeId
@@ -38,6 +38,13 @@ namespace Renty.Application.Helpers
                 if (existing != null)
                     return OperationResult<Address>.Success(existing);
                 
+            }
+
+            if(dto.Latitude.HasValue && dto.Longitude.HasValue)
+            {
+                var existing = await _addressRepository.GetByLocationAsync(dto.Latitude.Value, dto.Longitude.Value);
+                if (existing != null)
+                    return OperationResult<Address>.Success(existing);
             }
 
             AddressDetailsDto? geoResult;
@@ -74,7 +81,7 @@ namespace Renty.Application.Helpers
             }
 
             var country = await _locationResolver.ResolveCountryAsync(geoResult.CountryName, geoResult.CountryCode, ct);
-            var city = await _locationResolver.ResolveCityAsync(dto.CityName, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
+            var city = await _locationResolver.ResolveCityAsync(geoResult.CityName, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
 
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 

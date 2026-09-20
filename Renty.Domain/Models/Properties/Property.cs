@@ -49,6 +49,8 @@ namespace Renty.Domain.Models.Properties
         [ForeignKey(nameof(CountryId))]
         public virtual Country Country { get; set; }
 
+        public bool ShowExactLocation { get; set; } = true;
+
         // Цена
         public decimal PricePerNight { get; set; }
 

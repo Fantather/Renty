@@ -19,7 +19,10 @@ namespace Renty.Application.Handlers.PropertyHandlers
         }
         public async Task<OperationResult<PropertyDraftDto>> Handle(GetPropertyDraftQuery request, CancellationToken cancellationToken)
         {
-            var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.PropertyId, request.CurrentUserId, cancellationToken);
+            if (!request.PropertyId.HasValue)
+                return OperationResult<PropertyDraftDto>.Fail("PropertyId is null");
+
+            var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.PropertyId.Value, request.CurrentUserId, cancellationToken);
 
             if (!result.IsSuccess)
                 return OperationResult<PropertyDraftDto>.Fail(result.Errors.ToArray());
@@ -43,6 +46,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 Description = property.Description,
                 CountryId = property.CountryId,
                 CityId = property.CityId,
+                PlaceId = property.Address.PlaceId,
                 Address = property.Address.FullAddress,
                 Street = property.Address.Street,
                 Latitude = property.Address.Location?.Coordinate.Y,

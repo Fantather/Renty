@@ -18,6 +18,8 @@ namespace Renty.Domain.Models.Properties
         [ForeignKey(nameof(TagId))]
         public virtual Tag Tag { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         // Дата добавления тега к недвижимости
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

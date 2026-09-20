@@ -1,4 +1,4 @@
-﻿using Renty.Application.DTOs.Common;
+using Renty.Application.DTOs.Common;
 using Renty.Application.DTOs.GetCities;
 using Renty.Domain.Models;
 using System;
@@ -21,6 +21,8 @@ namespace Renty.Application.DTOs.CreateProperty
         public Guid? CountryId { get; set; }
 
         public Guid? CityId { get; set; }
+
+        public string? PlaceId { get; set; }
 
         public string? Address { get; set; }
 
