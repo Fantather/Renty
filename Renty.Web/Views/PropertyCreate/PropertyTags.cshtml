@@ -6,7 +6,7 @@
 <div class="property-tags-page">
     <h1 class="property-tags-page__title">Выберите одну или две отличительные черты</h1>
 
-    <form method="post" asp-action="SavePropertyTags" asp-route-id="@ViewData["PropertyId"]">
+    <form method="post">
         <div class="option-card-grid">
             @foreach (var tag in Model.Tags)
             {

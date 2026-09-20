@@ -1,4 +1,4 @@
-@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@model Renty.Web.Models.InputModels.Properties.LocationInputModel
 @{
     ViewData["Title"] = "Точное место";
 }
@@ -7,7 +7,7 @@
     <h1 class="property-location-page__title">Указатель в нужном месте?</h1>
     <p class="property-location-page__subtitle">Гости увидят адрес, только когда оформят бронирование.</p>
 
-    <form method="post" asp-action="SavePropertyLocation" asp-route-id="@ViewData["PropertyId"]">
+    <form method="post">
         <input type="hidden" asp-for="Latitude" id="latitudeInput" />
         <input type="hidden" asp-for="Longitude" id="longitudeInput" />
 

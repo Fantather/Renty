@@ -6,7 +6,7 @@
 <div class="property-amenities-page">
     <h1 class="property-amenities-page__title">Расскажите гостям, какие удобства есть в вашем жилье</h1>
 
-    <form method="post" asp-action="SavePropertyAmenities" asp-route-id="@ViewData["PropertyId"]">
+    <form method="post">
         <div class="option-card-grid">
             @foreach (var amenity in Model.Amenities)
             {

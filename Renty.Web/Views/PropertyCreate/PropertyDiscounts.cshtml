@@ -1,4 +1,4 @@
-@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@model Renty.Web.Models.InputModels.Properties.DiscountsInputModel
 @{
     ViewData["Title"] = "Скидки";
 }
@@ -7,11 +7,11 @@
     <h1 class="property-discounts-page__title">Добавьте скидки</h1>
     <p class="property-discounts-page__subtitle">Привлеките внимание гостей, чтобы быстрее получить первые бронирования и отзывы.</p>
 
-    <form method="post" asp-action="SavePropertyDiscounts" asp-route-id="@ViewData["PropertyId"]">
+    <form method="post">
         <div class="discount-card-list">
             <div class="discount-card">
                 <div class="discount-card__percent">
-                    <input type="number" asp-for="Discounts.NewListingDiscountPercent" class="discount-card__percent-input" />
+                    <input type="number" asp-for="NewListingDiscountPercent" class="discount-card__percent-input" />
                     <span>%</span>
                 </div>
                 <div class="discount-card__info">
@@ -19,14 +19,14 @@
                     <p class="discount-card__description">Предложите скидку на первые 3 бронирования</p>
                 </div>
                 <label class="discount-toggle">
-                    <input type="checkbox" asp-for="Discounts.NewListingDiscountEnabled" class="discount-toggle__input" />
+                    <input type="checkbox" asp-for="NewListingDiscountEnabled" class="discount-toggle__input" />
                     <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
                 </label>
             </div>
 
             <div class="discount-card">
                 <div class="discount-card__percent">
-                    <input type="number" asp-for="Discounts.LastMinuteDiscountPercent" class="discount-card__percent-input" />
+                    <input type="number" asp-for="LastMinuteDiscountPercent" class="discount-card__percent-input" />
                     <span>%</span>
                 </div>
                 <div class="discount-card__info">
@@ -34,14 +34,14 @@
                     <p class="discount-card__description">Для бронирований, оформленных менее чем за 14 дней до прибытия</p>
                 </div>
                 <label class="discount-toggle">
-                    <input type="checkbox" asp-for="Discounts.LastMinuteDiscountEnabled" class="discount-toggle__input" />
+                    <input type="checkbox" asp-for="LastMinuteDiscountEnabled" class="discount-toggle__input" />
                     <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
                 </label>
             </div>
 
             <div class="discount-card">
                 <div class="discount-card__percent">
-                    <input type="number" asp-for="Discounts.WeeklyDiscountPercent" class="discount-card__percent-input" />
+                    <input type="number" asp-for="WeeklyDiscountPercent" class="discount-card__percent-input" />
                     <span>%</span>
                 </div>
                 <div class="discount-card__info">
@@ -49,7 +49,7 @@
                     <p class="discount-card__description">Для поездок длительностью от 7 ночей</p>
                 </div>
                 <label class="discount-toggle">
-                    <input type="checkbox" asp-for="Discounts.WeeklyDiscountEnabled" class="discount-toggle__input" />
+                    <input type="checkbox" asp-for="WeeklyDiscountEnabled" class="discount-toggle__input" />
                     <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
                 </label>
             </div>
@@ -57,7 +57,7 @@
             <div class="discount-card discount-card--has-error">
                 <div class="discount-card__row">
                     <div class="discount-card__percent">
-                        <input type="number" asp-for="Discounts.MonthlyDiscountPercent" class="discount-card__percent-input" />
+                        <input type="number" asp-for="MonthlyDiscountPercent" class="discount-card__percent-input" />
                         <span>%</span>
                     </div>
                     <div class="discount-card__info">
@@ -65,7 +65,7 @@
                         <p class="discount-card__description">Для поездок длительностью от 28 ночей</p>
                     </div>
                     <label class="discount-toggle">
-                        <input type="checkbox" asp-for="Discounts.MonthlyDiscountEnabled" class="discount-toggle__input" />
+                        <input type="checkbox" asp-for="MonthlyDiscountEnabled" class="discount-toggle__input" />
                         <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
                     </label>
                 </div>
