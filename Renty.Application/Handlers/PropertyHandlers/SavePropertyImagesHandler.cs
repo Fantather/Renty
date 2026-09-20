@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.Common;
 using Renty.Application.DTOs.CreateProperty;
@@ -12,26 +12,26 @@ using System.Text;
 
 namespace Renty.Application.Handlers.PropertyHandlers
 {
-    public class SavePropertyImagesHandler : IRequestHandler<SavePropertyImagesCommand, OperationResult<PropertyImageResponse>>
+    public class SavePropertyImagesHandler : IRequestHandler<SavePropertyImagesCommand, OperationResult<List<OrderedImageDto>>>
     {
-        private readonly IPropertyRepository _propertyRepository;
         private readonly IPropertyImageRepository _imageRepository;
         private readonly OwnedPropertyService _ownedPropertyService;
 
-        public SavePropertyImagesHandler(IPropertyRepository propertyRepository, IPropertyImageRepository imageRepository, OwnedPropertyService ownedPropertyService)
+        public SavePropertyImagesHandler(
+            IPropertyImageRepository imageRepository, 
+            OwnedPropertyService ownedPropertyService)
         {
-            _propertyRepository = propertyRepository;
             _imageRepository = imageRepository;
             _ownedPropertyService = ownedPropertyService;
         }
-        public async Task<OperationResult<PropertyImageResponse>> Handle(SavePropertyImagesCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<List<OrderedImageDto>>> Handle(SavePropertyImagesCommand request, CancellationToken cancellationToken)
         {
             var maxFileSize = 50 * 1024 * 1024; // 50 MB
 
             var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.PropertyId, request.CurrentUserId, cancellationToken);
 
             if (!result.IsSuccess)
-                return OperationResult<PropertyImageResponse>.Fail(result.Errors.ToArray());
+                return OperationResult<List<OrderedImageDto>>.Fail(result.Errors.ToArray());
 
             var property = result.Data!;
 
@@ -43,15 +43,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
             var imagesToDelete = property.PropertyImages
                 .Where(pi => !keepIds.Contains(pi.Id))
                 .ToList();
-
-            foreach(var image in imagesToDelete)
-            {
-                await _imageRepository.DeleteAsync(image,cancellationToken);
-
-                var fullPath = Path.Combine(request.WebRootPath, image.ImageUrl.TrimStart('/'));
-                if (File.Exists(fullPath))
-                    File.Delete(fullPath);
-            }
 
             // Загрузка новых файлов с сохранением по fileIndex
             // для того чтоб сопостаить с позицией из OrderedImages
@@ -68,7 +59,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 var validationError = ImageFileValidator.ValidateFile(file, maxFileSize);
 
                 if (!validationError.IsSuccess)
-                    return OperationResult<PropertyImageResponse>.Fail(validationError.Errors.ToArray());
+                    return OperationResult<List<OrderedImageDto>>.Fail(validationError.Errors.ToArray());
             }
 
 
@@ -96,8 +87,18 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             await _imageRepository.AddRangeAsync(newImagesByIndex.Values, cancellationToken);
 
+            foreach (var image in imagesToDelete)
+            {
+                await _imageRepository.DeleteAsync(image, cancellationToken);
+
+                var fullPath = Path.Combine(request.WebRootPath, image.ImageUrl.TrimStart('/'));
+                if (File.Exists(fullPath))
+                    File.Delete(fullPath);
+            }
+
             var existingById = property.PropertyImages.ToDictionary(pi => pi.Id);
 
+            var responseImages = new List<OrderedImageDto>();
 
             for(int position = 0; position < request.OrderedImages.Count; position++)
             {
@@ -108,32 +109,31 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 if (orderRef.Type == OrderedImageType.Existing)
                 {
                     if (!existingById.TryGetValue(orderRef.Id!.Value, out var value))
-                        return OperationResult<PropertyImageResponse>.Fail($"Image {orderRef.Id} not found");
+                        return OperationResult<List<OrderedImageDto>>.Fail($"Image {orderRef.Id} not found");
                     image = value;
                 }
                 else
                 {
                     if (!newImagesByIndex.TryGetValue(orderRef.FileIndex!.Value, out var value))
-                        return OperationResult<PropertyImageResponse>.Fail($"Invalid index of file {orderRef.FileIndex}");
+                        return OperationResult<List<OrderedImageDto>>.Fail($"Invalid index of file {orderRef.FileIndex}");
                     image = value;
                 }
 
                 image.DisplayOrder = position;
                 image.IsPrimary = position == 0;
+
+                responseImages.Add(new OrderedImageDto
+                {
+                    ImageId = image.Id,
+                    ImageUrl = image.ImageUrl,
+                    IsPrimary = image.IsPrimary,
+                    DisplayOrder = image.DisplayOrder
+                });
             }
 
-            await _imageRepository.SaveChangesAsync();
+            await _imageRepository.SaveChangesAsync(cancellationToken);
 
-            var allImages = property.PropertyImages.ToList();
-
-            var response = new PropertyImageResponse 
-            {
-                PropertyId = property.Id,
-                ImageIds = allImages.Select(i => i.Id).ToList(),
-                ImageUrls = allImages.Select(i => i.ImageUrl).ToList()
-            };
-
-            return OperationResult<PropertyImageResponse>.Success(response);
+            return OperationResult<List<OrderedImageDto>>.Success(responseImages);
         }
     }
 }

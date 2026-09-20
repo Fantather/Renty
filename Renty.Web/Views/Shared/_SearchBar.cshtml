@@ -7,7 +7,8 @@
         : "Когда?";
 }
 
-<form class="search-bar" method="get" asp-controller="Home" asp-action="Index">
+<form method="get" asp-controller="Home" asp-action="Index">
+<div class="search-bar">
     <div class="search-bar__segment" id="destinationSegment">
         <label class="search-bar__label" for="destinationInput">Где</label>
         <input type="text" class="search-bar__value search-bar__input" id="destinationInput" name="Destination"
@@ -36,7 +37,7 @@
 
     <div class="popover-panel destination-popover" id="destinationPopover" hidden>
         <template>
-            <icon name="star" />
+            <icon name="map-pin" />
         </template>
     </div>
 
@@ -66,4 +67,5 @@
     <input type="hidden" id="childCountInput" name="ChildCount" value="@(Model.ChildCount ?? 0)" />
     <input type="hidden" id="infantCountInput" name="InfantCount" value="@(Model.InfantCount ?? 0)" />
     <input type="hidden" id="petCountInput" name="PetCount" value="@(Model.PetCount ?? 0)" />
+</div>
 </form>

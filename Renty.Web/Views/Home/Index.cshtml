@@ -4,9 +4,18 @@
 }
 
 <div class="home-stack">
-    <partial name="_SearchBar" model="Model.Filter" />
+    <div class="home-stack__search-row">
+        <div class="home-stack__search-bar-wrap">
+            <partial name="_SearchBar" model="Model.Filter" />
+        </div>
+        <button type="button" class="btn-primary home-stack__map-button">
+            <span>Показати мапу</span>
+            <icon name="map" />
+        </button>
+    </div>
 
     <partial name="_CategoryStrip" model="Model.CategoryStrip" />
+    
 
     <div class="property-grid">
         @foreach (var property in Model.Properties)

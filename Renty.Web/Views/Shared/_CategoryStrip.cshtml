@@ -15,7 +15,8 @@
     @foreach (CategoryViewModel category in Model.Categories)
     {
         bool isActive = category.Slug == Model.SelectedSlug;
-        var routeValues = new Dictionary<string, string>(baseRoute) { ["categorySlug"] = category.Slug };
+        var routeValues = new Dictionary<string, string>(baseRoute);
+        if (!isActive) routeValues["categorySlug"] = category.Slug;
 
         <a asp-action="Index" asp-all-route-data="routeValues" class="category-strip__item @(isActive ? "is-active" : "")">
             <icon name="@category.IconName" class="category-strip__icon" />

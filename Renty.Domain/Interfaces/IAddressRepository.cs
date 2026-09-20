@@ -17,5 +17,6 @@ namespace Renty.Domain.Interfaces
 
         Task AddAsync(Address address, CancellationToken ct = default);
 
+        Task<Address?> GetByLocationAsync(double latitude, double longitude, CancellationToken ct = default);
     }
 }

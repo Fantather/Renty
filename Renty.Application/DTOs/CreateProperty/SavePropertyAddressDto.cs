@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Renty.Application.DTOs.CreateProperty
 {
-    public class CreatePropertyDto
+    public class SavePropertyAddressDto
     {
         //public string Title { get; set; } = string.Empty;
         //public Guid CategoryId { get; set; }
         public Guid HostId { get; set; }
 
         // поля гугл мапс
-        public string PlaceId { get; set; } = string.Empty;
+        public string? PlaceId { get; set; }
         public string RawAddress { get; set; } = string.Empty;
         public string? Street { get; set; }
         public string? District { get; set; }
