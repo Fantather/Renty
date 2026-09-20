@@ -6,6 +6,10 @@
 
         <h2 class="auth-card__title">Войти</h2>
 
+        <environment include="Development">
+            <p class="auth-card__footer">Администратор: admin@renty.com / zfY8d4bKWjY!</p>
+        </environment>
+
         <form id="loginForm" asp-controller="Account" asp-action="Login" method="post" class="auth-card__form">
             <label class="auth-card__label" asp-for="Email">Email</label>
             <input asp-for="Email" class="auth-card__input" />
