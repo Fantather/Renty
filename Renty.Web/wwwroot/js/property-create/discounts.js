@@ -16,8 +16,8 @@ percentInputs.forEach(function (input) {
     });
 });
 
-var weeklyInput = document.getElementById('Discounts_WeeklyDiscountPercent');
-var monthlyInput = document.getElementById('Discounts_MonthlyDiscountPercent');
+var weeklyInput = document.getElementById('WeeklyDiscountPercent');
+var monthlyInput = document.getElementById('MonthlyDiscountPercent');
 var monthlyCard = monthlyInput.closest('.discount-card');
 var monthlyError = document.getElementById('monthlyDiscountError');
 var submitButton = monthlyInput.closest('form').querySelector('button[type="submit"]');

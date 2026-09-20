@@ -1,29 +1,32 @@
 import { createSearchField } from '../shared/search-field.js';
+import { fetchPlaceSuggestions, endPlacesSession } from '../shared/places-autocomplete.js';
 
-var STAR_ICON_SVG = await fetch('/icons/star.svg').then(function (res) { return res.text(); });
+var DETAIL_FIELD_IDS = ['Address', 'Street', 'District', 'CityName', 'CountryName'];
 
-// Для получения автозаполнения для адреса нужно передать строку ввода и токен сессии /api/places/autocomplete?input={encodeUrlComponent(input)}&sessionToken={sessionToken}
-// Токен генерируется как UUID и создается при фокусе на поле ввода
-// PropertyCreateController.SearchAddress — пока заглушка с фиксированным ответом.
-var SEARCH_URL = '/create-property/search-address';
-
-var DETAIL_FIELD_IDS = ['Address', 'Street', 'District', 'CityId', 'CountryId'];
-
+// TODO: подключить, когда бэк добавит эндпоинт деталей места по placeId.
+// Тогда selectSuggestion должен запросить детали (с тем же sessionToken), вызвать эту функцию
+// с ответом и только после этого вызвать endPlacesSession().
 function fillAddressFields(item) {
     document.getElementById('Address').value = item.address;
     document.getElementById('Street').value = item.street;
     document.getElementById('District').value = item.district;
-    document.getElementById('CityId').value = item.cityId;
-    document.getElementById('CountryId').value = item.countryId;
+    document.getElementById('CityName').value = item.cityName;
+    document.getElementById('CountryName').value = item.countryName;
+    updateDetailsVisibility();
+}
+
+function selectSuggestion(item) {
+    document.getElementById('PlaceId').value = item.id;
+    document.getElementById('Address').value = item.title;
+    endPlacesSession();
     updateDetailsVisibility();
 }
 
 createSearchField({
     inputId: 'search',
     popoverId: 'search-popover',
-    searchUrl: SEARCH_URL,
-    iconFor: function () { return STAR_ICON_SVG; },
-    onSelect: fillAddressFields,
+    fetchItems: fetchPlaceSuggestions,
+    onSelect: selectSuggestion,
 });
 
 var searchInput = document.getElementById('search');
