@@ -80,8 +80,6 @@ namespace Renty.Application.DTOs.GetProperty
         //public TimeSpan? CheckInTime { get; set; }
         //public TimeSpan? CheckOutTime { get; set; }
 
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
         // Владелец 
         public HostDto Host { get; set; } = null!;
 

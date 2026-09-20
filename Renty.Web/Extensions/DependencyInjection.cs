@@ -42,6 +42,7 @@ namespace Renty.Web.DI
         {
             services.AddScoped<IPropertiesCategoryRepository, PropertiesCategoryRepository>();
             services.AddScoped<IPropertyRepository, PropertyRepository>();
+            services.AddScoped<IPropertyTagRepository, PropertyTagRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
             services.AddScoped<IRegionRepository, RegionRepository>();
