@@ -21,8 +21,9 @@ namespace Renty.Application.Mappers.Properties
             CreateMap<Property, GetPropertyDetailsResponse>()
                 // Переименования полей
                 .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
-                .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.Country.Name))
+                // русские названия городов и стран, если они есть, иначе английские
+                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.City.NameRu) ? src.City.Name : src.City.NameRu))
+                .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.Country.NameRu) ? src.Country.Name : src.Country.NameRu))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address.FullAddress))
 
                 // Распаковка Details

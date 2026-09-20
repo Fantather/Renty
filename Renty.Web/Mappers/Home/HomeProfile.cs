@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Renty.Application.DTOs.GetProperties;
 using Renty.Application.DTOs.Common;
 using Renty.Web.Models.Shared;
