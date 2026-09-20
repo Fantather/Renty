@@ -1,4 +1,4 @@
-@model Renty.Web.Models.InputModels.Properties.PropertyInputModel
+@model Renty.Web.Models.PropertyCreate.LocationVisibilityPageViewModel
 @{
     ViewData["Title"] = "Видимость местоположения";
 }
@@ -7,10 +7,7 @@
     <h1 class="property-location-visibility-page__title">Выберите, как гости будут видеть ваше местоположение на карте</h1>
     <p class="property-location-visibility-page__subtitle">Гости увидят адрес, только когда оформят бронирование. До этого им показывается приблизительное местоположение.</p>
 
-    <form method="post" asp-action="SavePropertyLocationVisibility" asp-route-id="@ViewData["PropertyId"]">
-        <input type="hidden" asp-for="Latitude" />
-        <input type="hidden" asp-for="Longitude" />
-
+    <form method="post">
         <div class="location-preview">
             <div class="location-preview__map" id="locationPreviewMap"
                  data-lat="@Model.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)"
@@ -28,7 +25,7 @@
                     <p class="location-preview__toggle-description">Если вы разрешите, перед бронированием гости смогут увидеть на карте, где находится жильё.</p>
                 </div>
                 <label class="discount-toggle">
-                    <input type="checkbox" asp-for="ShowExactLocation" class="discount-toggle__input" id="showExactLocationInput" />
+                    <input type="checkbox" asp-for="Input.ShowExactLocation" class="discount-toggle__input" id="showExactLocationInput" />
                     <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
                 </label>
             </div>

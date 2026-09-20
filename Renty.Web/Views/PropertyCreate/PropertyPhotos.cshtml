@@ -7,8 +7,7 @@
     <h1 class="property-photos-page__title">Загрузите фото жилья</h1>
     <p class="property-photos-page__subtitle">Нужно минимум 5 фотографий.</p>
 
-    <form method="post" enctype="multipart/form-data" asp-action="SavePropertyPhotos" asp-route-id="@Model.PropertyId">
-        <input type="hidden" asp-for="PropertyId" />
+    <form method="post" enctype="multipart/form-data">
         <input type="file" asp-for="Images" multiple accept="image/*" hidden />
         <input type="file" id="photoPicker" multiple accept="image/*" hidden />
 

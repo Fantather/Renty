@@ -8,9 +8,6 @@ namespace Renty.Web.Models.InputModels.Media
     /// </summary>
     public class UploadPropertyImagesInputModel
     {
-        [Required]
-        public Guid PropertyId { get; set; }
-
         // Уже сохраненные фото
         public List<ExistingImageInputModel> ExistingImages { get; set; } = new();
 

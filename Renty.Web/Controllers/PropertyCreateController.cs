@@ -30,12 +30,12 @@ namespace Renty.Web.Controllers
         [HttpGet("address")]
         public IActionResult PropertyAddress()
         {
-            return View(new PropertyInputModel());
+            return View(new AddressInputModel());
         }
 
         // TODO: этот метод должен создавать черновик квартиры в БД и возвращать её id.
         [HttpPost("address")]
-        public IActionResult SavePropertyAddress(PropertyInputModel model)
+        public IActionResult SavePropertyAddress(AddressInputModel model)
         {
             var id = Guid.NewGuid();
             return RedirectToAction(nameof(PropertyLocation), new { id });
@@ -46,15 +46,14 @@ namespace Renty.Web.Controllers
         [HttpGet("location/{id:guid}")]
         public IActionResult PropertyLocation(Guid id)
         {
-            ViewData["PropertyId"] = id;
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
 
-            return View(new PropertyInputModel { Latitude = 50.4501, Longitude = 30.5234 });
+            return View(new LocationInputModel { Latitude = 50.4501, Longitude = 30.5234 });
         }
 
         // TODO: сохранить Latitude/Longitude квартиры.
         [HttpPost("location/{id:guid}")]
-        public IActionResult SavePropertyLocation(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyLocation(Guid id, LocationInputModel model)
         {
             return RedirectToAction(nameof(PropertyLocationVisibility), new { id });
         }
@@ -62,15 +61,14 @@ namespace Renty.Web.Controllers
         [HttpGet("location-visibility/{id:guid}")]
         public IActionResult PropertyLocationVisibility(Guid id)
         {
-            ViewData["PropertyId"] = id;
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
 
-            return View(new PropertyInputModel { Latitude = 50.4501, Longitude = 30.5234, ShowExactLocation = true });
+            return View(new LocationVisibilityPageViewModel { Latitude = 50.4501, Longitude = 30.5234 });
         }
 
         // TODO: сохранить ShowExactLocation квартиры.
         [HttpPost("location-visibility/{id:guid}")]
-        public IActionResult SavePropertyLocationVisibility(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyLocationVisibility(Guid id, [Bind(Prefix = nameof(LocationVisibilityPageViewModel.Input))] LocationVisibilityInputModel model)
         {
             return RedirectToAction(nameof(PropertyCategory), new { id });
         }
@@ -87,7 +85,6 @@ namespace Renty.Web.Controllers
             //if (!result.IsSuccess)
             //    return RedirectToAction(nameof(SavePropertyAddress));
 
-            ViewData["PropertyId"] = id;
             var vm = new CategoryPageViewModel
             {
                 Categories = new List<CategoryViewModel>
@@ -97,7 +94,7 @@ namespace Renty.Web.Controllers
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Гостевой дом", IconName = "star" },
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Гостиница", IconName = "star" },
                 },
-                Property = new PropertyInputModel()
+                Input = new CategoryInputModel()
             };
 
             return View(vm);
@@ -107,7 +104,7 @@ namespace Renty.Web.Controllers
         [HttpPost("category/{id:guid}")]
         public async Task<IActionResult> SavePropertyCategory(Guid id, CategoryPageViewModel model)
         {
-            var result = await _mediator.Send(new SavePropertyCategoryCommand(model.Property.PropertyId, CurrentUserId(), model.Property.CategoryId));
+            var result = await _mediator.Send(new SavePropertyCategoryCommand(id, CurrentUserId(), model.Input.CategoryId));
 
             if (!result.IsSuccess)
             {
@@ -126,8 +123,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(SavePropertyAddress));
 
-            ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel
+            return View(new BasicsInputModel
             {
                 MaxGuests = result.Data!.MaxGuests!.Value,
                 BathroomsCount = result.Data!.BathroomsCount!.Value,
@@ -138,7 +134,7 @@ namespace Renty.Web.Controllers
 
         // TODO: сохранить MaxGuests/BedroomsCount/BedsCount/BathroomsCount в PropertyDetails квартиры в БД.
         [HttpPost("basics/{id:guid}")]
-        public async Task<IActionResult> SavePropertyBasics(Guid id, PropertyInputModel model)
+        public async Task<IActionResult> SavePropertyBasics(Guid id, BasicsInputModel model)
         {
             var result = await _mediator.Send(new SavePropertyBasicsCommand(id, CurrentUserId(), model.MaxGuests, model.BedroomsCount, model.BedsCount, model.BathroomsCount));
 
@@ -161,7 +157,6 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(SavePropertyAddress));
 
-            ViewData["PropertyId"] = id;
             var vm = new AmenitiesPageViewModel
             {
                 Amenities = new List<AmenityViewModel>
@@ -171,7 +166,7 @@ namespace Renty.Web.Controllers
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000103"), Name = "Кухня", Description = "Базовая кухня в наличии", IconName = "star" },
                     new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000104"), Name = "Стиральная машина", Description = "Стиральная машина для гостей", IconName = "star" },
                 },
-                Property = new PropertyInputModel
+                Input = new AmenitiesInputModel
                 {
                     AmenityIds = result.Data!.AmenityIds
                 }
@@ -182,7 +177,7 @@ namespace Renty.Web.Controllers
 
         // TODO: сохранить AmenityIds квартиры.
         [HttpPost("amenities/{id:guid}")]
-        public async Task<IActionResult> SavePropertyAmenities(Guid id, PropertyInputModel model)
+        public async Task<IActionResult> SavePropertyAmenities(Guid id, AmenitiesInputModel model)
         {
             var result = await _mediator.Send(new SavePropertyAmenitiesCommand(id,CurrentUserId(),model.AmenityIds));
 
@@ -211,8 +206,7 @@ namespace Renty.Web.Controllers
                 ImageUrl = i.ImageUrl
             }).ToList();
 
-            return View(new UploadPropertyImagesInputModel { 
-                PropertyId = id, 
+            return View(new UploadPropertyImagesInputModel {
                 ExistingImages = images
             });
         }
@@ -256,13 +250,12 @@ namespace Renty.Web.Controllers
         [HttpGet("title/{id:guid}")]
         public IActionResult PropertyTitle(Guid id)
         {
-            ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            return View(new TitleInputModel());
         }
 
         // TODO: сохранить Name квартиры.
         [HttpPost("title/{id:guid}")]
-        public IActionResult SavePropertyTitle(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyTitle(Guid id, TitleInputModel model)
         {
             return RedirectToAction(nameof(PropertyTags), new { id });
         }
@@ -271,7 +264,6 @@ namespace Renty.Web.Controllers
         [HttpGet("tags/{id:guid}")]
         public IActionResult PropertyTags(Guid id)
         {
-            ViewData["PropertyId"] = id;
             var vm = new TagsPageViewModel
             {
                 Tags = new List<TagViewModel>
@@ -290,7 +282,7 @@ namespace Renty.Web.Controllers
 
         // TODO: сохранить TagIds квартиры (максимум 2).
         [HttpPost("tags/{id:guid}")]
-        public IActionResult SavePropertyTags(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyTags(Guid id, TagsInputModel model)
         {
             return RedirectToAction(nameof(PropertyDescription), new { id });
         }
@@ -298,13 +290,12 @@ namespace Renty.Web.Controllers
         [HttpGet("description/{id:guid}")]
         public IActionResult PropertyDescription(Guid id)
         {
-            ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            return View(new DescriptionInputModel());
         }
 
         // TODO: сохранить Description квартиры.
         [HttpPost("description/{id:guid}")]
-        public IActionResult SavePropertyDescription(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyDescription(Guid id, DescriptionInputModel model)
         {
             return RedirectToAction(nameof(PropertyBookingSettings), new { id });
         }
@@ -312,13 +303,12 @@ namespace Renty.Web.Controllers
         [HttpGet("booking-settings/{id:guid}")]
         public IActionResult PropertyBookingSettings(Guid id)
         {
-            ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            return View(new BookingSettingsInputModel());
         }
 
         // TODO: сохранить InstantBookEnabled квартиры (принимаются ли заявки на бронирование автоматически).
         [HttpPost("booking-settings/{id:guid}")]
-        public IActionResult SavePropertyBookingSettings(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyBookingSettings(Guid id, BookingSettingsInputModel model)
         {
             return RedirectToAction(nameof(PropertyPricing), new { id });
         }
@@ -326,13 +316,12 @@ namespace Renty.Web.Controllers
         [HttpGet("pricing/{id:guid}")]
         public IActionResult PropertyPricing(Guid id)
         {
-            ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel { WeekendPricePercent = 0 });
+            return View(new PricingInputModel { WeekendPricePercent = 0 });
         }
 
         // TODO: сохранить PricePerNight/WeekendPricePercent квартиры.
         [HttpPost("pricing/{id:guid}")]
-        public IActionResult SavePropertyPricing(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyPricing(Guid id, PricingInputModel model)
         {
             return RedirectToAction(nameof(PropertyDiscounts), new { id });
         }
@@ -340,13 +329,12 @@ namespace Renty.Web.Controllers
         [HttpGet("discounts/{id:guid}")]
         public IActionResult PropertyDiscounts(Guid id)
         {
-            ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            return View(new DiscountsInputModel());
         }
 
         // TODO: сохранить Discounts квартиры.
         [HttpPost("discounts/{id:guid}")]
-        public IActionResult SavePropertyDiscounts(Guid id, PropertyInputModel model)
+        public IActionResult SavePropertyDiscounts(Guid id, DiscountsInputModel model)
         {
             return RedirectToAction(nameof(PropertyReview), new { id });
         }
@@ -354,8 +342,7 @@ namespace Renty.Web.Controllers
         [HttpGet("review/{id:guid}")]
         public IActionResult PropertyReview(Guid id)
         {
-            ViewData["PropertyId"] = id;
-            return View(new PropertyInputModel());
+            return View();
         }
 
         // TODO: опубликовать объявление (сменить статус черновика) и перенаправить на страницу объекта.

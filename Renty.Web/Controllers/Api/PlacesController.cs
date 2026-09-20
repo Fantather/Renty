@@ -21,7 +21,7 @@ namespace Renty.Web.Controllers.Api
         {
             if (string.IsNullOrEmpty(input))
                 return Ok(new List<AddressSuggestionDto>());
-            var result = await _mediator.Send(new AutocompleteQuery(input, Guid.Parse(sessionToken)));
+            var result = await _mediator.Send(new AutocompleteQuery(input, sessionToken));
 
             return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Errors);
         }

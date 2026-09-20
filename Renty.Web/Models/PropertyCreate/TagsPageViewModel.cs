@@ -5,7 +5,7 @@ namespace Renty.Web.Models.PropertyCreate
 {
     public class TagsPageViewModel
     {
-        public PropertyInputModel Property { get; set; } = new();
+        public TagsInputModel Input { get; set; } = new();
         public List<TagViewModel> Tags { get; set; } = new();
     }
 }

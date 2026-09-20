@@ -5,7 +5,7 @@ namespace Renty.Web.Models.PropertyCreate
 {
     public class AmenitiesPageViewModel
     {
-        public PropertyInputModel Property { get; set; } = new();
+        public AmenitiesInputModel Input { get; set; } = new();
         public List<AmenityViewModel> Amenities { get; set; } = new();
     }
 }
