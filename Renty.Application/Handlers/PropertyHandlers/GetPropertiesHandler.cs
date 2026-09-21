@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +7,7 @@ using Renty.Application.DTOs.GetProperties;
 using Renty.Application.Queries;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Infrastructure.Data;
+using Renty.Infrastructure.Helpers;
 
 namespace Renty.Application.Handlers.PropertyHandlers
 {
@@ -51,11 +52,45 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 if (request.GuestCount.HasValue)
                     query = query.Where(p => p.Details.MaxGuests >= request.GuestCount);
 
+                // фильтрация по доступности на основе бронирований
                 if (request.CheckInDate.HasValue && request.CheckOutDate.HasValue)
-                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > request.CheckInDate.Value && b.CheckInDate < request.CheckOutDate.Value));
+                {
+                    var ci = request.CheckInDate.Value;
+                    var co = request.CheckOutDate.Value;
+                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > ci && b.CheckInDate < co));
+                }
+                else if (request.CheckInDate.HasValue)
+                {
+                    // если check-in предоставлен,то что объект свободен в этот день
+                    var ci = request.CheckInDate.Value;
+                    var ciEnd = ci.AddDays(1);
+                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > ci && b.CheckInDate < ciEnd));
+                }
+                else if (request.CheckOutDate.HasValue)
+                {
+                    // если check-out предоставлен,то что объект свободен по этот день
+                    var co = request.CheckOutDate.Value;
+                    var coStart = co.Date;
+                    var coEnd = coStart.AddDays(1);
+                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > coStart && b.CheckInDate < coEnd));
+                }
 
                 if (request.CityId.HasValue)
                     query = query.Where(p => p.CityId == request.CityId.Value);
+
+                //тут должен быть тот самый метод автофильтра?
+                if (!string.IsNullOrWhiteSpace(request.Destination))
+                {
+                    var destination = request.Destination.ToLower().Trim();
+                    if (RuHelper.IsCyrillic(destination))
+                    {
+                        query = query.Where(p => p.City.NameRu.ToLower().Contains(destination));
+                    }
+                    else
+                    {
+                        query = query.Where(p => p.City.Name.ToLower().Contains(destination));
+                    }
+                }
 
                 if (request.CategoryId.HasValue)
                     query = query.Where(p => p.CategoryId == request.CategoryId.Value);
@@ -73,6 +108,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     "CREATED_AT_ASC" => query.OrderBy(p => p.CreatedAt),
                     _ => query.OrderByDescending(p => p.CreatedAt)
                 };
+                Console.Write(query);
 
                 // пагинация и проекция в DTO
                 var propertiesDto = await query

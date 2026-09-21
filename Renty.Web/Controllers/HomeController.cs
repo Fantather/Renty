@@ -51,10 +51,15 @@ namespace Renty.Web.Controllers
             {
                 CategorySlug = filter.CategorySlug,
                 CheckInDate = filter.CheckInDate?.ToDateTime(TimeOnly.MinValue),
-                CheckOutDate = filter.CheckOutDate?.ToDateTime(TimeOnly.MinValue),
+                // полный чекаут день недоступен
+                CheckOutDate = filter.CheckOutDate?.ToDateTime(TimeOnly.MaxValue),
                 GuestCount = guestCount > 0 ? guestCount : null,
-                Page = 1,
+                //передача фильтра по городу и стране в запрос
+                Destination = filter.Destination,
+
+                Page=1,
                 PageSize = 20,
+
                 UserId = currentUserId
             };
 
@@ -74,6 +79,8 @@ namespace Renty.Web.Controllers
                     CategoryName = p.CategoryName,
                     DurationLabel = p.Duration,
                     PricePerNight = p.PricePerNight
+                    
+
                 }).ToList();
             }
 

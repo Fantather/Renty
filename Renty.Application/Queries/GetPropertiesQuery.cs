@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Common;
 using Renty.Application.DTOs.GetProperties;
 using System;
@@ -13,12 +13,13 @@ namespace Renty.Application.Queries
     /// <param name="Page">Текущая страница</param>
     /// <param name="PageSize">Количество объектов на странице</param>
     /// <param name="UserId">Текущий пользователь</param>
-    /// <param name="CityId">Идентификатор города для фильтрации</param>
+    /// <param name="CityId">Идентификатор города для фильтрации</param>    
     /// <param name="CategoryId">Идентификатор категории</param>
     /// <param name="CategorySlug">Идентификатор категории</param>
     /// <param name="SortBy">Сортировка по параметру</param>
     /// <param name="CheckInDate">Фильтрация по дате заселения</param>
     /// <param name="CheckOutDate">Фильтрация по дате выезда</param>
     /// <param name="GuestCount">Фильтрация по колличеству гостей</param>
-    public record GetPropertiesQuery(int Page = 1, int PageSize = 20, Guid? UserId = null, Guid? CityId = null, Guid? CategoryId = null, string? CategorySlug = null, string? SortBy = null, DateTime? CheckInDate = null, DateTime? CheckOutDate = null, int? GuestCount = null) : IRequest<OperationResult<GetPropertiesResponse>>;
+    /// <param name="Destination">Фильтрация по колличеству гостей</param>
+    public record GetPropertiesQuery(int Page = 1, int PageSize = 20, Guid? UserId = null, Guid? CityId = null, Guid? CategoryId = null, string? CategorySlug = null, string? SortBy = null, DateTime? CheckInDate = null, DateTime? CheckOutDate = null, int? GuestCount = null, string? Destination = null) : IRequest<OperationResult<GetPropertiesResponse>>;
 }

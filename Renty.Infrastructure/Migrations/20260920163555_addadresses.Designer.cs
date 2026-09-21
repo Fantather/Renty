@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using Renty.Infrastructure.Data;
 namespace Renty.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260920163555_addadresses")]
+    partial class addadresses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -621,9 +624,6 @@ namespace Renty.Infrastructure.Migrations
                     b.Property<int>("ReviewsCount")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("ShowExactLocation")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -715,9 +715,6 @@ namespace Renty.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
 
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uuid");
