@@ -1,8 +1,9 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.Common;
 using Renty.Application.Helpers;
 using Renty.Domain.Interfaces;
+using Renty.Domain.Models.Properties;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,15 +31,31 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var property = result.Data!;
 
-            if (request.MaxGuests < 0 || request.MaxGuests >= 50)
+            if (request.MaxGuests <= 0 || request.MaxGuests >= 50)
                 return OperationResult<Guid>.Fail("The number of guests must be between 1 and 50");
 
             if(request.BathroomsCount < 0 || request.BedsCount < 0 || request.BedroomsCount < 0)
                 return OperationResult<Guid>.Fail("Quantity data cannot be less than zero.");
 
-            property.Details.MaxGuests = request.MaxGuests;
-            property.Details.BedroomsCount = request.BedroomsCount;
-            property.Details.BathroomsCount = request.BathroomsCount;
+            if(property.Details == null)
+            {
+                var details = new PropertyDetails
+                {
+                    MaxGuests = request.MaxGuests,
+                    BedroomsCount = request.BedroomsCount,
+                    BathroomsCount = request.BathroomsCount,
+                    BedsCount = request.BedsCount,
+                    PropertyId = property.Id
+                };
+                property.Details = details;
+            }
+            else
+            {
+                property.Details.MaxGuests = request.MaxGuests;
+                property.Details.BedroomsCount = request.BedroomsCount;
+                property.Details.BathroomsCount = request.BathroomsCount;
+                property.Details.BedsCount = request.BedsCount;
+            }
 
             await _propertyRepository.UpdateAsync(property, cancellationToken);
 

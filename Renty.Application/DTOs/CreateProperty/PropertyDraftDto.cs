@@ -18,9 +18,9 @@ namespace Renty.Application.DTOs.CreateProperty
         public Guid? CategoryId { get; set; }
 
 
-        public Guid? CountryId { get; set; }
+        public string? CountryName { get; set; }
 
-        public Guid? CityId { get; set; }
+        public string? CityName { get; set; }
 
         public string? PlaceId { get; set; }
 
@@ -51,7 +51,7 @@ namespace Renty.Application.DTOs.CreateProperty
         public string? HouseRules { get; set; }
 
         // false = сначала подтверждаем бронирования вручную, true = мгновенное бронирование
-        public bool? InstantBookEnabled { get; set; }
+        public bool? InstantBook { get; set; }
 
         // Заполняем что есть в нашей квартирке. Так как я не привязівала комнаті к прям созданию типа комнаті, то оно так
         public int? MaxGuests { get; set; }
@@ -67,13 +67,12 @@ namespace Renty.Application.DTOs.CreateProperty
         //теги квартиры .\Renty.Domain\Models\Properties\PropertyTag.cs
         public List<Guid> TagIds { get; set; } = new();
 
-        // отличительные черты для описания (не PropertyTag) — фиксированный набор, максимум 2
-        public List<string> Highlights { get; set; } = new();
-
         // изображения с указанием последовательности
         public List<OrderedImageDto> Images { get; set; } = new();
 
         // можно задать скидки
         public DiscountsInputDto? Discounts { get; set; }
+
+
     }
 }

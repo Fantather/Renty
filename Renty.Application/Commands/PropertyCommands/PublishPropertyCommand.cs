@@ -6,5 +6,5 @@ using System.Text;
 
 namespace Renty.Application.Commands.PropertyCommands
 {
-    public record SavePropertyTagsCommand(Guid PropertyId, Guid CurrentUserId, List<Guid> TagIds) : IRequest<OperationResult<Guid>>;
+    public record PublishPropertyCommand(Guid PropertyId, Guid CurrentUserId) : IRequest<OperationResult<Unit>>;
 }

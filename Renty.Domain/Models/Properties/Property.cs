@@ -56,6 +56,8 @@ namespace Renty.Domain.Models.Properties
 
         public string Currency { get; set; } = "USD"; // ISO currency code
 
+        // наценка на пятницу/субботу в процентах ("Коэффициент выходных")
+        public int? WeekendPricePercent { get; set; }
 
         // Рейтинг и отзывы
         public decimal AverageRating { get; set; } = 0;
@@ -74,6 +76,9 @@ namespace Renty.Domain.Models.Properties
 
         // Статус
         public PropertyStatusEnum Status { get; set; } = PropertyStatusEnum.Active;
+
+        // Одобрение бронирования (вручную = false | автоматически = true)
+        public bool InstantBook { get; set; } = false;
 
         // Даты
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
