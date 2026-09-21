@@ -1,0 +1,24 @@
+@model SearchIndexViewModel
+@section HeaderSearch {
+    <partial name="_SearchBar" model="Model.Filter" />
+}
+@{
+    ViewData["FullWidth"] = true;
+    ViewData["StickyHeader"] = true;
+}
+
+<div class="search-page__categories">
+    <partial name="_CategoryStrip" model="Model.CategoryStrip" />
+</div>
+
+<div class="search-page">
+    <div class="search-inner">
+        @foreach (var property in Model.Properties)
+        {
+            <partial name="_PropertyCard" model="property" />
+        }
+    </div>
+
+    <div id="searchMap" class="search-page__search-map"></div>
+</div>
+

@@ -112,3 +112,29 @@ html {
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
+
+
+/* Шапка */
+.site-header__inner {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 850px) 1fr;
+    align-items: center;
+    width: 100%;
+    padding-inline: var(--page-gutter);
+    height: var(--header-height);
+}
+
+.site-header__search {
+    grid-column: 2;
+}
+
+.site-header__menu {
+    grid-column: 3;
+    justify-self: end;
+}
+
+.site-header--sticky {
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+}

@@ -1,0 +1,28 @@
+.search-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-inline: var(--page-gutter);
+}
+
+.search-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px 15px;
+}
+
+.search-page__categories {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: var(--header-height);
+    z-index: 5;
+    background: var(--color-surface);
+    padding-inline: var(--page-gutter);
+    height: var(--search-strip-height);
+}
+
+.search-page__search-map {
+    position: sticky;
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height));
+}

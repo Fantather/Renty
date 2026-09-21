@@ -19,21 +19,6 @@ namespace Renty.Web.Controllers
         }
         public async Task<IActionResult> Index(PropertyFilterViewModel filter)
         {
-            var categoriesResult = await _mediator.Send(new GetCategoriesQuery());
-            var categoriesVm = new List<CategoryViewModel>();
-
-            if (categoriesResult.IsSuccess && categoriesResult.Data != null)
-            {
-                categoriesVm = categoriesResult.Data.Categories.Select(c => new CategoryViewModel
-                {
-                    Id = c.Id,
-                    Slug = c.Slug,
-                    Name = c.Name,
-
-                    IconName = string.IsNullOrEmpty(c.ImageUrl) ? "star" : c.ImageUrl
-                }).ToList();
-            }
-
             Guid? currentUserId = null;
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
@@ -81,12 +66,6 @@ namespace Renty.Web.Controllers
             var vm = new HomeIndexViewModel
             {
                 Properties = propertiesVm,
-                CategoryStrip = new CategoryStripViewModel
-                {
-                    Categories = categoriesVm,
-                    SelectedSlug = filter.CategorySlug,
-                    Filter = filter
-                },
                 Filter = filter,
             };
 

@@ -20,24 +20,20 @@
     <link rel="stylesheet" href="~/Renty.Web.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
+    <header class="@(ViewData["StickyHeader"] as bool? == true ? "site-header--sticky" : "")">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="site-header__inner">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Renty</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                    </ul>
-
+                <div class="site-header__search">
+                    @await RenderSectionAsync("HeaderSearch", required: false)
+                </div>
+                <div class="site-header__menu">
                     <partial name="_MainMenu" />
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="@(ViewData["FullWidth"] as bool? == true ? "container-fluid" : "container")">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -55,6 +51,10 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/main-menu/main-menu.js" type="module" asp-append-version="true"></script>
+    @if (IsSectionDefined("HeaderSearch"))
+    {
+        <script src="~/js/search-bar/search-bar.js" type="module" asp-append-version="true"></script>
+    }
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

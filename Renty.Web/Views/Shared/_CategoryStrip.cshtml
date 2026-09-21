@@ -11,7 +11,7 @@
     if (Model.Filter?.PetCount > 0) baseRoute["petCount"] = Model.Filter.PetCount.ToString()!;
 }
 
-<nav class="category-strip">
+<div class="category-strip">
     @foreach (CategoryViewModel category in Model.Categories)
     {
         bool isActive = category.Slug == Model.SelectedSlug;
@@ -23,4 +23,4 @@
             <span class="category-strip__label">@category.Name</span>
         </a>
     }
-</nav>
+</div>

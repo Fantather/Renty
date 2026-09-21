@@ -1,4 +1,5 @@
 :root {
+    /* Colors */
     --color-bg: #e9e5db;
     --color-surface: #ffffff;
     --color-text: #2b2823;
@@ -11,9 +12,15 @@
 
     --color-hover: #ececec;
 
+    /* Radius */
     --radius-lg: 20px;
     --radius-md: 12px;
     --radius-sm: 8px;
 
+    /* Shadow */
     --shadow-card: 0 4px 16px rgba(43, 40, 35, 0.08);
+
+    /* Layout */
+    --page-gutter: 52px;
+    --header-height: 80px;
 }
