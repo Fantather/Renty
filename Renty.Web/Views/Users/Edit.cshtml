@@ -118,7 +118,13 @@
             <div class="edit-profile__toggle-row">
                 <div>
                     <p>Показывать десятилетие моего рождения</p>
-                    <span>@(Model.Input.Facts.First(f => f.Type == UserFactTypeEnum.Generation).Type.GetDescription()) @Model.Input.Facts.First(f => f.Type == UserFactTypeEnum.Generation).Value</span>
+                    @{
+                        UserFactInputModel? generationFact = Model.Input.Facts.FirstOrDefault(f => f.Type == UserFactTypeEnum.Generation);
+                    }
+                    @if (generationFact != null)
+                    {
+                        <span>@generationFact.Type.GetDescription() @generationFact.Value</span>
+                    }
                 </div>
                 <input type="checkbox" id="generationToggle" />
             </div>

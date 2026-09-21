@@ -60,8 +60,8 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.RatingBreakdown, opt => opt.Ignore())
 
                 // Координаты (если они есть в сущности, укажите MapFrom)
-                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Latitude : (double?)null))
-                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Longitude : (double?)null));
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Location.Coordinate.Y : (double?)null))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Location.Coordinate.X : (double?)null));
         }
     }
 }

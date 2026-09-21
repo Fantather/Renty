@@ -145,7 +145,7 @@ namespace Renty.Web.Controllers
             var result = await _mediator.Send(command);
 
             if (!result.IsSuccess)
-                return StatusCode(500, result.ErrorMessage);
+                return StatusCode(500, string.Join("; ", result.Errors));
 
             return Json(new { avatarUrl = result.Data });
         }
