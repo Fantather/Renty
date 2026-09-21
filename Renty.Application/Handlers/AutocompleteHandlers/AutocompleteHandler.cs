@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Common;
 using Renty.Application.Queries.Autocomplete;
 using Renty.Domain.Interfaces;

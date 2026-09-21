@@ -35,6 +35,7 @@
     <Folder Include="wwwroot\icons\amenities\" />
     <Folder Include="wwwroot\icons\users\" />
     <Folder Include="wwwroot\icons\property-category\" />
+    <Folder Include="wwwroot\users\avatars\" />
   </ItemGroup>
 
 </Project>
