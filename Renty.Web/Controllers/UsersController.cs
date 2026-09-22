@@ -76,11 +76,18 @@ namespace Renty.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditUserProfileInputModel input)
+        public async Task<IActionResult> Edit([Bind(Prefix = "Input")] EditUserProfileInputModel input)
         {
             var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (!Guid.TryParse(currentUserIdClaim, out var userId))
                 return Challenge();
+            //да, леша, это костыль
+            var factKeys = ModelState.Keys.Where(k => k.Contains("Facts") && k.Contains("Value")).ToList();
+            foreach (var key in factKeys)
+            {
+                ModelState.Remove(key);
+            }
 
             if (!ModelState.IsValid)
             {
