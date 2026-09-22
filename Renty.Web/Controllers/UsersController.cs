@@ -76,7 +76,7 @@ namespace Renty.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditUserProfileInputModel input)
+        public async Task<IActionResult> Edit([Bind(Prefix = "Input")] EditUserProfileInputModel input)
         {
             var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!Guid.TryParse(currentUserIdClaim, out var userId))
@@ -99,7 +99,7 @@ namespace Renty.Web.Controllers
                     return View(vm);
                 }
 
-                return View(input);
+                return View(new EditUserProfileViewModel { Input = input });
             }
 
             var inputDto = _mapper.Map<EditUserProfileInputDto>(input);

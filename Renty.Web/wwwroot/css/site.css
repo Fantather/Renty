@@ -112,3 +112,23 @@ html {
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
+
+.avatar {
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.avatar--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EDE9FE;
+    color: #7C3AED;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.avatar--placeholder span {
+    transform: translateY(-0.1em);
+}
