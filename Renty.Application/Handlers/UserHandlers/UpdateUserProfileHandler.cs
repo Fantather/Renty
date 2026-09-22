@@ -64,13 +64,17 @@ namespace Renty.Application.Handlers.UserHandlers
             {
                 foreach (var f in request.Input.Facts)
                 {
-                    var fact = new Renty.Domain.Models.User.UserFact 
-                    { 
-                        UserId = user.Id, 
-                        Type = f.Type, 
-                        Value = f.Value ?? string.Empty 
-                    };
-                    _context.UserFacts.Add(fact);
+
+                    if (!string.IsNullOrWhiteSpace(f.Value))
+                    {
+                        var fact = new Renty.Domain.Models.User.UserFact
+                        {
+                            UserId = user.Id,
+                            Type = f.Type,
+                            Value = f.Value
+                        };
+                        _context.UserFacts.Add(fact);
+                    }
                 }
             }
 

@@ -4,6 +4,7 @@ using Renty.Application.Common;
 using Renty.Application.DTOs.GetUser;
 using Renty.Application.Extensions;
 using Renty.Application.Queries;
+using Renty.Domain.Models.LookupsTables;
 using Renty.Infrastructure.Data;
 
 namespace Renty.Application.Handlers.UserHandlers
@@ -28,6 +29,15 @@ namespace Renty.Application.Handlers.UserHandlers
 
             if (user == null)
                 return OperationResult<GetEditUserProfileResponse>.Fail("User not found");
+            var userFactsDict = user.Facts?.ToDictionary(f => f.Type, f => f.Value) ?? new Dictionary<UserFactTypeEnum, string>();
+            var allFacts = Enum.GetValues<UserFactTypeEnum>();
+
+            var factsDto = allFacts.Select(type => new UserFactInputDto
+            {
+                Type = type,
+                Value = userFactsDict.TryGetValue(type, out var value) ? value : string.Empty,
+                IconName = type.GetMeta().IconName
+            }).ToList();
 
             var input = new EditUserProfileInputDto
             {
@@ -41,12 +51,7 @@ namespace Renty.Application.Handlers.UserHandlers
                     : string.Empty,
                 LanguageIds = user.Languages?.Select(l => l.Id).ToList() ?? new List<Guid>(),
                 Info = user.Info,
-                Facts = user.Facts?.Select(f => new UserFactInputDto
-                {
-                    Type = f.Type,
-                    Value = f.Value,
-                    IconName = f.Type.GetMeta().IconName
-                }).ToList() ?? new List<UserFactInputDto>()
+                Facts = factsDto
             };
 
             var availableLanguages = await _context.Languages

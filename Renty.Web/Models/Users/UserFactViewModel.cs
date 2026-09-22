@@ -6,7 +6,7 @@ namespace Renty.Web.Models.Users
     public class UserFactViewModel
     {
         public UserFactTypeEnum Type { get; set; }
-        public string Value { get; set; } = string.Empty;
+        public string? Value { get; set; } = string.Empty;
         public string IconName { get; set; } = string.Empty;
     }
 }

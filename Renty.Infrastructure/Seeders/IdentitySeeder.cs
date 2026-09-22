@@ -12,8 +12,9 @@ namespace Renty.Infrastructure.Seeders
     public static class IdentitySeeder
     {
         public static async Task SeedAdminAsync(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole<Guid>> roleManager)
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole<Guid>> roleManager,
+        AppDbContext context) 
         {
             const string admin = "Admin";
             if (!await roleManager.RoleExistsAsync(admin))
@@ -26,6 +27,13 @@ namespace Renty.Infrastructure.Seeders
 
             if (existingAdmin == null)
             {
+
+                var englishLang = await context.Languages.FirstOrDefaultAsync(l => l.Code == "en-en" || l.Name.Contains("English"));
+                var russianLang = await context.Languages.FirstOrDefaultAsync(l => l.Code == "ru-ru" || l.Name.Contains("Russian"));
+                var ukrainianLang = await context.Languages.FirstOrDefaultAsync(l => l.Code == "uk-uk" || l.Name.Contains("Ukrainian"));
+                var frenchLang = await context.Languages.FirstOrDefaultAsync(l => l.Code == "fr-fr" || l.Name.Contains("French"));
+                var spanishLang = await context.Languages.FirstOrDefaultAsync(l => l.Code == "es-es" || l.Name.Contains("Spanish"));
+
                 var adminUser = new ApplicationUser
                 {
                     UserName = "admin",
@@ -40,12 +48,41 @@ namespace Renty.Infrastructure.Seeders
                     AvatarUrl = "https://static.wikitide.net/1d6chanwiki/thumb/e/e5/Warhammer_-_Emperor_of_Mankind%2C_by_GENZOMAN.jpg/400px-Warhammer_-_Emperor_of_Mankind%2C_by_GENZOMAN.jpg"
                 };
 
+
+                if (englishLang != null) adminUser.Languages.Add(englishLang);
+                if (russianLang != null) adminUser.Languages.Add(russianLang);
+                if (ukrainianLang != null) adminUser.Languages.Add(ukrainianLang);
+                if (frenchLang != null) adminUser.Languages.Add(frenchLang);
+                if (spanishLang != null) adminUser.Languages.Add(spanishLang);
+
                 var result = await userManager.CreateAsync(adminUser, "zfY8d4bKWjY!");
 
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(adminUser, admin);
                 }
+                else
+                {
+                    var errorMessages = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Ошибки валидации Identity при создании администратора: {errorMessages}");
+                }
+
+                var adminFacts = new List<UserFact>
+                {
+                    new UserFact { UserId = adminUser.Id, Type = UserFactTypeEnum.Work, Value = "Любитель Warhammera" },
+                    new UserFact { UserId = adminUser.Id, Type = UserFactTypeEnum.Pets, Value = "Верую в идеологию превосходства человечества" },
+                    new UserFact { UserId = adminUser.Id, Type = UserFactTypeEnum.HowISpendTime, Value = "Люблю наших пользователей!" },
+                    new UserFact { UserId = adminUser.Id, Type = UserFactTypeEnum.WhatILove, Value = "Позитивный и спокойный человек, но иногда душню" },
+                    new UserFact { UserId = adminUser.Id, Type = UserFactTypeEnum.InterestingFact, Value = "Я свободно говорю на 6 языках и могу вести базовые разговоры еще на 21" },
+                    new UserFact { UserId = adminUser.Id, Type = UserFactTypeEnum.WhereIWantToGo, Value = "Предпочитаю путшешествия с фотографиями. Никогда не знаешь где будет новая квартира!" }
+                };
+
+                foreach (var fact in adminFacts)
+                {
+                    context.UserFacts.Add(fact);
+                }
+
+                await context.SaveChangesAsync();
             }
         }
 
