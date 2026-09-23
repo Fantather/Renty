@@ -606,6 +606,9 @@ namespace Renty.Infrastructure.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
+                    b.Property<bool>("InstantBook")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -636,6 +639,9 @@ namespace Renty.Infrastructure.Migrations
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("WeekendPricePercent")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -878,8 +884,8 @@ namespace Renty.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("IconUrl")
-                        .HasColumnType("uuid");
+                    b.Property<string>("IconUrl")
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -912,6 +918,12 @@ namespace Renty.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
+
+                    b.Property<Guid?>("IconId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("IconUrl")
+                        .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");

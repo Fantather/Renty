@@ -17,7 +17,7 @@ namespace Renty.Domain.Models.Properties
         public Guid? IconId { get; set; }
 
         // URL иконки (если используется прямая ссылка)
-        public Guid? IconUrl { get; set; }
+        public string? IconUrl { get; set; }
 
         // Свойство для определения порядка отображения тегов
         public int DisplayOrder { get; set; } = 0;

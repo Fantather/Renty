@@ -113,7 +113,6 @@ html {
     transform: rotate(45deg);
 }
 
-
 /* Шапка */
 .navbar {
     padding-top: var(--header-top-padding);
@@ -152,4 +151,24 @@ html {
     position: sticky;
     top: 0px;
     z-index: 10;
+}
+
+.avatar {
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.avatar--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EDE9FE;
+    color: #7C3AED;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.avatar--placeholder span {
+    transform: translateY(-0.1em);
 }

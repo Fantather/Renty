@@ -1,4 +1,4 @@
-﻿using Slugify;
+using Slugify;
 using Renty.Domain.Interfaces;
 
 namespace Renty.Infrastructure.Helpers

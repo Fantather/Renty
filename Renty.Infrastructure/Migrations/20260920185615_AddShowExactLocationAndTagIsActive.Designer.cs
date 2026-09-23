@@ -13,8 +13,8 @@ using Renty.Infrastructure.Data;
 namespace Renty.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260920181029_AddAddress")]
-    partial class AddAddress
+    [Migration("20260920185615_AddShowExactLocationAndTagIsActive")]
+    partial class AddShowExactLocationAndTagIsActive
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

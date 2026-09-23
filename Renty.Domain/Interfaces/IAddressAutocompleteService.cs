@@ -1,4 +1,4 @@
-﻿using Renty.Domain.ServiceModels.Places;
+using Renty.Domain.ServiceModels.Places;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -7,7 +7,7 @@ using NetTopologySuite.Geometries;
 namespace Renty.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAddress : Migration
+    public partial class addadresses : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,26 +32,12 @@ namespace Renty.Infrastructure.Migrations
                 name: "Street",
                 table: "Properties");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "IsActive",
-                table: "PropertyTags",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.AddColumn<Guid>(
                 name: "AddressId",
                 table: "Properties",
                 type: "uuid",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-
-            migrationBuilder.AddColumn<bool>(
-                name: "ShowExactLocation",
-                table: "Properties",
-                type: "boolean",
-                nullable: false,
-                defaultValue: false);
 
             migrationBuilder.CreateTable(
                 name: "Addresses",
@@ -122,15 +108,7 @@ namespace Renty.Infrastructure.Migrations
                 table: "Properties");
 
             migrationBuilder.DropColumn(
-                name: "IsActive",
-                table: "PropertyTags");
-
-            migrationBuilder.DropColumn(
                 name: "AddressId",
-                table: "Properties");
-
-            migrationBuilder.DropColumn(
-                name: "ShowExactLocation",
                 table: "Properties");
 
             migrationBuilder.AddColumn<string>(

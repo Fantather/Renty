@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Properties;
 using Renty.Infrastructure.Data;
@@ -12,12 +12,24 @@ namespace Renty.Infrastructure.Repository
         {
         }
 
-        public async Task<IEnumerable<Discount>> GetActiveByPropertyIdAsync(Guid propertyId, CancellationToken ct = default)
+        public async Task AddRangeAsync(IEnumerable<Discount> discounts, CancellationToken ct = default)
         {
-            return await _dbSet
-                .Where(d => d.PropertyId == propertyId && d.IsActive)
-                .AsNoTracking()
-                .ToListAsync(ct);
+            await _dbSet.AddRangeAsync(discounts, ct);
+            await _context.SaveChangesAsync(ct);
+        }
+
+        public async Task<IEnumerable<Discount>> GetActiveByPropertyIdAsync(Guid propertyId, bool noTracking = true, CancellationToken ct = default)
+        {
+            var query = _dbSet.Where(d => d.PropertyId == propertyId && d.IsActive);
+
+            if (noTracking)
+                query = query.AsNoTracking();
+
+            return await query.ToListAsync(ct);
+        }
+        public async Task SaveChangesAsync(CancellationToken ct = default)
+        {
+            await _context.SaveChangesAsync(ct);
         }
     }
 }

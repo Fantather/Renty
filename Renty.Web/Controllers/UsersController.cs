@@ -1,108 +1,160 @@
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Renty.Domain.Models.LookupsTables;
-using Renty.Web.Extensions;
+using Renty.Application.Commands;
+using Renty.Application.Commands.EditCommands;
+using Renty.Application.DTOs.GetUser;
+using Renty.Application.Queries;
 using Renty.Web.Models.InputModels.Users;
-using Renty.Web.Models.Shared;
 using Renty.Web.Models.Users;
+using System.Security.Claims;
 
 namespace Renty.Web.Controllers
 {
     public class UsersController : Controller
     {
-        // TEMPORARY: заглушка вместо реального GetUserProfileQuery — контроллер/DI на бэке ещё не готовы.
-        // Когда будут готовы, тело метода заменится на вызов _mediator.Send(new GetUserProfileQuery(id)),
-        // а ViewModel и Profile.cshtml трогать не придётся.
-        public IActionResult Profile(Guid? id)
+        private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+
+        public UsersController(IMediator mediator, IMapper mapper)
         {
-            var vm = new UserProfileViewModel
-            {
-                IsOwner = !id.HasValue,
-                AvatarUrl = "https://placehold.co/160x160",
-                FullName = "Алексей",
-                IsSuperHost = true,
-                Rating = 4.92m,
-                ReviewsCount = 110,
-                MonthsOnPlatform = 10,
-                IsVerified = true,
-                HomeCity = "Алмере",
-                HomeCountry = "Нидерланды",
-                Languages = new List<string> { "Английский", "Русский" },
-                Info = "Зашёл в бар как-то чёрный сталкер",
-                Facts = new List<UserFactViewModel>
-                {
-                    new() { Type = UserFactTypeEnum.Work, Value = "Работа", IconName = UserFactTypeEnum.Work.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.Generation, Value = "00-е", IconName = UserFactTypeEnum.Generation.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.HowISpendTime, Value = "Делаю часами", IconName = UserFactTypeEnum.HowISpendTime.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.Pets, Value = "Питомцы", IconName = UserFactTypeEnum.Pets.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.SchoolYears, Value = "Я устал босс (Академия ШАГ)", IconName = UserFactTypeEnum.SchoolYears.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.FavoriteSchoolSong, Value = "Любимая песня", IconName = UserFactTypeEnum.FavoriteSchoolSong.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.InterestingFact, Value = "Я не ем людей", IconName = UserFactTypeEnum.InterestingFact.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.UselessSkill, Value = "Навык", IconName = UserFactTypeEnum.UselessSkill.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.LifeStory, Value = "Я говорил что я не ем людей? Так вот...", IconName = UserFactTypeEnum.LifeStory.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.WhatILove, Value = "Говорить что я не ем людей", IconName = UserFactTypeEnum.WhatILove.GetMeta().IconName },
-                    new() { Type = UserFactTypeEnum.WhereIWantToGo, Value = "На экзопланете", IconName = UserFactTypeEnum.WhereIWantToGo.GetMeta().IconName },
-                },
-                Reviews = new List<ReviewViewModel>
-                {
-                    new() { AuthorName = "Cosima Therese", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Мы сразу почувствовали себя очень комфортно в этом жилье, как дома.", CreatedAt = DateTime.UtcNow.AddDays(-6) },
-                    new() { AuthorName = "Christian", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Красивый дом в нашем районе, где моя семья остановилась во время поездки в Париж.", CreatedAt = DateTime.UtcNow.AddDays(-14) },
-                    new() { AuthorName = "Omar", AuthorAvatarUrl = "https://placehold.co/60x60", Rating = 5, Text = "Очень хорошо. Мы смогли осмотреть достопримечательности и провести несколько дней.", CreatedAt = DateTime.UtcNow.AddDays(-21) },
-                },
-            };
+            _mediator = mediator;
+            _mapper = mapper;
+        }
+
+        public async Task<IActionResult> Profile(Guid? id)
+        {
+            Guid? currentUserId = null;
+            var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (Guid.TryParse(currentUserIdClaim, out var parsed))
+                currentUserId = parsed;
+
+            // Определяем, чей профиль запрашивается
+            Guid targetUserId = id ?? currentUserId ?? Guid.Empty;
+
+            if (targetUserId == Guid.Empty)
+                return BadRequest();
+
+            // айли просмотренного профиля
+            var query = new GetUserProfileQuery(targetUserId, currentUserId);
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+                return NotFound();
+
+            var vm = _mapper.Map<UserProfileViewModel>(result.Data);
 
             return View(vm);
         }
 
-        // TEMPORARY: заглушка вместо реального GetUserProfileQuery/UpdateUserProfileCommand — бэк ещё не готов.
         [HttpGet]
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit()
         {
+            var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(currentUserIdClaim, out var userId))
+                return Challenge();
+
+            // айди текущего пользователя
+            var query = new GetEditUserProfileQuery(userId);
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+                return Challenge();
+
+            var input = _mapper.Map<EditUserProfileInputModel>(result.Data!.Input);
+            var availableLanguages = _mapper.Map<List<Renty.Web.Models.Shared.LanguageOptionViewModel>>(result.Data!.AvailableLanguages);
+
             var vm = new EditUserProfileViewModel
             {
-                Input = new EditUserProfileInputModel
-                {
-                    FirstName = "Алексей",
-                    LastName = "",
-                    AvatarUrl = null,
-                    HomeCityDisplay = "Алмере, Нидерланды",
-                    LanguageIds = new List<Guid> { EnglishLanguageId, RussianLanguageId },
-                    Info = "Зашёл в бар как-то чёрный сталкер",
-                    Facts = new List<UserFactInputModel>
-                    {
-                        new() { Type = UserFactTypeEnum.Work, Value = "Работа", IconName = UserFactTypeEnum.Work.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.Generation, Value = "00-е", IconName = UserFactTypeEnum.Generation.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.HowISpendTime, Value = "Делаю часами", IconName = UserFactTypeEnum.HowISpendTime.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.Pets, Value = "Питомцы", IconName = UserFactTypeEnum.Pets.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.SchoolYears, Value = "Я устал босс (Академия ШАГ)", IconName = UserFactTypeEnum.SchoolYears.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.FavoriteSchoolSong, Value = "Любимая песня", IconName = UserFactTypeEnum.FavoriteSchoolSong.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.InterestingFact, Value = "Я не ем людей", IconName = UserFactTypeEnum.InterestingFact.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.UselessSkill, Value = "Навык", IconName = UserFactTypeEnum.UselessSkill.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.LifeStory, Value = "Я говорил что я не ем людей? Так вот...", IconName = UserFactTypeEnum.LifeStory.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.WhatILove, Value = "Говорить что я не ем людей", IconName = UserFactTypeEnum.WhatILove.GetMeta().IconName },
-                        new() { Type = UserFactTypeEnum.WhereIWantToGo, Value = "На экзопланете", IconName = UserFactTypeEnum.WhereIWantToGo.GetMeta().IconName },
-                    },
-                },
-                AvailableLanguages = new List<LanguageOptionViewModel>
-                {
-                    new() { Id = EnglishLanguageId, Name = "Английский" },
-                    new() { Id = RussianLanguageId, Name = "Русский" },
-                    new() { Id = Guid.NewGuid(), Name = "Украинский" },
-                    new() { Id = Guid.NewGuid(), Name = "Испанский" },
-                    new() { Id = Guid.NewGuid(), Name = "Французский" },
-                    new() { Id = Guid.NewGuid(), Name = "Немецкий" },
-                },
+                Input = input,
+                AvailableLanguages = availableLanguages
             };
 
             return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Edit(EditUserProfileInputModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit([Bind(Prefix = "Input")] EditUserProfileInputModel input)
         {
-            return RedirectToAction(nameof(Profile));
+            var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(currentUserIdClaim, out var userId))
+                return Challenge();
+            //да, леша, это костыль
+            var factKeys = ModelState.Keys.Where(k => k.Contains("Facts") && k.Contains("Value")).ToList();
+            foreach (var key in factKeys)
+            {
+                ModelState.Remove(key);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // айди текущего пользователя для перезагрузки формы
+                var query = new GetEditUserProfileQuery(userId);
+                var result = await _mediator.Send(query);
+
+                if (result.IsSuccess)
+                {
+                    var availableLanguages = _mapper.Map<List<Renty.Web.Models.Shared.LanguageOptionViewModel>>(result.Data!.AvailableLanguages);
+                    var vm = new EditUserProfileViewModel
+                    {
+                        Input = input,
+                        AvailableLanguages = availableLanguages
+                    };
+                    return View(vm);
+                }
+
+                return View(new EditUserProfileViewModel { Input = input });
+            }
+
+            var inputDto = _mapper.Map<EditUserProfileInputDto>(input);
+
+            // айди текущего пользователя в команду обновления
+            var command = new UpdateUserProfileCommand(userId, inputDto);
+            var updateResult = await _mediator.Send(command);
+
+            if (!updateResult.IsSuccess)
+            {
+          
+                var errorMsg = "Failed to update profile";
+                ModelState.AddModelError(string.Empty, errorMsg);
+
+                // языки с передачей айди текущего пользователя для перезагрузки формы
+                var query = new GetEditUserProfileQuery(userId);
+                var queryResult = await _mediator.Send(query);
+
+                var availableLanguages = queryResult.IsSuccess
+                    ? _mapper.Map<List<Renty.Web.Models.Shared.LanguageOptionViewModel>>(queryResult.Data!.AvailableLanguages)
+                    : new();
+
+                var vm = new EditUserProfileViewModel
+                {
+                    Input = input,
+                    AvailableLanguages = availableLanguages
+                };
+                return View(vm);
+            }
+
+            return RedirectToAction("Profile", new { id = userId });
         }
 
-        private static readonly Guid EnglishLanguageId = Guid.NewGuid();
-        private static readonly Guid RussianLanguageId = Guid.NewGuid();
+        [HttpPost("users-avatar")]
+        public async Task<IActionResult> UploadAvatar([FromForm] UploadAvatarInputModel model)
+        {
+            if (model.File == null || model.File.Length == 0)
+                return BadRequest("Файл не выбран");
+
+            using var stream = model.File.OpenReadStream();
+
+            var command = new UploadAvatarCommand(stream, model.File.FileName);
+            var result = await _mediator.Send(command);
+
+            if (!result.IsSuccess)
+                return StatusCode(500, string.Join("; ", result.Errors));
+
+            return Json(new { avatarUrl = result.Data });
+        }
     }
 }

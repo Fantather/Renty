@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,5 +12,6 @@ namespace Renty.Application.DTOs.Common
         public string? Description { get; set; }
         public string Slug { get; set; } = null!;
         public string? ImageUrl { get; set; }
+        public string? IconName { get; set; }
     }
 }

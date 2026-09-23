@@ -110,7 +110,7 @@ using (var scope = app.Services.CreateScope())
         var basePath = Path.Combine(AppContext.BaseDirectory, "Seeders", "location", "SourceFiles");
         await LocationSeeder.SeedLocationsAsync(context, basePath);
         // Пользователи, админ, два одессита и киевлянин
-        await IdentitySeeder.SeedAdminAsync(userManager, roleManager);
+        await IdentitySeeder.SeedAdminAsync(userManager, roleManager, context);
         await IdentitySeeder.SeedTestUsersAsync(userManager, context);
 
         // Справочники

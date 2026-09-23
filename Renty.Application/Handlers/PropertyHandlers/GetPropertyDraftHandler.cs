@@ -4,6 +4,7 @@ using Renty.Application.DTOs.CreateProperty;
 using Renty.Application.Helpers;
 using Renty.Application.Queries.Property;
 using Renty.Domain.Interfaces;
+using Renty.Domain.Models.LookupsTables;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -37,6 +38,31 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var images = property.PropertyImages.Select(i => new OrderedImageDto { ImageId = i.Id, IsPrimary = i.IsPrimary, ImageUrl = i.ImageUrl, DisplayOrder = i.DisplayOrder }).ToList();
 
+            var discounts = new DiscountsInputDto();
+
+            foreach(var discount in property.Discounts.Where(d => d.IsActive))
+            {
+                switch (discount.Type)
+                {
+                    case DiscountTypeEnum.LastMinute:
+                        discounts.LastMinuteDiscountEnabled = true;
+                        discounts.LastMinuteDiscountPercent = Convert.ToInt32(discount.Percentage);
+                        break;
+                    case DiscountTypeEnum.NewListingPromo:
+                        discounts.NewListingDiscountEnabled = true;
+                        discounts.NewListingDiscountPercent = Convert.ToInt32(discount.Percentage);
+                        break;
+                    case DiscountTypeEnum.Monthly:
+                        discounts.MonthlyDiscountEnabled = true;
+                        discounts.MonthlyDiscountPercent = Convert.ToInt32(discount.Percentage);
+                        break;
+                    case DiscountTypeEnum.Weekly:
+                        discounts.WeeklyDiscountEnabled = true;
+                        discounts.WeeklyDiscountPercent = Convert.ToInt32(discount.Percentage);
+                        break;
+                }
+                
+            }
 
             var propertyDraft = new PropertyDraftDto
             {
@@ -44,33 +70,32 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 Name = property.Name,
                 CategoryId = property.CategoryId,
                 Description = property.Description,
-                CountryId = property.CountryId,
-                CityId = property.CityId,
+                CountryName = property.Country.Name,
+                CityName = property.City.Name,
                 PlaceId = property.Address.PlaceId,
                 Address = property.Address.FullAddress,
                 Street = property.Address.Street,
                 Latitude = property.Address.Location?.Coordinate.Y,
                 Longitude = property.Address.Location?.Coordinate.X,
-                Floor = property?.Details.Floor,
-                FloorsCount = property?.Details.FloorsCount,
-                BathroomsCount = property?.Details.BathroomsCount,
-                BedroomsCount = property?.Details.BedroomsCount,
-                BedsCount = property?.Details.BedsCount,
-                MaxGuests = property?.Details.MaxGuests,
-                Highlights = new(),
-                HouseRules = property?.HouseRules,
-                CheckInTime = property?.CheckInTime,
-                CheckOutTime = property?.CheckOutTime,
-                PricePerNight = property?.PricePerNight,
-                WeekendPricePercent = 0,
-                Currency = property?.Currency,
+                Floor = property!.Details.Floor,
+                FloorsCount = property!.Details.FloorsCount,
+                BathroomsCount = property!.Details.BathroomsCount,
+                BedroomsCount = property!.Details.BedroomsCount,
+                BedsCount = property!.Details.BedsCount,
+                MaxGuests = property!.Details.MaxGuests,
+                HouseRules = property!.HouseRules,
+                CheckInTime = property!.CheckInTime,
+                CheckOutTime = property!.CheckOutTime,
+                PricePerNight = property!.PricePerNight,
+                WeekendPricePercent = property!.WeekendPricePercent.HasValue ? property!.WeekendPricePercent.Value : 0,
+                Currency = property!.Currency,
                 TagIds = tagIds,
                 AmenityIds = amenityIds,
                 Images = images,
-                Discounts = null,
-                District = property?.Address.District,
-                InstantBookEnabled = null,
-                ShowExactLocation = null
+                Discounts = discounts,
+                District = property!.Address.District,
+                InstantBook = property!.InstantBook,
+                ShowExactLocation = property!.ShowExactLocation,
             };
 
             return OperationResult<PropertyDraftDto>.Success(propertyDraft);

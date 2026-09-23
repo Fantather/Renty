@@ -1,4 +1,4 @@
-﻿using Renty.Domain.Models.Locations;
+using Renty.Domain.Models.Locations;
 
 
 namespace Renty.Domain.Interfaces
@@ -70,6 +70,7 @@ namespace Renty.Domain.Interfaces
         /// <returns>Город или null</returns>
         Task<City?> GetCityByNameAndCountryAsync(string cityName, Guid countryId, CancellationToken ct = default);
 
+        
 
     }
 }

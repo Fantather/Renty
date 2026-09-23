@@ -21,12 +21,12 @@ namespace Renty.Application.Mappers.Properties
             CreateMap<Property, GetPropertyDetailsResponse>()
                 // Переименования полей
                 .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name))
-                .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.Country.Name))
+                // русские названия городов и стран, если они есть, иначе английские
+                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.City.NameRu) ? src.City.Name : src.City.NameRu))
+                .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.Country.NameRu) ? src.Country.Name : src.Country.NameRu))
                 .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.Address.FullAddress))
                 .ForMember(dest => dest.ShowExactLocation, opt => opt.MapFrom(src => src.ShowExactLocation))
-                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Latitude))
-                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address.Longitude))
+
 
                 // Распаковка Details
                 .ForMember(dest => dest.MaxGuests, opt => opt.MapFrom(src => src.Details.MaxGuests))
@@ -60,8 +60,8 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.RatingBreakdown, opt => opt.Ignore())
 
                 // Координаты (если они есть в сущности, укажите MapFrom)
-                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Latitude : (double?)null))
-                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Longitude : (double?)null));
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Location.Coordinate.Y : (double?)null))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address.Location != null ? src.Address.Location.Coordinate.X : (double?)null));
         }
     }
 }
