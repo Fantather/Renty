@@ -31,6 +31,7 @@
                     <partial name="_MainMenu" />
                 </div>
             </div>
+            @await RenderSectionAsync("HeaderCategories", required: false)
         </nav>
     </header>
     <div class="@(ViewData["FullWidth"] as bool? == true ? "container-fluid" : "container")">

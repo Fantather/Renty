@@ -2,7 +2,9 @@
     /* Colors */
     --color-bg: #e9e5db;
     --color-surface: #ffffff;
+    --color-surface-inverse: #2b2823;
     --color-text: #2b2823;
+    --color-text-inverse: #ffffff;
     --color-text-muted: #726c62;
     --color-accent: #766a5c;
     --color-accent-hover: #5f564a;
@@ -23,4 +25,6 @@
     /* Layout */
     --page-gutter: 52px;
     --header-height: 80px;
+    --search-strip-height: 78px;
+    --header-top-padding: 12px;
 }

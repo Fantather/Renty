@@ -1,6 +1,6 @@
 @model PropertyCardViewModel
 
-<div class="property-card">
+<div class="property-card" data-property-id="@Model.Slug">
     <div class="property-card__image-wrap">
         <a asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.Slug" class="property-card__image-link">
             <img src="@Model.ImageUrls.First()" alt="@Model.City, @Model.Country" class="property-card__image" />

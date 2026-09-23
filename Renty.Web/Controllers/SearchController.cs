@@ -4,8 +4,10 @@ using Renty.Web.Models.Shared;
 
 namespace Renty.Web.Controllers
 {
-    public class SearchController : Controller
+    public class SearchController(IConfiguration configuration) : Controller
     {
+        private readonly IConfiguration _configuration = configuration;
+
         public IActionResult Index(PropertyFilterViewModel filter)
         {
             var cities = new[]
@@ -13,6 +15,17 @@ namespace Renty.Web.Controllers
                 ("Kyiv", "Ukraine"), ("Odesa", "Ukraine"), ("Lviv", "Ukraine"),
                 ("Amsterdam", "Netherlands"), ("Rotterdam", "Netherlands"), ("Berlin", "Germany")
             };
+
+            var cityCoordinates = new Dictionary<string, (double Lat, double Lng)>
+            {
+                ["Kyiv"] = (50.4501, 30.5234),
+                ["Odesa"] = (46.4825, 30.7233),
+                ["Lviv"] = (49.8397, 24.0297),
+                ["Amsterdam"] = (52.3676, 4.9041),
+                ["Rotterdam"] = (51.9244, 4.4777),
+                ["Berlin"] = (52.5200, 13.4050)
+            };
+
             var categories = new[] { "В центре города", "У моря", "Дизайнерское жильё", "Сельская местность" };
 
             var categoryList = new List<CategoryViewModel>
@@ -31,6 +44,7 @@ namespace Renty.Web.Controllers
             var properties = Enumerable.Range(1, 12).Select(i =>
             {
                 var (city, country) = cities[i % cities.Length];
+                var (lat, lng) = cityCoordinates[city];
                 return new PropertyCardViewModel
                 {
                     Id = Guid.NewGuid(),
@@ -42,7 +56,9 @@ namespace Renty.Web.Controllers
                     Rating = 3.5m + (i % 15) / 10m,
                     CategoryName = categories[i % categories.Length],
                     DurationLabel = "27 сент. – 2 окт.",
-                    PricePerNight = 900 + i * 37
+                    PricePerNight = 900 + i * 37,
+                    Latitude = lat + (i % 5) * 0.01,
+                    Longitude = lng + (i % 5) * 0.01
                 };
             }).ToList();
 
@@ -56,8 +72,14 @@ namespace Renty.Web.Controllers
                     Filter = filter
                 },
                 Filter = filter,
-                TotalCount = properties.Count
+                TotalCount = properties.Count,
+                GoogleMapsApiKey = _configuration["GoogleMaps:ApiKey"] ?? string.Empty
             });
+        }
+
+        public IActionResult PropertiesInBounds(double north, double south, double east, double west)
+        {
+            return Json(new { count = 0, properties = Array.Empty<object>() });
         }
     }
 }

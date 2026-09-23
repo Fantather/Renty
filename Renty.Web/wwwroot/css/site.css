@@ -115,6 +115,12 @@ html {
 
 
 /* Шапка */
+.navbar {
+    padding-top: var(--header-top-padding);
+    padding-bottom: 0;
+    flex-direction: column;
+}
+
 .site-header__inner {
     display: grid;
     grid-template-columns: 1fr minmax(0, 850px) 1fr;
@@ -131,6 +137,15 @@ html {
 .site-header__menu {
     grid-column: 3;
     justify-self: end;
+}
+
+.site-header__categories {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-inline: var(--page-gutter);
+    padding-top: 16px;
+    height: var(--search-strip-height);
 }
 
 .site-header--sticky {
