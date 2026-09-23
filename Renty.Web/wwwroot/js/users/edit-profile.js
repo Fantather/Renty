@@ -53,14 +53,16 @@ var generationToggle = document.getElementById('generationToggle');
 var generationSaveBtn = document.getElementById('generationModalSave');
 var showGenerationInput = document.getElementById('showGenerationInput');
 
-generationTrigger.addEventListener('click', function () {
-    generationToggle.checked = showGenerationInput.value.toLowerCase() === 'true';
-    generationModal.open();
-});
+if (generationTrigger) {
+    generationTrigger.addEventListener('click', function () {
+        generationToggle.checked = showGenerationInput.value.toLowerCase() === 'true';
+        generationModal.open();
+    });
+}
 
 generationSaveBtn.addEventListener('click', function () {
     showGenerationInput.value = generationToggle.checked;
-    generationTrigger.hidden = !generationToggle.checked;
+    if (generationTrigger) generationTrigger.hidden = !generationToggle.checked;
 
     generationModal.close();
 });
@@ -200,4 +202,44 @@ homeCitySaveBtn.addEventListener('click', function () {
     homeCityRowLabel.textContent = 'Где я живу: ' + display;
 
     homeCityModal.close();
+});
+
+
+
+var avatarTrigger = document.getElementById('avatarTrigger');
+var avatarInputEl = document.getElementById('avatarFileInput');
+var avatarUrlInput = document.getElementById('Input_AvatarUrl');
+var avatarWrap = document.querySelector('.edit-profile__avatar-wrap');
+
+avatarTrigger.addEventListener('click', function (){
+    avatarInputEl.click();
+});
+avatarInputEl.addEventListener('change', function (){
+    var newAvatar = avatarInputEl.files[0];
+    if (!newAvatar) return;
+
+    var formData = new FormData();
+    formData.append('File', newAvatar);
+
+    fetch('/users-avatar', {method: 'POST', body: formData })
+        .then(function(response) {
+            if (!response.ok) throw new Error('Не удалось загрузить аватар');
+            return response.json();
+        })
+        .then(function (data) {
+            var oldAvatar = avatarWrap.querySelector('.avatar');
+            var img = document.createElement('img');
+            img.className = 'avatar';
+            img.style.width = oldAvatar.style.width;
+            img.style.height = oldAvatar.style.height;
+            img.src = data.avatarUrl;
+
+            oldAvatar.replaceWith(img);
+            avatarUrlInput.value = data.avatarUrl;
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+    avatarInputEl.value = '';
 });

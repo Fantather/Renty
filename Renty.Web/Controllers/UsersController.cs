@@ -107,7 +107,7 @@ namespace Renty.Web.Controllers
                     return View(vm);
                 }
 
-                return View(input);
+                return View(new EditUserProfileViewModel { Input = input });
             }
 
             var inputDto = _mapper.Map<EditUserProfileInputDto>(input);
