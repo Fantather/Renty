@@ -9,7 +9,7 @@ namespace Renty.Application.Queries.Property
     double North, double South, double East, double West,
     string? CategorySlug = null, DateTime? CheckInDate = null, DateTime? CheckOutDate = null,
     int? GuestCount = null, string? Destination = null, Guid? UserId = null, int Page = 1,         
-        int PageSize = 20
+        int PageSize = 20, List<string>? CategorySlugs = null, List<Guid>? AmenityIds = null
 ) : IRequest<OperationResult<GetPropertiesByMapResponse>>;
 
 }
