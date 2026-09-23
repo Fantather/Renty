@@ -1,4 +1,4 @@
-﻿using Renty.Application.DTOs.Common;
+using Renty.Application.DTOs.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,16 +31,9 @@ namespace Renty.Application.DTOs.GetProperties
         public decimal AverageRating { get; set; }
         public int ReviewsCount { get; set; }
 
-        // Статус
-        //[Description("В ожидании")]
-        //Pending = 1,
-        //[Description("Завершено")]
-        //Completed = 2,
-        //[Description("Не удалось")]
-        //Failed = 3,
-        //[Description("Возвращено")]
-        //Refunded = 4
-        //public string Status { get; set; } = null!;
+        // Координаты для отображения на карте, null если не указаны, что б не сломать методы другие
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
 
         // Титульное изображение
         public string CoverImage { get; set; } = null!;
@@ -54,3 +47,15 @@ namespace Renty.Application.DTOs.GetProperties
 
     }
 }
+
+
+// Статус
+//[Description("В ожидании")]
+//Pending = 1,
+//[Description("Завершено")]
+//Completed = 2,
+//[Description("Не удалось")]
+//Failed = 3,
+//[Description("Возвращено")]
+//Refunded = 4
+//public string Status { get; set; } = null!;
