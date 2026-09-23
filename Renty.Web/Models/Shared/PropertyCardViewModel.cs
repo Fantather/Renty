@@ -12,5 +12,7 @@ namespace Renty.Web.Models.Shared
         public string CategoryName { get; set; } = string.Empty;
         public string DurationLabel { get; set; } = string.Empty;
         public decimal PricePerNight { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
     }
 }

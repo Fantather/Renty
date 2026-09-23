@@ -113,6 +113,46 @@ html {
     transform: rotate(45deg);
 }
 
+/* Шапка */
+.navbar {
+    padding-top: var(--header-top-padding);
+    padding-bottom: 0;
+    flex-direction: column;
+}
+
+.site-header__inner {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 850px) 1fr;
+    align-items: center;
+    width: 100%;
+    padding-inline: var(--page-gutter);
+    height: var(--header-height);
+}
+
+.site-header__search {
+    grid-column: 2;
+}
+
+.site-header__menu {
+    grid-column: 3;
+    justify-self: end;
+}
+
+.site-header__categories {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-inline: var(--page-gutter);
+    padding-top: 16px;
+    height: var(--search-strip-height);
+}
+
+.site-header--sticky {
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+}
+
 .avatar {
     border-radius: 50%;
     object-fit: cover;

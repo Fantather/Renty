@@ -34,7 +34,7 @@
     border: none;
     border-radius: 50%;
     background: var(--color-overlay);
-    color: #fff;
+    color: var(--color-text-inverse);
     display: flex;
     align-items: center;
     justify-content: center;

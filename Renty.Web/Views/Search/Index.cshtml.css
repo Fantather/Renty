@@ -1,0 +1,98 @@
+.search-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-inline: var(--page-gutter);
+    padding-top: 24px;
+    gap: 0px 30px;
+}
+
+.search-page__total {
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+}
+
+.search-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px 15px;
+}
+
+.search-page__search-map {
+    position: sticky;
+    top: calc(var(--header-top-padding) + var(--header-height) + var(--search-strip-height));
+    height: calc(100vh - var(--header-top-padding) - var(--header-height) - var(--search-strip-height));
+    padding-block: 16px;
+}
+
+.search-page__search-map-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-md);
+}
+
+::deep .map-price-pin {
+    padding: 6px 10px;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+}
+
+::deep .map-popup-card {
+    width: 280px;
+}
+
+::deep .map-popup-card .property-card__body {
+    padding-inline: 12px;
+    padding-bottom: 12px;
+}
+
+::deep .map-popup-card .property-card__image-wrap {
+    border-radius: 0;
+}
+
+::deep .map-price-pin.is-active,
+::deep .map-price-pin:hover {
+    background-color: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
+}
+
+::deep .gm-style-iw-c {
+    padding: 0 !important;
+    outline: none !important;
+    border-radius: var(--radius-lg) !important;
+}
+
+::deep .gm-style-iw-d {
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+::deep .gm-style-iw-chr {
+    display: none !important;
+}
+
+::deep .map-popup-card .property-card__favorite {
+    right: 52px;
+}
+
+::deep .map-popup-card__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-overlay);
+    color: var(--color-text-inverse);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
