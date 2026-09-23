@@ -8,6 +8,7 @@ using Renty.Application.Queries;
 using Renty.Web.Models.InputModels.Users;
 using Renty.Web.Models.Users;
 using System.Security.Claims;
+using Renty.Web.Models.Shared;
 
 namespace Renty.Web.Controllers
 {
@@ -97,7 +98,7 @@ namespace Renty.Web.Controllers
 
                 if (result.IsSuccess)
                 {
-                    var availableLanguages = _mapper.Map<List<Renty.Web.Models.Shared.LanguageOptionViewModel>>(result.Data!.AvailableLanguages);
+                    var availableLanguages = _mapper.Map<List<LanguageOptionViewModel>>(result.Data!.AvailableLanguages);
                     var vm = new EditUserProfileViewModel
                     {
                         Input = input,
@@ -126,7 +127,7 @@ namespace Renty.Web.Controllers
                 var queryResult = await _mediator.Send(query);
 
                 var availableLanguages = queryResult.IsSuccess
-                    ? _mapper.Map<List<Renty.Web.Models.Shared.LanguageOptionViewModel>>(queryResult.Data!.AvailableLanguages)
+                    ? _mapper.Map<List<LanguageOptionViewModel>>(queryResult.Data!.AvailableLanguages)
                     : new();
 
                 var vm = new EditUserProfileViewModel
