@@ -8,6 +8,7 @@ using Renty.Application.Queries;
 using Renty.Web.Models.InputModels.Users;
 using Renty.Web.Models.Users;
 using System.Security.Claims;
+using Renty.Web.Models.Shared;
 
 namespace Renty.Web.Controllers
 {
@@ -76,11 +77,18 @@ namespace Renty.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditUserProfileInputModel input)
+        public async Task<IActionResult> Edit([Bind(Prefix = "Input")] EditUserProfileInputModel input)
         {
             var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             if (!Guid.TryParse(currentUserIdClaim, out var userId))
                 return Challenge();
+            //да, леша, это костыль
+            var factKeys = ModelState.Keys.Where(k => k.Contains("Facts") && k.Contains("Value")).ToList();
+            foreach (var key in factKeys)
+            {
+                ModelState.Remove(key);
+            }
 
             if (!ModelState.IsValid)
             {
@@ -90,7 +98,7 @@ namespace Renty.Web.Controllers
 
                 if (result.IsSuccess)
                 {
-                    var availableLanguages = _mapper.Map<List<Renty.Web.Models.Shared.LanguageOptionViewModel>>(result.Data!.AvailableLanguages);
+                    var availableLanguages = _mapper.Map<List<LanguageOptionViewModel>>(result.Data!.AvailableLanguages);
                     var vm = new EditUserProfileViewModel
                     {
                         Input = input,
@@ -99,7 +107,7 @@ namespace Renty.Web.Controllers
                     return View(vm);
                 }
 
-                return View(input);
+                return View(new EditUserProfileViewModel { Input = input });
             }
 
             var inputDto = _mapper.Map<EditUserProfileInputDto>(input);
@@ -119,7 +127,7 @@ namespace Renty.Web.Controllers
                 var queryResult = await _mediator.Send(query);
 
                 var availableLanguages = queryResult.IsSuccess
-                    ? _mapper.Map<List<Renty.Web.Models.Shared.LanguageOptionViewModel>>(queryResult.Data!.AvailableLanguages)
+                    ? _mapper.Map<List<LanguageOptionViewModel>>(queryResult.Data!.AvailableLanguages)
                     : new();
 
                 var vm = new EditUserProfileViewModel

@@ -18,6 +18,9 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.Country.NameRu) ? src.Country.Name : src.Country.NameRu))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
 
+                .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Address != null && src.Address.Location != null ? (double?)src.Address.Location.Y : null))
+                .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Address != null && src.Address.Location != null ? (double?)src.Address.Location.X : null))
+
                 .ForMember(dest => dest.CoverImage, opt => opt.MapFrom(src =>
                     src.PropertyImages.Where(i => i.IsPrimary).Select(i => i.ImageUrl).FirstOrDefault() ??
                     src.PropertyImages.Select(i => i.ImageUrl).FirstOrDefault() ??
@@ -25,6 +28,8 @@ namespace Renty.Application.Mappers.Properties
 
                 .ForMember(dest => dest.IsFavorite, opt => opt.Ignore())
                 .ForMember(dest => dest.Duration, opt => opt.Ignore());
+
+
         }
     }
 }

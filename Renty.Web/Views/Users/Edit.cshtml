@@ -12,12 +12,13 @@
         <div class="edit-profile__avatar-col">
             <div class="edit-profile__avatar-wrap">
                 <partial name="_Avatar" model="new AvatarViewModel { Url = Model.Input.AvatarUrl, Name = Model.Input.FirstName, SizePx = 160 }" />
-                <button type="button" class="edit-profile__avatar-btn" data-field="avatar">
+                <button type="button" class="edit-profile__avatar-btn" id="avatarTrigger">
                     <icon name="camera" class="edit-profile__avatar-btn-icon" />
                     Добавить
                 </button>
             </div>
         </div>
+
 
         <div class="edit-profile__content">
             <h1 class="edit-profile__title">Мой профиль</h1>
@@ -72,6 +73,7 @@
         </div>
     </div>
 
+        <input type="file" id="avatarFileInput" accept="image/*" hidden />
         <input type="hidden" asp-for="Input.FirstName" />
         <input type="hidden" asp-for="Input.LastName" />
         <input type="hidden" asp-for="Input.AvatarUrl" />
