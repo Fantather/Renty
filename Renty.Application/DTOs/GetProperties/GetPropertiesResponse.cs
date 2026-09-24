@@ -14,8 +14,8 @@ namespace Renty.Application.DTOs.GetProperties
 
         public List<PropertyListItem> Properties { get; set; } = new();
 
-        //// Общее количество объектов
-        //public int TotalCount { get; set; }
+        // Общее количество объектов, подходящих под фильтр (без учёта пагинации)
+        public int TotalCount { get; set; }
 
         // Текущая страница
         public int Page { get; set; }

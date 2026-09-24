@@ -1,0 +1,10 @@
+.search-page__total {
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+}
+
+.search-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 20px 15px;
+}

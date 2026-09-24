@@ -11,6 +11,7 @@ using Renty.Infrastructure.Data;
 
 namespace Renty.Application.Handlers.PropertyHandlers
 {
+    [Obsolete("Заменён GetPropertiesHandler: границы карты теперь фильтруются в нём")]
     public class GetPropertiesByMapHandler : IRequestHandler<GetPropertiesByMapQuery, OperationResult<GetPropertiesByMapResponse>>
     {
         private readonly AppDbContext _context;

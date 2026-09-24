@@ -98,6 +98,33 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 if (!string.IsNullOrEmpty(request.CategorySlug))
                     query = query.Where(p => p.Category.Slug == request.CategorySlug);
 
+                // фильтрация по видимой области карты
+                if (request.North.HasValue && request.South.HasValue && request.East.HasValue && request.West.HasValue)
+                {
+                    var north = request.North.Value;
+                    var south = request.South.Value;
+                    var east = request.East.Value;
+                    var west = request.West.Value;
+
+                    query = query.Where(p => p.Address != null && p.Address.Location != null &&
+                                             p.Address.Location.Y <= north &&
+                                             p.Address.Location.Y >= south &&
+                                             p.Address.Location.X <= east &&
+                                             p.Address.Location.X >= west);
+                }
+
+                // фильтрация по удобствам
+                if (request.AmenityIds != null && request.AmenityIds.Any())
+                {
+                    foreach (var amenityId in request.AmenityIds)
+                    {
+                        query = query.Where(p => p.PropertyAmenities.Any(pa => pa.AmenityId == amenityId && pa.IsActive));
+                    }
+                }
+
+                // общее количество до пагинации
+                var totalCount = await query.CountAsync(cancellationToken);
+
                 // сортировка
                 query = request.SortBy switch
                 {
@@ -144,7 +171,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 }
 
                 return OperationResult<GetPropertiesResponse>.Success(
-                    new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto }
+                    new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto, TotalCount = totalCount }
                     );
             }
             catch (Exception ex)
