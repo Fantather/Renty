@@ -22,7 +22,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
         }
         public async Task<OperationResult<Guid>> Handle(SavePropertyPricingCommand request, CancellationToken cancellationToken)
         {
-            int currencyLength = 2;
 
             var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.PropertyId, request.CurrentUserId, cancellationToken);
 
@@ -31,7 +30,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var property = result.Data!;
 
-            if (string.IsNullOrWhiteSpace(request.Currency) || request.Currency.Length > currencyLength)
+            if (string.IsNullOrWhiteSpace(request.Currency))
                 return OperationResult<Guid>.Fail("Invalid currency");
             if (request.PricePerNight < 0)
                 return OperationResult<Guid>.Fail("Invalid price per night");

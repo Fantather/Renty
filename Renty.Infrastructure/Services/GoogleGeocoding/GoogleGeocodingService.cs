@@ -43,6 +43,7 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             }
 
             var result = geocodeResponse.Results.First();
+            
             var dto = new AddressDetailsDto
             {
                 PlaceId = result.PlaceId,
@@ -75,6 +76,7 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             }
 
             var result = geocodeResponse.Results.First();
+
             var dto = new AddressDetailsDto
             {
                 PlaceId = result.PlaceId,
@@ -107,6 +109,7 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
             }
 
             var result = geocodeResponse.Results.First();
+
             var dto = new AddressDetailsDto
             {
                 PlaceId = result.PlaceId,
@@ -162,6 +165,8 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
                 {
                     dto.StreetName = component.LongName;
                 }
+                dto.HasStreet = components.Any(c => c.Types.Contains("route"));
+                dto.HasStreetNumber = components.Any(c => c.Types.Contains("street_number"));
             }
 
             // если гугл вернет другой тип для города

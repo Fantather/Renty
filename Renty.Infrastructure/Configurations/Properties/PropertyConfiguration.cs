@@ -28,15 +28,15 @@ namespace Renty.Infrastructure.Configurations.Properties
 
             // Свойства
             builder.Property(p => p.Name)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(200);
 
             builder.Property(p => p.Slug)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(250);
 
             builder.Property(p => p.Description)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(5000);
 
             builder.Property(p => p.PricePerNight)
@@ -66,7 +66,8 @@ namespace Renty.Infrastructure.Configurations.Properties
             builder.HasOne(p => p.Category)
                 .WithMany()
                 .HasForeignKey(p => p.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired(false);
 
             builder.HasOne(p => p.Address)
                 .WithMany()

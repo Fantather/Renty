@@ -12,17 +12,20 @@ namespace Renty.Application.Handlers.PropertyHandlers
 {
     public class SavePropertyTagsHandler : IRequestHandler<SavePropertyTagsCommand, OperationResult<Guid>>
     {
-        private readonly IPropertyTagRepository _propertyTagRepository;
+        private readonly ITagRepository _tagRepository;
         private readonly IPropertyRepository _propertyRepository;
         private readonly OwnedPropertyService _ownedPropertyService;
+        private readonly IPropertyTagRepository _propertyTagRepository;
         public SavePropertyTagsHandler(
-            IPropertyTagRepository propertyTagRepository,
+            ITagRepository tagRepository,
             IPropertyRepository propertyRepository,
-            OwnedPropertyService ownedPropertyService)
+            OwnedPropertyService ownedPropertyService,
+            IPropertyTagRepository propertyTagRepository)
         {
-            _propertyTagRepository = propertyTagRepository;
+            _tagRepository = tagRepository;
             _propertyRepository = propertyRepository;
             _ownedPropertyService = ownedPropertyService;
+            _propertyTagRepository = propertyTagRepository;
         }
         public async Task<OperationResult<Guid>> Handle(SavePropertyTagsCommand request, CancellationToken cancellationToken)
         {
@@ -38,36 +41,41 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var requestIds = request.TagIds.Distinct().ToList();
 
-            var existingIds = await _propertyTagRepository.GetExistingIdsAsync(request.TagIds, cancellationToken);
+            var existingIds = await _tagRepository.GetExistingIdsAsync(request.TagIds, cancellationToken);
 
             var missingIds = existingIds.Except(request.TagIds);
 
             if (missingIds.Any())
                 return OperationResult<Guid>.Fail($"Unknown tags: {string.Join(", ", missingIds)}");
 
-            var currentIds = (await _propertyTagRepository.GetTagsByPropertyIdAsync(property.Id, ct: cancellationToken))
-                .Select(t=>t.Id)
+            var currentIds = property.PropertyTags
+                .Select(t=>t.TagId)
                 .ToHashSet();
 
             var toAdd = requestIds.Where(id => !currentIds.Contains(id));
+            var newTags = new List<PropertyTag>();
 
             foreach(var id in toAdd)
             {
-                property.PropertyTags.Add(new PropertyTag
+                var tag = new PropertyTag
                 {
                     PropertyId = property.Id,
                     TagId = id
-                });
+                };
+
+                property.PropertyTags.Add(tag);
+                newTags.Add(tag);
             }
+            await _propertyTagRepository.AddRangeAsync(newTags,cancellationToken);
 
             var toRemove = currentIds.Where(id => !requestIds.Contains(id));
 
-            foreach(var tag in property.PropertyTags.Where(t => toRemove.Contains(t.Id)))
+            foreach(var tag in property.PropertyTags.Where(t => toRemove.Contains(t.TagId)))
             {
                 tag.IsActive = false;
             }
 
-            await _propertyRepository.UpdateAsync(property, cancellationToken);
+            await _propertyRepository.SaveChangesAsync(cancellationToken);
 
             return OperationResult<Guid>.Success(property.Id);
         }

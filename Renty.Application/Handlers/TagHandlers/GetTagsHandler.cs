@@ -11,9 +11,9 @@ namespace Renty.Application.Handlers.TagHandlers
 {
     public class GetTagsHandler : IRequestHandler<GetTagsQuery, OperationResult<List<TagResponse>>>
     {
-        private readonly IPropertyTagRepository _tagRepository;
+        private readonly ITagRepository _tagRepository;
         public GetTagsHandler(
-            IPropertyTagRepository tagRepository)
+            ITagRepository tagRepository)
         {
             _tagRepository = tagRepository;
         }

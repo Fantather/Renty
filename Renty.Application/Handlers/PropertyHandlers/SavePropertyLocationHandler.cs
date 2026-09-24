@@ -1,4 +1,6 @@
 using MediatR;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.Common;
 using Renty.Application.DTOs.CreateProperty;
@@ -17,13 +19,16 @@ namespace Renty.Application.Handlers.PropertyHandlers
         private readonly IPropertyRepository _propertyRepository;
         public SavePropertyLocationHandler(
             OwnedPropertyService ownedPropertyService,
+            AddressResolverService addressResolverService,
             IPropertyRepository propertyRepository)
         {
             _ownedPropertyService = ownedPropertyService;
+            _addressResolverService = addressResolverService;
             _propertyRepository = propertyRepository;
         }
         public async Task<OperationResult<Guid>> Handle(SavePropertyLocationCommand request, CancellationToken cancellationToken)
         {
+
             var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.PropertyId, request.CurrentUserId, cancellationToken);
 
             if (!result.IsSuccess)
@@ -31,12 +36,23 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var property = result.Data!;
 
-            var resultAddress = await _addressResolverService.ResolveAsync(new SavePropertyAddressDto { Latitude = request.Latitude, Longitude = request.Longitude }, cancellationToken);
+            if (request.Longitude == 0 && request.Latitude == 0)
+                return OperationResult<Guid>.Fail("Coordinates are empty");
 
-            if (!resultAddress.IsSuccess)
-                return OperationResult<Guid>.Fail(resultAddress.Errors.ToArray());
+            if(property.Address == null)
+            {
+                var resultAddress = await _addressResolverService.ResolveAsync(new SavePropertyAddressDto { Latitude = request.Latitude, Longitude = request.Longitude }, cancellationToken);
 
-            property.AddressId = resultAddress.Data!.Id;
+                if (!resultAddress.IsSuccess)
+                    return OperationResult<Guid>.Fail(resultAddress.Errors.ToArray());
+
+                property.AddressId = resultAddress.Data!.Id;
+            }
+            else
+            {
+                var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+                property.Address.Location = geometryFactory.CreatePoint(new Coordinate(request.Longitude, request.Latitude));
+            }
 
             await _propertyRepository.UpdateAsync(property, cancellationToken);
 

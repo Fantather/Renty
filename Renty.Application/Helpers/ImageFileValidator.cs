@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using Org.BouncyCastle.Asn1.Ocsp;
@@ -26,7 +26,7 @@ namespace Renty.Application.Helpers
             if (file.Length == 0)
                 return OperationResult<Unit>.Fail("File is empty");
 
-            if (IsFileTypeImage(file.FileName))
+            if (!IsFileTypeImage(file.FileName))
                 return OperationResult<Unit>.Fail("The file is not an image");
 
             return OperationResult<Unit>.Success(new Unit());

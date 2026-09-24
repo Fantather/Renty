@@ -31,7 +31,8 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var property = result.Data!;
 
-            var existing = await _discountRepository.GetActiveByPropertyIdAsync(property.Id, false, ct:cancellationToken);
+            //var existing = await _discountRepository.GetActiveByPropertyIdAsync(property.Id, false, ct:cancellationToken);
+            var existing = property.Discounts.Where(d => d.IsActive);
 
             var desiredTypes = new HashSet<DiscountTypeEnum>();
             var discounts = new List<Discount>();

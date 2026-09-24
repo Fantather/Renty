@@ -18,7 +18,7 @@ namespace Renty.Application.Mappers.Propertires
 
             CreateMap<SavePropertyAddressDto, Property>()
                 //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RawAddress))
+                //.ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.RawAddress))
 
                 // Cтатус по умолчанию при создании черновика
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(_ => PropertyStatusEnum.Draft))

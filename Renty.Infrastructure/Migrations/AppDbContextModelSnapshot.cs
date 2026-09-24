@@ -571,7 +571,7 @@ namespace Renty.Infrastructure.Migrations
                         .HasPrecision(3, 2)
                         .HasColumnType("numeric(3,2)");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<TimeSpan?>("CheckInTime")
@@ -595,7 +595,6 @@ namespace Renty.Infrastructure.Migrations
                         .HasColumnType("character varying(3)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(5000)
                         .HasColumnType("character varying(5000)");
 
@@ -610,7 +609,6 @@ namespace Renty.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
@@ -628,7 +626,6 @@ namespace Renty.Infrastructure.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Slug")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("character varying(250)");
 
@@ -1404,8 +1401,7 @@ namespace Renty.Infrastructure.Migrations
                     b.HasOne("Renty.Domain.Models.PropertiesCategory", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Renty.Domain.Models.Locations.City", "City")
                         .WithMany()

@@ -1,7 +1,8 @@
-﻿using System;
+using Renty.Domain.Models.Properties.Anemities;
+using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 namespace Renty.Domain.Interfaces
 {
     
@@ -28,6 +29,8 @@ namespace Renty.Domain.Interfaces
         /// <param name="entity">Сущность для добавления</param>
         /// <param name="ct">Токен отмены для асинхронной операции</param>
         Task AddAsync(T entity, CancellationToken ct = default);
+
+        Task AddRangeAsync(IEnumerable<T> entities, CancellationToken ct = default);
         /// <summary>
         /// Обновляет существующую сущность
         /// </summary>
@@ -48,5 +51,7 @@ namespace Renty.Domain.Interfaces
         /// <param name="ct">Токен отмены для асинхронной операции</param>
         /// <returns>True, если сущность существует; иначе false</returns>
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
+
+        Task SaveChangesAsync(CancellationToken ct = default);
     }
 }

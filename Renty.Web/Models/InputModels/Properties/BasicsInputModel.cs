@@ -9,5 +9,7 @@ namespace Renty.Web.Models.InputModels.Properties
         public int BedsCount { get; set; }
         public int BedroomsCount { get; set; }
         public int BathroomsCount { get; set; }
+        public int Floor { get; set; }
+        public int FloorsCount { get; set; } = 1;
     }
 }

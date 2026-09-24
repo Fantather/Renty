@@ -28,8 +28,9 @@ namespace Renty.Application.Services
             var name = string.IsNullOrWhiteSpace(countryName) ? "Unknown" : countryName;
             var code = string.IsNullOrWhiteSpace(countryCode) ? "XX" : countryCode;
 
-            var matches = await _countryRepository.GetCountriesByNameAsync(name, 1, ct);
-            var country = matches.FirstOrDefault();
+            //var matches = await _countryRepository.GetCountriesByNameAsync(name, 1, ct);
+            //var country = matches.FirstOrDefault();
+            var country = await _countryRepository.GetCountryByCountryCodeAsync(code, ct);
 
             if (country == null)
             {

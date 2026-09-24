@@ -22,7 +22,9 @@ namespace Renty.Infrastructure.Repository
         /// <returns>Найденный адрес или null</returns>
         public async Task<Address?> GetByPlaceIdAsync(string placeId, CancellationToken ct = default)
         {
-            return await _dbSet.FirstOrDefaultAsync(a => a.PlaceId == placeId);
+            return await _dbSet
+                .Include(a => a.City)
+                .FirstOrDefaultAsync(a => a.PlaceId == placeId);
         }
 
         public async Task AddAsync(Address address, CancellationToken ct = default)
@@ -33,7 +35,9 @@ namespace Renty.Infrastructure.Repository
 
         public async Task<Address?> GetByLocationAsync(double latitude ,double longitude, CancellationToken ct = default)
         {
-            return await _dbSet.FirstOrDefaultAsync(a => a.Location.Y == latitude && a.Location.X == longitude, ct);
+            return await _dbSet
+                .Include(a => a.City)
+                .FirstOrDefaultAsync(a => a.Location.Y == latitude && a.Location.X == longitude, ct);
         }
     }
 }

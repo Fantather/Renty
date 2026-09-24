@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.Common;
 using Renty.Application.Helpers;
@@ -15,11 +15,17 @@ namespace Renty.Application.Handlers.PropertyHandlers
         private readonly IPropertyRepository _propertyRepository;
         private readonly IAmenityRepository _amenityRepository;
         private readonly OwnedPropertyService _ownedPropertyService;
-        public SavePropertyAmenitiesHandler(IPropertyRepository propertyRepository, IAmenityRepository amenityRepository, OwnedPropertyService ownedPropertyService)
+        private readonly IPropertyAmenityRepository _propertyAmenityRepository;
+        public SavePropertyAmenitiesHandler(
+            IPropertyRepository propertyRepository, 
+            IAmenityRepository amenityRepository, 
+            OwnedPropertyService ownedPropertyService,
+            IPropertyAmenityRepository propertyAmenityRepository)
         {
             _propertyRepository = propertyRepository;
             _ownedPropertyService = ownedPropertyService;
             _amenityRepository = amenityRepository;
+            _propertyAmenityRepository = propertyAmenityRepository;
         }
         public async Task<OperationResult<Guid>> Handle(SavePropertyAmenitiesCommand request, CancellationToken cancellationToken)
         {
@@ -45,29 +51,37 @@ namespace Renty.Application.Handlers.PropertyHandlers
             
 
             var property = result.Data!;
-            var currentIds = (await _amenityRepository.GetAmenitiesByPropertyIdAsync(property.Id, ct: cancellationToken))
-                .Select(a => a.Id)
+            var currentIds = property.PropertyAmenities
+                .Select(a => a.AmenityId)
                 .ToHashSet();
 
             var toAdd = requestedIds.Where(id => !currentIds.Contains(id));
-
+            var newAmenities = new List<PropertyAmenity>();
 
             foreach(var amenityId in toAdd)
             {
-                property.PropertyAmenities.Add(new PropertyAmenity
+                var amenity = new PropertyAmenity
                 {
                     PropertyId = property.Id,
                     AmenityId = amenityId,
                     IsActive = true
-                });
+                };
+                property.PropertyAmenities.Add(amenity);
+                newAmenities.Add(amenity);
+
             }
+
+            await _propertyAmenityRepository.AddRangeAsync(newAmenities, cancellationToken);
 
             var toRemove = currentIds.Where(id => !requestedIds.Contains(id)).ToList();
 
-            foreach (var amenity in property.PropertyAmenities.Where(pa => toRemove.Contains(pa.Id)))
+            foreach (var amenity in property.PropertyAmenities.Where(pa => toRemove.Contains(pa.AmenityId)))
                 amenity.IsActive = false;
 
-            await _propertyRepository.UpdateAsync(property, cancellationToken);
+
+            await _propertyRepository.SaveChangesAsync(cancellationToken);
+
+            
 
             return OperationResult<Guid>.Success(request.PropertyId);
         }

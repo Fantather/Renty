@@ -210,6 +210,7 @@ namespace Renty.Infrastructure.Repository
             return _dbSet
                 .Include(p => p.Details)
                 .Include(p => p.Host)
+                .Include(p => p.Address)
                 .Include(p => p.City)
                 .Include(p => p.Country)
                 .Include(p => p.Category)

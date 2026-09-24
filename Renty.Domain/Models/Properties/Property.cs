@@ -19,11 +19,11 @@ namespace Renty.Domain.Models.Properties
     {
         public Guid Id { get; set; } = Guid.CreateVersion7();
 
-        public string Name { get; set; } = string.Empty;
+        public string? Name { get; set; } 
 
-        public string Slug { get; set; } = string.Empty;
+        public string? Slug { get; set; } 
 
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } 
 
         // Владелец 
         public Guid HostId { get; set; }
@@ -31,9 +31,9 @@ namespace Renty.Domain.Models.Properties
         public virtual ApplicationUser Host { get; set; }
 
         // Категория (Apartment, House, Villa, Hotel, etc.)
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         [ForeignKey(nameof(CategoryId))]
-        public virtual PropertiesCategory Category { get; set; }
+        public virtual PropertiesCategory? Category { get; set; }
 
         // Адрес и местоположение
 

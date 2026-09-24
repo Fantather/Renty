@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Renty.Domain.Models.Locations;
@@ -15,6 +15,13 @@ namespace Renty.Domain.Interfaces
         /// <param name="ct">Токен отмены.</param>
         /// <returns>Список стран, соответствующих критериям поиска.</returns>
         Task<IEnumerable<Country>> GetCountriesByNameAsync(string searchTerm, int limit = 10, CancellationToken ct = default);
+        /// <summary>
+        /// Получить страну по её коду
+        /// </summary>
+        /// <param name="code">Код страны</param>
+        /// <param name="ct">Токен отмены</param>
+        /// <returns>Страна или null</returns>
+        Task<Country?> GetCountryByCountryCodeAsync(string code, CancellationToken ct = default);
         /// <summary>
         /// Изменяет состояние объекта Country по его идентификатору.
         /// </summary>

@@ -72,6 +72,9 @@ namespace Renty.Application.Helpers
             if(geoResult == null)
                 return OperationResult<Address>.Fail("Не удалось определить координаты адреса. Укажите точку на карте вручную.");
 
+            if (!geoResult.HasStreet || !geoResult.HasStreetNumber)
+                return OperationResult<Address>.Fail("Пожалуйста, укажите полный адрес с названием улицы и номером дома, а не только город/район");
+
             // Если появился placeId после geocode
             if (!string.IsNullOrWhiteSpace(geoResult.PlaceId))
             {
@@ -92,7 +95,8 @@ namespace Renty.Application.Helpers
                 Street = geoResult.StreetName,
                 District = geoResult.RegionName,
                 Location = geometryFactory.CreatePoint(new Coordinate(geoResult.Longitude, geoResult.Latitude)),
-                CityId = city.Id
+                CityId = city.Id,
+                City = city
             };
 
             await _addressRepository.AddAsync(address, ct);

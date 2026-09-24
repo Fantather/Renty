@@ -8,7 +8,7 @@ namespace Renty.Web.Mappers.CreateProperty
     {
         public DiscountProfile()
         {
-            CreateMap<DiscountsInputModel, DiscountsInputDto>();
+            CreateMap<DiscountsInputModel,DiscountsInputDto>();
         }
     }
 }

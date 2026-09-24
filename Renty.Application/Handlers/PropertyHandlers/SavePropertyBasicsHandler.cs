@@ -31,30 +31,39 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var property = result.Data!;
 
-            if (request.MaxGuests <= 0 || request.MaxGuests >= 50)
+            var input = request.input;
+
+            if (input.MaxGuests <= 0 || input.MaxGuests >= 50)
                 return OperationResult<Guid>.Fail("The number of guests must be between 1 and 50");
 
-            if(request.BathroomsCount < 0 || request.BedsCount < 0 || request.BedroomsCount < 0)
+            if (input.FloorsCount <= 0)
+                return OperationResult<Guid>.Fail("The number of floors must be greater than zero");
+
+            if(input.BathroomsCount < 0 || input.BedsCount < 0 || input.BedroomsCount < 0)
                 return OperationResult<Guid>.Fail("Quantity data cannot be less than zero.");
 
             if(property.Details == null)
             {
                 var details = new PropertyDetails
                 {
-                    MaxGuests = request.MaxGuests,
-                    BedroomsCount = request.BedroomsCount,
-                    BathroomsCount = request.BathroomsCount,
-                    BedsCount = request.BedsCount,
-                    PropertyId = property.Id
+                    MaxGuests = input.MaxGuests,
+                    BedroomsCount = input.BedroomsCount,
+                    BathroomsCount = input.BathroomsCount,
+                    BedsCount = input.BedsCount,
+                    PropertyId = property.Id,
+                    Floor = input.Floor,
+                    FloorsCount = input.FloorsCount
                 };
                 property.Details = details;
             }
             else
             {
-                property.Details.MaxGuests = request.MaxGuests;
-                property.Details.BedroomsCount = request.BedroomsCount;
-                property.Details.BathroomsCount = request.BathroomsCount;
-                property.Details.BedsCount = request.BedsCount;
+                property.Details.MaxGuests = input.MaxGuests;
+                property.Details.BedroomsCount = input.BedroomsCount;
+                property.Details.BathroomsCount = input.BathroomsCount;
+                property.Details.BedsCount = input.BedsCount;
+                property.Details.Floor = input.Floor;
+                property.Details.FloorsCount = input.FloorsCount;
             }
 
             await _propertyRepository.UpdateAsync(property, cancellationToken);

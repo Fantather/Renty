@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
+using Renty.Domain.Models.Properties.Anemities;
 using Renty.Infrastructure.Data;
 using System.Linq.Expressions;
 namespace Renty.Infrastructure.Repository
@@ -84,6 +85,19 @@ namespace Renty.Infrastructure.Repository
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
         {
             return await _dbSet.AnyAsync(predicate, ct);
+        }
+
+        public async Task SaveChangesAsync(CancellationToken ct = default)
+        {
+            await _context.SaveChangesAsync(ct);
+        }
+
+        public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken ct = default)
+        {
+            
+            await _dbSet.AddRangeAsync(entities, ct);
+            await _context.SaveChangesAsync(ct);
+        
         }
     }
 }

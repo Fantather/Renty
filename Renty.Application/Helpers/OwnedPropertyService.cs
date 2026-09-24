@@ -1,4 +1,4 @@
-﻿using Org.BouncyCastle.Asn1.Ocsp;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Renty.Application.Common;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Properties;
@@ -18,7 +18,7 @@ namespace Renty.Application.Helpers
         }
         public async Task<OperationResult<Property>> GetOwnedPropertyAsync(Guid propertyId, Guid currentUserId, CancellationToken ct = default)
         {
-            var property = await _propertyRepository.GetByIdAsync(propertyId, ct);
+            var property = await _propertyRepository.GetPropertyWithDetailsAsync(propertyId, ct);
 
             if (property == null)
                 return OperationResult<Property>.Fail("The property does not exist");

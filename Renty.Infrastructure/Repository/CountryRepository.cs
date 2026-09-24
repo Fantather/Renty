@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Locations;
 using Renty.Domain.Models.LookupsTables;
@@ -80,6 +80,11 @@ namespace Renty.Infrastructure.Repository
             country.IsActive = isActive;
             await _context.SaveChangesAsync(ct);
             return true;
+        }
+
+        public async Task<Country?> GetCountryByCountryCodeAsync(string code, CancellationToken ct = default)
+        {
+            return await _dbSet.FirstOrDefaultAsync(c => c.CountryCode == code, ct);
         }
     }
     }

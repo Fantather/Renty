@@ -12,6 +12,7 @@ using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Locations;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Properties;
+using Renty.Infrastructure.Helpers;
 using Renty.Infrastructure.Repository;
 
 namespace Renty.Application.Handlers.PropertyHandlers
@@ -42,7 +43,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             // перенос в проперти
             var property = _mapper.Map<Property>(dto);
-
+            property.AddressId = addressResult.Data.Id;
             //а это айди городов из бд
             property.CityId = addressResult.Data!.CityId!;
             property.CountryId = addressResult.Data.City.CountryId;

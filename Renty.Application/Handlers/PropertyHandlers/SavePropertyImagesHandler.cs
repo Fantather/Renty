@@ -48,7 +48,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
             // для того чтоб сопостаить с позицией из OrderedImages
             var newImagesByIndex = new Dictionary<int, PropertyImage>();
 
-            var uploadFolder = Path.Combine(request.WebRootPath, "upload", "images", "properties");
+            var uploadFolder = Path.Combine(request.WebRootPath, "upload", "images");
 
             if (!Directory.Exists(uploadFolder))
                 Directory.CreateDirectory(uploadFolder);
@@ -75,7 +75,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     await file.CopyToAsync(stream, cancellationToken);
                 }
 
-                var imageUrl = $"/upload/images/properties/{fileName}";
+                var imageUrl = $"/upload/images/{fileName}";
 
                 newImagesByIndex[i] = new PropertyImage
                 {
@@ -85,7 +85,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 
             }
 
-            await _imageRepository.AddRangeAsync(newImagesByIndex.Values, cancellationToken);
+            //await _imageRepository.AddRangeAsync(newImagesByIndex.Values, cancellationToken);
 
             foreach (var image in imagesToDelete)
             {
@@ -131,7 +131,18 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 });
             }
 
-            await _imageRepository.SaveChangesAsync(cancellationToken);
+            // Пока не отправляются с формы OrderedImageRef
+            for (int position = 0; position < newImagesByIndex.Count; position++)
+            {
+                var orderRef = newImagesByIndex[position];
+
+                orderRef.DisplayOrder = position;
+                orderRef.IsPrimary = position == 0;
+
+            }
+            await _imageRepository.AddRangeAsync(newImagesByIndex.Values, cancellationToken);
+
+            //await _imageRepository.SaveChangesAsync(cancellationToken);
 
             return OperationResult<List<OrderedImageDto>>.Success(responseImages);
         }

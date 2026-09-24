@@ -5,10 +5,7 @@ using System.Text;
 
 namespace Renty.Domain.Interfaces
 {
-    public interface IPropertyTagRepository : IGenericRepository<Tag>
+    public interface IPropertyTagRepository : IGenericRepository<PropertyTag>
     {
-        Task<IEnumerable<Guid>> GetExistingIdsAsync(IEnumerable<Guid> ids, CancellationToken ct = default);
-
-        Task<IEnumerable<Tag>> GetTagsByPropertyIdAsync(Guid propertyId, bool activeOnly = true, CancellationToken ct = default);
     }
 }

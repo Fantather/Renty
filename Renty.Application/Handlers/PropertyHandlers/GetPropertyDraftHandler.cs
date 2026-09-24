@@ -30,7 +30,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var property = result.Data!;
 
-            // Тестовый мэппинг
 
             var tagIds = property.PropertyTags.Select(t => t.TagId).ToList();
 
@@ -67,35 +66,35 @@ namespace Renty.Application.Handlers.PropertyHandlers
             var propertyDraft = new PropertyDraftDto
             {
                 Id = property.Id,
-                Name = property.Name,
-                CategoryId = property.CategoryId,
-                Description = property.Description,
-                CountryName = property.Country.Name,
-                CityName = property.City.Name,
-                PlaceId = property.Address.PlaceId,
-                Address = property.Address.FullAddress,
-                Street = property.Address.Street,
-                Latitude = property.Address.Location?.Coordinate.Y,
-                Longitude = property.Address.Location?.Coordinate.X,
-                Floor = property!.Details.Floor,
-                FloorsCount = property!.Details.FloorsCount,
-                BathroomsCount = property!.Details.BathroomsCount,
-                BedroomsCount = property!.Details.BedroomsCount,
-                BedsCount = property!.Details.BedsCount,
-                MaxGuests = property!.Details.MaxGuests,
-                HouseRules = property!.HouseRules,
-                CheckInTime = property!.CheckInTime,
-                CheckOutTime = property!.CheckOutTime,
-                PricePerNight = property!.PricePerNight,
-                WeekendPricePercent = property!.WeekendPricePercent.HasValue ? property!.WeekendPricePercent.Value : 0,
-                Currency = property!.Currency,
+                Name = property?.Name,
+                CategoryId = property?.CategoryId,
+                Description = property?.Description,
+                CountryName = string.IsNullOrEmpty(property.Country?.Name) ? property.Country?.NameRu : property.Country?.Name,
+                CityName = string.IsNullOrEmpty(property.City?.Name) ? property.City?.NameRu : property.City?.Name,
+                PlaceId = property.Address?.PlaceId,
+                Address = property.Address?.FullAddress,
+                Street = property.Address?.Street,
+                Latitude = property.Address?.Latitude,
+                Longitude = property.Address?.Longitude,
+                Floor = property?.Details?.Floor,
+                FloorsCount = property?.Details?.FloorsCount,
+                BathroomsCount = property?.Details?.BathroomsCount,
+                BedroomsCount = property?.Details?.BedroomsCount,
+                BedsCount = property?.Details?.BedsCount,
+                MaxGuests = property?.Details?.MaxGuests,
+                HouseRules = property?.HouseRules,
+                CheckInTime = property?.CheckInTime,
+                CheckOutTime = property?.CheckOutTime,
+                PricePerNight = property?.PricePerNight,
+                WeekendPricePercent = property.WeekendPricePercent.HasValue ? property.WeekendPricePercent.Value : 0,
+                Currency = property?.Currency,
                 TagIds = tagIds,
                 AmenityIds = amenityIds,
                 Images = images,
                 Discounts = discounts,
-                District = property!.Address.District,
-                InstantBook = property!.InstantBook,
-                ShowExactLocation = property!.ShowExactLocation,
+                District = property?.Address?.District,
+                InstantBook = property?.InstantBook,
+                ShowExactLocation = property?.ShowExactLocation,
             };
 
             return OperationResult<PropertyDraftDto>.Success(propertyDraft);

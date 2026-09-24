@@ -3,6 +3,7 @@ using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.Common;
 using Renty.Application.Helpers;
 using Renty.Domain.Interfaces;
+using Renty.Infrastructure.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,6 +34,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 return OperationResult<Guid>.Fail("Title is null or white space");
 
             property.Name = request.Title;
+            property.Slug = SlugGenerator.GenerateSlug(property.Name, property.Id);
 
             await _propertyRepository.UpdateAsync(property);
 

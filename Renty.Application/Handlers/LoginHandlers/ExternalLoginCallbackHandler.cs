@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Renty.Application.Commands.LoginCommands;
 using Renty.Application.Common;
@@ -66,6 +66,7 @@ namespace Renty.Application.Handlers.LoginHandlers
                 {
                     user = new ApplicationUser
                     {
+                        UserName = email,
                         Email = email,
                         EmailConfirmed = true
                     };
