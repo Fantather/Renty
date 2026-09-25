@@ -8,7 +8,20 @@ using Renty.Web.Models.Shared;
 using System.Security.Claims;
 
 namespace Renty.Web.Controllers
-{
+
+
+{        // TODO (Ольга): 
+// вот какой функционал должен быть реализован:
+// - страница поиска показывает реальное жильё из базы вместо мока, с учётом категории, дат заезда и выезда, направления и текущего пользователя (избранное);
+// - если пользователь сдвинул или приблизил карту, список и пины показывают жильё только из видимой области (границы North/South/East/West),
+//   и в этом режиме вместо Destination работают границы карты;
+// - заголовок «N вариантов жилья» показывает общее число найденных объектов, а не число карточек на странице;
+// - если в поиске выбраны даты, на карточке показывается выбранный период (например «27 сент – 2 окт (5 ночей)»), это не даты самой квартиры;
+// - порядок карточек предсказуем (по умолчанию сначала новые к примеру), страницы не перемешиваются;
+// - список и карта на одной странице при одних и тех же фильтрах показывают один и тот же набор жилья;
+// - запрос из search-map.js (заголовок X-Requested-With) получает только фрагмент _SearchResults, а не целую страницу.
+
+
     public class SearchController : Controller
     {
         private readonly IMediator _mediator;
@@ -35,7 +48,13 @@ namespace Renty.Web.Controllers
             var checkOut = filter.CheckOutDate?.ToDateTime(TimeOnly.MaxValue);
 
             // Проверяем, есть ли координаты от карты
-            var hasBounds = filter.North.HasValue && filter.South.HasValue && filter.East.HasValue && filter.West.HasValue;
+            bool isMapAjaxRequest = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+            // если ты карту потыкал - тогда смотрим координаты, если нет - тогда ищем по городу
+            var hasBounds = isMapAjaxRequest &&
+                filter.North.HasValue &&
+                filter.South.HasValue &&
+                filter.East.HasValue &&
+                filter.West.HasValue;
 
             var items = new List<PropertyCardViewModel>();
             var totalCount = 0;
