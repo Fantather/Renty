@@ -21,7 +21,8 @@ namespace Renty.Application.Extensions
             DateTime? checkInDate,
             DateTime? checkOutDate,
             string? categorySlug,
-            List<Guid>? amenityIds)
+            List<Guid>? amenityIds,
+            bool? petsAllowed)
         {
             if (guestCount.HasValue)
             {
@@ -30,7 +31,12 @@ namespace Renty.Application.Extensions
 
             if (!string.IsNullOrEmpty(categorySlug))
             {
-                query = query.Where(p => p.Category.Slug == categorySlug);
+                query = query.Where(p => p.Category.Slug == categorySlug);  
+            }
+
+            if (petsAllowed.HasValue && petsAllowed.Value)
+            {
+                query = query.Where(p => p.Details.PetsAllowed);
             }
 
             if (amenityIds != null && amenityIds.Any())

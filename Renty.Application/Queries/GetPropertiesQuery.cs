@@ -22,6 +22,7 @@ namespace Renty.Application.Queries
     /// <param name="GuestCount">Фильтрация по колличеству гостей</param>
     /// <param name="Destination">Фильтрация по названию города или месту</param>
     /// <param name="AmenityIds">Фильтрация по списку удобств (Wi-Fi, кухня и т.д.)</param>
+    /// <param name="PetsAllowed">Питомцы можно ли</param>
     public record GetPropertiesQuery(
         int Page = 1, int PageSize = 20,
         Guid? UserId = null,
@@ -33,6 +34,7 @@ namespace Renty.Application.Queries
         DateTime? CheckOutDate = null,
         int? GuestCount = null,
         string? Destination = null,
-        List<Guid>? AmenityIds = null
+        List<Guid>? AmenityIds = null,
+        bool? PetsAllowed = null
         ) : IRequest<OperationResult<GetPropertiesResponse>>;
 }

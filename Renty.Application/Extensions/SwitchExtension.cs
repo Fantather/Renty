@@ -7,6 +7,10 @@ namespace Renty.Application.Extensions
         // Метод расширения для конструкции switch (сортировка)
         public static IQueryable<Property> ApplySort(this IQueryable<Property> query, string? sortBy)
         {
+            if (string.IsNullOrEmpty(sortBy))
+            {
+                return query.OrderByDescending(p => p.CreatedAt);
+            }
             return sortBy switch
             {
                 "RATING_ASC" => query.OrderBy(p => p.AverageRating),

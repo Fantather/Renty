@@ -22,6 +22,7 @@ namespace Renty.Application.Queries.Property
     /// <param name="CheckOutDate">Фильтрация по дате выезда</param>
     /// <param name="GuestCount">Фильтрация по количеству гостей</param>
     /// <param name="Destination">Фильтрация по названию города или месту</param>
+    /// <param name="PetsAllowed">Питомцы  можно ли</param>
     /// <param name="AmenityIds">Фильтрация по списку удобств (Wi-Fi, кухня и т.д.)</param>
     public record GetPropertiesByMapQuery(
         double North,
@@ -37,6 +38,7 @@ namespace Renty.Application.Queries.Property
         int Page = 1,
         int PageSize = 20,
         List<Guid>? AmenityIds = null,
-        string? SortBy = null
+        string? SortBy = null,
+        bool? PetsAllowed = null
     ) : IRequest<OperationResult<GetPropertiesByMapResponse>>;
 }

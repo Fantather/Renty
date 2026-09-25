@@ -11,11 +11,13 @@ namespace Renty.Web.Models.Shared
         public DateOnly? CheckInDate { get; set; }
         public DateOnly? CheckOutDate { get; set; }
 
-        // Гости — раздельно по категориям
-        public int? AdultCount { get; set; }
-        public int? ChildCount { get; set; }
-        public int? InfantCount { get; set; }
-        public int? PetCount { get; set; }
+        // Гости — раздельно по категориям 
+        //public int? AdultCount { get; set; }
+        //public int? ChildCount { get; set; }
+        //public int? InfantCount { get; set; }
+        //public int? PetCount { get; set; }
+        public bool Pets { get; set; }
+        public int GuestCount { get; set; }
 
         // Границы видимой области карты
         public double? North { get; set; }

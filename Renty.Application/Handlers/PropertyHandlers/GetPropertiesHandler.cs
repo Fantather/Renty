@@ -70,7 +70,8 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     request.CheckInDate,
                     request.CheckOutDate,
                     request.CategorySlug,
-                    request.AmenityIds); 
+                    request.AmenityIds,
+                    request.PetsAllowed); 
 
                 // тотал каунт до  пагинации
                 var totalCount = await query.CountAsync(cancellationToken);

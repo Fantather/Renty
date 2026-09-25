@@ -14,10 +14,6 @@ namespace Renty.Application.DTOs.GetProperties
 
         public List<PropertyListItem> Properties { get; set; } = new();
 
-        // Общее количество объектов, подходящих под фильтр (без учёта пагинации)
-        // TODO (Ольга): GetPropertiesHandler это поле не заполняет, оно всегда 0.
-        // Нужно посчитать CountAsync по query после всех фильтров и до сортировки/Skip/Take и записать сюда.
-        // От него зависит заголовок «N вариантов жилья» на странице поиска.
         public int TotalCount { get; set; }
 
         // Текущая страница
