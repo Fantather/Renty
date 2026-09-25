@@ -1,11 +1,15 @@
 @{
     Layout = "_Layout";
+    ViewData["Title"] = "Редактор объявления";
 }
 
 <div class="editor">
+    <a href="@Url.Action("Index", "Home")"></a>
     <aside class="editor__sidebar">
         <h1 class="editor__title">Редактор объявления</h1>
-        <nav class="editor__menu"></nav>
+        <nav class="editor__menu">
+            <vc:editor-menu />
+        </nav>
     </aside>
 
     <section class="editor__content">

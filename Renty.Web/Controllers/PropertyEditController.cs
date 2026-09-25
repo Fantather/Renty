@@ -37,6 +37,17 @@ namespace Renty.Web.Controllers
             return View();
         }
 
+        [HttpGet("pricing")]
+        public async Task<IActionResult> Pricing(Guid id)
+        {
+            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()));
+
+            if (!result.IsSuccess)
+                return NotFound();
+
+            return View();
+        }
+
         private Guid CurrentUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 }

@@ -1,0 +1,8 @@
+.editor__sidebar {
+    position: sticky;
+    overflow-y: auto;
+}
+
+.editor__back ::deep .editor__back-icon {
+    transform: rotate(180deg);
+}
