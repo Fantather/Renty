@@ -103,6 +103,5 @@ namespace Renty.Application.Helpers
 
             return OperationResult<Address>.Success(address);
         }
-
     }
 }
