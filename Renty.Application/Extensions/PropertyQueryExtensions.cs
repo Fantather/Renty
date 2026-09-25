@@ -24,7 +24,7 @@ namespace Renty.Application.Extensions
             List<Guid>? amenityIds,
             bool? petsAllowed)
         {
-            if (guestCount.HasValue)
+            if (guestCount.HasValue && guestCount > 0)
             {
                 query = query.Where(p => p.Details.MaxGuests >= guestCount);
             }
@@ -34,7 +34,7 @@ namespace Renty.Application.Extensions
                 query = query.Where(p => p.Category.Slug == categorySlug);  
             }
 
-            if (petsAllowed.HasValue && petsAllowed.Value)
+            if (petsAllowed.HasValue && petsAllowed.Value == true)
             {
                 query = query.Where(p => p.Details.PetsAllowed);
             }
@@ -49,22 +49,34 @@ namespace Renty.Application.Extensions
 
             if (checkInDate.HasValue && checkOutDate.HasValue)
             {
-                var ci = checkInDate.Value;
-                var co = checkOutDate.Value;
-                query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > ci && b.CheckInDate < co));
+                var ci = DateTime.SpecifyKind(checkInDate.Value, DateTimeKind.Utc);
+                var co = DateTime.SpecifyKind(checkOutDate.Value, DateTimeKind.Utc);
+
+                query = query.Where(p => !p.Bookings.Any(b =>
+                    (b.Status == BookingStatusEnum.Confirmed || b.Status == BookingStatusEnum.Pending) &&
+                    b.CheckOutDate > ci &&
+                    b.CheckInDate < co));
             }
             else if (checkInDate.HasValue)
             {
-                var ci = checkInDate.Value;
+                var ci = DateTime.SpecifyKind(checkInDate.Value, DateTimeKind.Utc);
                 var ciEnd = ci.AddDays(1);
-                query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > ci && b.CheckInDate < ciEnd));
+
+                query = query.Where(p => !p.Bookings.Any(b =>
+                    (b.Status == BookingStatusEnum.Confirmed || b.Status == BookingStatusEnum.Pending) &&
+                    b.CheckOutDate > ci &&
+                    b.CheckInDate < ciEnd));
             }
             else if (checkOutDate.HasValue)
             {
-                var co = checkOutDate.Value;
-                var coStart = co.Date;
+                var co = DateTime.SpecifyKind(checkOutDate.Value, DateTimeKind.Utc);
+                var coStart = DateTime.SpecifyKind(co.Date, DateTimeKind.Utc);
                 var coEnd = coStart.AddDays(1);
-                query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > coStart && b.CheckInDate < coEnd));
+
+                query = query.Where(p => !p.Bookings.Any(b =>
+                    (b.Status == BookingStatusEnum.Confirmed || b.Status == BookingStatusEnum.Pending) &&
+                    b.CheckOutDate > coStart &&
+                    b.CheckInDate < coEnd));
             }
 
             return query;

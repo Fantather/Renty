@@ -44,8 +44,13 @@ namespace Renty.Web.Controllers
         public async Task<IActionResult> Index(PropertyFilterViewModel filter)
         {
             var currentUserId = Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var parsedId) ? parsedId : (Guid?)null;
-            var checkIn = filter.CheckInDate?.ToDateTime(TimeOnly.MinValue);
-            var checkOut = filter.CheckOutDate?.ToDateTime(TimeOnly.MaxValue);
+            var checkIn = filter.CheckInDate.HasValue
+            ? DateTime.SpecifyKind(filter.CheckInDate.Value.ToDateTime(TimeOnly.MinValue), DateTimeKind.Utc)
+            : (DateTime?)null;
+
+            var checkOut = filter.CheckOutDate.HasValue
+                ? DateTime.SpecifyKind(filter.CheckOutDate.Value.ToDateTime(TimeOnly.MaxValue), DateTimeKind.Utc)
+                : (DateTime?)null;
 
             // Проверяем, есть ли координаты от карты
             bool isMapAjaxRequest = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
