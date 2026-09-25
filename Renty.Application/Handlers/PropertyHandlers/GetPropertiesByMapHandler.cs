@@ -11,7 +11,15 @@ using Renty.Infrastructure.Data;
 
 namespace Renty.Application.Handlers.PropertyHandlers
 {
-    [Obsolete("Заменён GetPropertiesHandler: границы карты теперь фильтруются в нём")]
+    // TODO (Ольга): чтобы карта и список на странице поиска (SearchController.Index) показывали одно и то же, не хватает того,
+    // что делает GetPropertiesHandler при тех же фильтрах:
+    // 1) Duration: строка «27 сент - 2 окт (5 ночей)» для каждого PropertyListItem, иначе после сдвига карты у карточек пропадает подпись с датами;
+    // 2) сортировка: перед Skip/Take нет OrderBy, порядок и страницы недетерминированы; нужен SortBy (по умолчанию CreatedAt по убыванию);
+    // 3) бронирования: тут учитываются только Confirmed, в GetPropertiesHandler любые; и нет случаев «только дата заезда» и «только дата выезда»;
+    // 4) CityId и CategoryId в запрос не проброшены; Destination в запросе есть, но хендлер его не применяет (убрано в 39a403d);
+    // 5) валидация Page/PageSize и try/catch с OperationResult.Fail, как в GetPropertiesHandler;
+    // 6) общие фильтры (даты, гости, категория, удобства) лучше вынести в один метод-расширение ApplyFilters для обоих хендлеров,
+    //    иначе они снова разойдутся.
     public class GetPropertiesByMapHandler : IRequestHandler<GetPropertiesByMapQuery, OperationResult<GetPropertiesByMapResponse>>
     {
         private readonly AppDbContext _context;

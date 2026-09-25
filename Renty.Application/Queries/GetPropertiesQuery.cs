@@ -21,10 +21,5 @@ namespace Renty.Application.Queries
     /// <param name="CheckOutDate">Фильтрация по дате выезда</param>
     /// <param name="GuestCount">Фильтрация по колличеству гостей</param>
     /// <param name="Destination">Фильтрация по колличеству гостей</param>
-    /// <param name="North">Северная граница видимой области карты (применяется, только если заданы все четыре границы)</param>
-    /// <param name="South">Южная граница видимой области карты</param>
-    /// <param name="East">Восточная граница видимой области карты</param>
-    /// <param name="West">Западная граница видимой области карты</param>
-    /// <param name="AmenityIds">Идентификаторы удобств, которые должны быть у жилья</param>
-    public record GetPropertiesQuery(int Page = 1, int PageSize = 20, Guid? UserId = null, Guid? CityId = null, Guid? CategoryId = null, string? CategorySlug = null, string? SortBy = null, DateTime? CheckInDate = null, DateTime? CheckOutDate = null, int? GuestCount = null, string? Destination = null, double? North = null, double? South = null, double? East = null, double? West = null, List<Guid>? AmenityIds = null) : IRequest<OperationResult<GetPropertiesResponse>>;
+    public record GetPropertiesQuery(int Page = 1, int PageSize = 20, Guid? UserId = null, Guid? CityId = null, Guid? CategoryId = null, string? CategorySlug = null, string? SortBy = null, DateTime? CheckInDate = null, DateTime? CheckOutDate = null, int? GuestCount = null, string? Destination = null) : IRequest<OperationResult<GetPropertiesResponse>>;
 }
