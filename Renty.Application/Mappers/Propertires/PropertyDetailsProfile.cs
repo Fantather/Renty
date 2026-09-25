@@ -17,7 +17,7 @@ namespace Renty.Application.Mappers.Properties
                         ? string.Join(", ", src.Languages.Select(l => l.Name))
                         : string.Empty))
                 .ForMember(dest => dest.ResponseSpeed, opt => opt.MapFrom(src => src.ResponseSpeed ?? "Неизвестно"));
-
+            
             CreateMap<Property, GetPropertyDetailsResponse>()
                 // Переименования полей
                 .ForMember(dest => dest.PropertyName, opt => opt.MapFrom(src => src.Name))
@@ -37,7 +37,7 @@ namespace Renty.Application.Mappers.Properties
                 .ForMember(dest => dest.Floor, opt => opt.MapFrom(src => src.Details.Floor))
 
                 .ForMember(dest => dest.RoomsCount, opt => opt.MapFrom(src => src.Details.RoomsCount))
-
+                .ForMember(dest => dest.PetsAllowed, opt => opt.MapFrom(src => src.Details.PetsAllowed))
                 // Обход промежуточных таблиц
                 .ForMember(dest => dest.Amenities, opt => opt.MapFrom(src => src.PropertyAmenities.Select(pa => pa.Amenity)))
                 .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.PropertyTags.Select(pt => pt.Tag)))
