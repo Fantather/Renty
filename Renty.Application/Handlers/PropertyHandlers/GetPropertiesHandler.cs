@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Renty.Application.Common;
 using Renty.Application.DTOs.GetProperties;
+using Renty.Application.Extensions;
 using Renty.Application.Queries;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Infrastructure.Data;
@@ -26,153 +27,91 @@ namespace Renty.Application.Handlers.PropertyHandlers
         {
             var page = 1;
             var pageSize = 5;
+
             try
             {
                 if (request.Page < page)
-                    return OperationResult<GetPropertiesResponse>.Fail($"The page cannot be less than {page}");
+                    return OperationResult<GetPropertiesResponse>.Fail($"Страница не может быть меньше {page}");
 
                 if (request.PageSize < pageSize)
-                    return OperationResult<GetPropertiesResponse>.Fail($"The page size cannot be less than {pageSize}");
-                //подготовка строки 
-                string durationString = string.Empty;
-                if (request.CheckInDate.HasValue && request.CheckOutDate.HasValue)
-                {
-                    var checkIn = request.CheckInDate.Value;
-                    var checkOut = request.CheckOutDate.Value;
-                    durationString = $"{checkIn:dd MMM} - {checkOut:dd MMM} ({(checkOut - checkIn).Days} ночей)";
-                }
+                    return OperationResult<GetPropertiesResponse>.Fail($"Размер страницы не может быть меньше {pageSize}");
 
-                //без репозитория запрос идет к бд
+                var durationString = PropertyQueryExtensions.GetDurationString(request.CheckInDate, request.CheckOutDate);
+
                 var query = _context.Properties
                     .Where(p => p.Status == PropertyStatusEnum.Active)
                     .AsNoTracking()
                     .AsQueryable();
 
-                // фильтрация
-                if (request.GuestCount.HasValue)
-                    query = query.Where(p => p.Details.MaxGuests >= request.GuestCount);
+                // Специфичный фильтр для этого хендлера
+                if (!string.IsNullOrWhiteSpace(request.Destination))
+                {
+                    var destination = request.Destination.ToLower().Trim();
 
-                // фильтрация по доступности на основе бронирований
-                if (request.CheckInDate.HasValue && request.CheckOutDate.HasValue)
-                {
-                    var ci = request.CheckInDate.Value;
-                    var co = request.CheckOutDate.Value;
-                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > ci && b.CheckInDate < co));
-                }
-                else if (request.CheckInDate.HasValue)
-                {
-                    // если check-in предоставлен,то что объект свободен в этот день
-                    var ci = request.CheckInDate.Value;
-                    var ciEnd = ci.AddDays(1);
-                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > ci && b.CheckInDate < ciEnd));
-                }
-                else if (request.CheckOutDate.HasValue)
-                {
-                    // если check-out предоставлен,то что объект свободен по этот день
-                    var co = request.CheckOutDate.Value;
-                    var coStart = co.Date;
-                    var coEnd = coStart.AddDays(1);
-                    query = query.Where(p => !p.Bookings.Any(b => b.CheckOutDate > coStart && b.CheckInDate < coEnd));
+                    if (RuHelper.IsCyrillic(destination))
+                    {
+                        query = query.Where(p => p.City.NameRu != null && p.City.NameRu.ToLower().Contains(destination));
+                    }
+                    else
+                    {
+                        query = query.Where(p => p.City.Name != null && p.City.Name.ToLower().Contains(destination));
+                    }
                 }
 
                 if (request.CityId.HasValue)
                     query = query.Where(p => p.CityId == request.CityId.Value);
 
-                //тут должен быть тот самый метод автофильтра?
-                if (!string.IsNullOrWhiteSpace(request.Destination))
-                {
-                    var destination = request.Destination.ToLower().Trim();
-                    if (RuHelper.IsCyrillic(destination))
-                    {
-                        query = query.Where(p => p.City.NameRu.ToLower().Contains(destination));
-                    }
-                    else
-                    {
-                        query = query.Where(p => p.City.Name.ToLower().Contains(destination));
-                    }
-                }
-
                 if (request.CategoryId.HasValue)
                     query = query.Where(p => p.CategoryId == request.CategoryId.Value);
 
-                if (!string.IsNullOrEmpty(request.CategorySlug))
-                    query = query.Where(p => p.Category.Slug == request.CategorySlug);
+                // общие фильры
+                query = query.ApplyFilters(
+                    request.GuestCount,
+                    request.CheckInDate,
+                    request.CheckOutDate,
+                    request.CategorySlug,
+                    request.AmenityIds,
+                    request.PetsAllowed); 
 
-                // фильтрация по видимой области карты
-                if (request.North.HasValue && request.South.HasValue && request.East.HasValue && request.West.HasValue)
-                {
-                    var north = request.North.Value;
-                    var south = request.South.Value;
-                    var east = request.East.Value;
-                    var west = request.West.Value;
-
-                    query = query.Where(p => p.Address != null && p.Address.Location != null &&
-                                             p.Address.Location.Y <= north &&
-                                             p.Address.Location.Y >= south &&
-                                             p.Address.Location.X <= east &&
-                                             p.Address.Location.X >= west);
-                }
-
-                // фильтрация по удобствам
-                if (request.AmenityIds != null && request.AmenityIds.Any())
-                {
-                    foreach (var amenityId in request.AmenityIds)
-                    {
-                        query = query.Where(p => p.PropertyAmenities.Any(pa => pa.AmenityId == amenityId && pa.IsActive));
-                    }
-                }
-
-                // общее количество до пагинации
+                // тотал каунт до  пагинации
                 var totalCount = await query.CountAsync(cancellationToken);
 
-                // сортировка
-                query = request.SortBy switch
-                {
-                    "RATING_ASC" => query.OrderBy(p => p.AverageRating),
-                    "RATING_DESC" => query.OrderByDescending(p => p.AverageRating),
-                    "PRICEPRENIGHT_ASC" => query.OrderBy(p => p.PricePerNight),
-                    "PRICEPRENIGHT_DESC" => query.OrderByDescending(p => p.PricePerNight),
-                    "CREATED_AT_ASC" => query.OrderBy(p => p.CreatedAt),
-                    _ => query.OrderByDescending(p => p.CreatedAt)
-                };
-                Console.Write(query);
+                query = query.ApplySort(request.SortBy);
 
-                // пагинация и проекция в DTO
                 var propertiesDto = await query
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ProjectTo<PropertyListItem>(_mapper.ConfigurationProvider)
                     .ToListAsync(cancellationToken);
-                
 
-                // избранное
                 var favoriteSlugs = new HashSet<string>();
                 if (request.UserId.HasValue && propertiesDto.Any())
                 {
                     var propertySlugs = propertiesDto.Select(p => p.Slug).ToList();
-
                     var favoritesFromDb = await _context.Favorites
                         .Where(f => f.UserId == request.UserId.Value && propertySlugs.Contains(f.Property.Slug))
                         .Select(f => f.Property.Slug)
                         .ToListAsync(cancellationToken);
-
                     favoriteSlugs = new HashSet<string>(favoritesFromDb);
                 }
 
-                //вывод длительности и избранного в DTO
                 foreach (var dto in propertiesDto)
                 {
                     dto.Duration = durationString;
-
                     if (request.UserId.HasValue)
                     {
                         dto.IsFavorite = favoriteSlugs.Contains(dto.Slug);
                     }
                 }
 
-                return OperationResult<GetPropertiesResponse>.Success(
-                    new GetPropertiesResponse { Page = request.Page, PageSize = request.PageSize, Properties = propertiesDto, TotalCount = totalCount }
-                    );
+
+                return OperationResult<GetPropertiesResponse>.Success(new GetPropertiesResponse
+                {
+                    Page = request.Page,
+                    PageSize = request.PageSize,
+                    TotalCount = totalCount, 
+                    Properties = propertiesDto
+                });
             }
             catch (Exception ex)
             {
@@ -181,3 +120,4 @@ namespace Renty.Application.Handlers.PropertyHandlers
         }
     }
 }
+

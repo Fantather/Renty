@@ -35,6 +35,9 @@ namespace Renty.Infrastructure.Configurations.Properties
                 .IsRequired()
                 .HasDefaultValue(1);
 
+            builder.Property(pd => pd.PetsAllowed)
+                .HasDefaultValue(false);
+
             builder.Property(pd => pd.FloorsCount)
                 .IsRequired()
                 .HasDefaultValue(1);

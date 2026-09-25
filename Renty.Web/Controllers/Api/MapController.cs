@@ -1,12 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Renty.Application.Queries;
+using Renty.Application.Queries.Property;
 using System.Security.Claims;
 
 
 namespace Renty.Web.Controllers.Api
 {
-    // Сейчас не используется: страница поиска отправляет тот же GetPropertiesQuery (фильтры + границы карты) напрямую из SearchController
+    // TODO (Ольга): этот эндпоинт сейчас никто не вызывает, search-map.js ходит на /Search (SearchController.Index).
+    // Когда подключишь GetPropertiesByMapQuery в SearchController.Index, здесь ничего менять не нужно.
     [Route("api/map")]
     [ApiController]
     public class MapController : ControllerBase
@@ -21,7 +22,7 @@ namespace Renty.Web.Controllers.Api
         //Леше. По плану запрос выглядит примерно так:
         // GET: /api/map/properties?north=...&south=...&east=...&west=...&destination=Kyiv
         [HttpGet("properties")]
-        public async Task<IActionResult> GetPropertiesInBounds([FromQuery] GetPropertiesQuery query)
+        public async Task<IActionResult> GetPropertiesInBounds([FromQuery] GetPropertiesByMapQuery query)
         {
             // айди текущего пользователя, если есть
             var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);

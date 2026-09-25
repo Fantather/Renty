@@ -29,6 +29,7 @@ namespace Renty.Application.DTOs.GetProperty
         // Рейтинг и отзывы
         public decimal AverageRating { get; set; }
         public int ReviewsCount { get; set; }
+        public bool PetsAllowed { get; set; } = false;
         public List<ReviewDto> Reviews { get; set; } = new();
 
         public RatingBreakdownDto RatingBreakdown { get; set; } = new();

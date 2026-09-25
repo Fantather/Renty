@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -23,8 +23,17 @@ namespace Renty.Infrastructure.Services.PlacesAPI.Models
         public string PlaceId { get; set; } = null!;
         [JsonPropertyName("text")]
         public TextValue Text { get; set; } = null!;
+        [JsonPropertyName("structuredFormat")]
+        public StructuredFormat StructuredFormat { get; set; }
         [JsonPropertyName("types")]
         public List<string> Types { get; set; } = new();
+    }
+    public class StructuredFormat
+    {
+        [JsonPropertyName("mainText")]
+        public TextValue MainText { get; set; }
+        [JsonPropertyName("secondaryText")]
+        public TextValue? SecondaryText { get; set; }
     }
     public class TextValue
     {
