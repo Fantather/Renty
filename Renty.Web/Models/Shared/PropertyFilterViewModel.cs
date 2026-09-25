@@ -16,5 +16,11 @@ namespace Renty.Web.Models.Shared
         public int? ChildCount { get; set; }
         public int? InfantCount { get; set; }
         public int? PetCount { get; set; }
+
+        // Границы видимой области карты
+        public double? North { get; set; }
+        public double? South { get; set; }
+        public double? East { get; set; }
+        public double? West { get; set; }
     }
 }

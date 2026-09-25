@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Renty.Application.DTOs.GetProperties
 {
+    [Obsolete("Заменён GetPropertiesResponse: границы карты теперь необязательные параметры GetPropertiesQuery")]
     public class GetPropertiesByMapResponse
     {
         public List<PropertyListItem> Properties { get; set; } = new();

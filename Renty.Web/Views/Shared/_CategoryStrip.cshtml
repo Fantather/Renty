@@ -9,6 +9,14 @@
     if (Model.Filter?.ChildCount > 0) baseRoute["childCount"] = Model.Filter.ChildCount.ToString()!;
     if (Model.Filter?.InfantCount > 0) baseRoute["infantCount"] = Model.Filter.InfantCount.ToString()!;
     if (Model.Filter?.PetCount > 0) baseRoute["petCount"] = Model.Filter.PetCount.ToString()!;
+
+    if (Model.Filter?.North != null && Model.Filter.South != null && Model.Filter.East != null && Model.Filter.West != null)
+    {
+        baseRoute["north"] = Model.Filter.North.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        baseRoute["south"] = Model.Filter.South.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        baseRoute["east"] = Model.Filter.East.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        baseRoute["west"] = Model.Filter.West.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    }
 }
 
 <div class="category-strip">
