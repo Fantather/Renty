@@ -102,7 +102,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 // 1) TotalCount: var totalCount = await query.CountAsync(cancellationToken) после всех фильтров, до сортировки и пагинации,
                 //    и передать в GetPropertiesResponse.TotalCount (сейчас поле в ответе всегда 0);
                 // 2) фильтр по удобствам (AmenityIds): цикл по идентификаторам с p.PropertyAmenities.Any(pa => pa.AmenityId == id && pa.IsActive),
-                //    как в GetPropertiesByMapHandler. Страница поиска пока их не передаёт, но понадобятся фильтры на странице.
+                //    как в GetPropertiesByMapHandler. Ни главная, ни страница поиска AmenityIds пока не передают, нужно, только когда появится такой фильтр, сейчас его нет на фронтенде.
                 // Границы карты (North/South/East/West) здесь намеренно нет, для карты используется GetPropertiesByMapHandler.
 
                 // сортировка
