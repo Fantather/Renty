@@ -5,10 +5,8 @@
     if (!string.IsNullOrEmpty(Model.Filter?.Destination)) baseRoute["destination"] = Model.Filter.Destination;
     if (Model.Filter?.CheckInDate != null) baseRoute["checkInDate"] = Model.Filter.CheckInDate.Value.ToString("yyyy-MM-dd");
     if (Model.Filter?.CheckOutDate != null) baseRoute["checkOutDate"] = Model.Filter.CheckOutDate.Value.ToString("yyyy-MM-dd");
-    if (Model.Filter?.AdultCount > 0) baseRoute["adultCount"] = Model.Filter.AdultCount.ToString()!;
-    if (Model.Filter?.ChildCount > 0) baseRoute["childCount"] = Model.Filter.ChildCount.ToString()!;
-    if (Model.Filter?.InfantCount > 0) baseRoute["infantCount"] = Model.Filter.InfantCount.ToString()!;
-    if (Model.Filter?.PetCount > 0) baseRoute["petCount"] = Model.Filter.PetCount.ToString()!;
+    if (Model.Filter?.GuestCount > 0) baseRoute["guestCount"] = Model.Filter.GuestCount.ToString();
+    if (Model.Filter?.Pets == true) baseRoute["pets"] = "true";
 
     if (Model.Filter?.North != null && Model.Filter.South != null && Model.Filter.East != null && Model.Filter.West != null)
     {
