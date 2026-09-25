@@ -5,7 +5,7 @@
     var defaultPlaceholder = "Поиск направлений";
     var areaPlaceholder = "Жильё в этой части карты";
 
-    var guestsTotal = (Model.AdultCount ?? 0) + (Model.ChildCount ?? 0) + (Model.InfantCount ?? 0) + (Model.PetCount ?? 0);
+    var guestsTotal = Model.GuestCount;
 
     var dateLabel = (Model.CheckInDate.HasValue && Model.CheckOutDate.HasValue)
         ? $"{Model.CheckInDate.Value:d MMM} – {Model.CheckOutDate.Value:d MMM}"
@@ -70,10 +70,8 @@
     <input type="hidden" id="checkInInput" name="CheckInDate" value="@(Model.CheckInDate?.ToString("yyyy-MM-dd"))" />
     <input type="hidden" id="checkOutInput" name="CheckOutDate" value="@(Model.CheckOutDate?.ToString("yyyy-MM-dd"))" />
 
-    <input type="hidden" id="adultCountInput" name="AdultCount" value="@(Model.AdultCount ?? 0)" />
-    <input type="hidden" id="childCountInput" name="ChildCount" value="@(Model.ChildCount ?? 0)" />
-    <input type="hidden" id="infantCountInput" name="InfantCount" value="@(Model.InfantCount ?? 0)" />
-    <input type="hidden" id="petCountInput" name="PetCount" value="@(Model.PetCount ?? 0)" />
+    <input type="hidden" id="guestCountInput" name="GuestCount" value="@Model.GuestCount" />
+    <input type="hidden" id="petsInput" name="Pets" value="@(Model.Pets ? "true" : "false")" />
 
     <input type="hidden" id="northInput" name="North" value="@(Model.North?.ToString(CultureInfo.InvariantCulture))" />
     <input type="hidden" id="southInput" name="South" value="@(Model.South?.ToString(CultureInfo.InvariantCulture))" />
