@@ -1,0 +1,15 @@
+@using System.Text.Json
+@model SearchIndexViewModel
+@{
+    var mapJsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+}
+
+<h1 class="search-page__total">@Model.TotalCount вариантов жилья</h1>
+<div class="search-inner">
+    @foreach (var property in Model.Properties)
+    {
+        <partial name="_PropertyCard" model="property" />
+    }
+</div>
+
+<script type="application/json" id="searchMapData">@Html.Raw(JsonSerializer.Serialize(Model.Properties, mapJsonOptions))</script>

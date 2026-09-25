@@ -6,6 +6,8 @@ using System.Security.Claims;
 
 namespace Renty.Web.Controllers.Api
 {
+    // TODO (Ольга): этот эндпоинт сейчас никто не вызывает, search-map.js ходит на /Search (SearchController.Index).
+    // Когда подключишь GetPropertiesByMapQuery в SearchController.Index, здесь ничего менять не нужно.
     [Route("api/map")]
     [ApiController]
     public class MapController : ControllerBase
