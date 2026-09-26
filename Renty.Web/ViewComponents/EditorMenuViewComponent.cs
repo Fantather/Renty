@@ -5,25 +5,35 @@ namespace Renty.Web.ViewComponents
 {
     public class EditorMenuViewComponent : ViewComponent
     {
-        private static readonly (string Name, string Action)[] Sections =
-        {
+        private static readonly (string Name, string Action)[] MenuItems = [
+            ("Адрес", "Address"),
+            ("Точное место", "Location"),
+            ("Видимость местоположения", "LocationVisibility"),
+            ("Тип жилья", "Category"),
+            ("Основная информация", "Basics"),
+            ("Удобства", "Amenities"),
+            ("Фото", "Photos"),
             ("Название", "Title"),
+            ("Отличительные черты", "Tags"),
+            ("Описание", "Description"),
+            ("Параметры бронирования", "BookingSettings"),
             ("Цена", "Pricing"),
-        };
-
+            ("Скидки", "Discounts")
+            ];
         public IViewComponentResult Invoke()
         {
-            var propertyId = Guid.Parse(ViewContext.RouteData.Values["id"]!.ToString()!);
-            var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-
-            var items = Sections
-                .Select(s => new EditorMenuItemViewModel(
-                    s.Name,
-                    s.Action,
-                    string.Equals(s.Action, currentAction, StringComparison.OrdinalIgnoreCase)))
+            Guid id = Guid.Parse(RouteData.Values["id"]!.ToString()!);
+            string action = RouteData.Values["action"]!.ToString()!;
+            List<EditorMenuItemViewModel> items = MenuItems
+                .Select(item => new EditorMenuItemViewModel(
+                    item.Name,
+                    item.Action,
+                    string.Equals(item.Action, action, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
 
-            return View(new EditorMenuViewModel(propertyId, items));
+            var menu = new EditorMenuViewModel(id, items);
+
+            return View(menu);
         }
     }
 }

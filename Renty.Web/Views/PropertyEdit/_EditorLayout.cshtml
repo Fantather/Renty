@@ -4,8 +4,10 @@
 }
 
 <div class="editor">
-    <a href="@Url.Action("Index", "Home")"></a>
     <aside class="editor__sidebar">
+        <a class="editor__back" href="@Url.Action("Index", "Home")">
+            <icon name="chevron" class="editor__back-icon" />
+        </a>
         <h1 class="editor__title">Редактор объявления</h1>
         <nav class="editor__menu">
             <vc:editor-menu />

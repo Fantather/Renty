@@ -1,7 +1,10 @@
 @model Renty.Web.Models.PropertyEdit.EditorMenuViewModel
 
-@foreach (var item in Model.Items)
-{
-    <a href="@Url.Action(item.Action, "PropertyEdit", new { id = Model.PropertyId })"
-       class="editor-menu__item @(item.IsActive ? "editor-menu__item--active" : "")">@item.Name</a>
-}
+<div class="editor-menu">
+    @foreach (var item in Model.Items)
+    {
+        <a class="editor-menu__item @(item.IsActive ? "editor-menu__item--active" : "")" href="@Url.Action(item.Action, "PropertyEdit", new { id = Model.PropertyId })">
+            <span class="editor-menu__title">@item.Name</span>
+        </a>
+    }
+</div>
