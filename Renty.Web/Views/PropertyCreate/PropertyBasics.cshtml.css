@@ -14,11 +14,6 @@
     color: var(--color-text-muted);
 }
 
-.property-basics-counters {
-    display: flex;
-    flex-direction: column;
-}
-
 .property-basics-next {
     margin-top: 24px;
     padding: 12px 24px;

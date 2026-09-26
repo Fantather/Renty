@@ -1,32 +1,15 @@
 @model Renty.Web.Models.InputModels.Properties.BasicsInputModel
 @{
     ViewData["Title"] = "Основная информация";
-
-    var basicsCounters = new List<CounterRowViewModel>
-    {
-        new() { Key = "maxGuests", Title = "Гости", Min = 1 },
-        new() { Key = "bedrooms", Title = "Спальни" },
-        new() { Key = "beds", Title = "Кровати" },
-        new() { Key = "bathrooms", Title = "Ванные" },
-    };
 }
 
 <div class="property-basics-page">
     <h1 class="property-basics-page__title">Поделитесь основной информацией о жилье</h1>
     <p class="property-basics-page__subtitle">Детали (например, типы кроватей) вы добавите позже.</p>
 
-    <form method="post">
-        <input type="hidden" asp-for="MaxGuests" />
-        <input type="hidden" asp-for="BedroomsCount" />
-        <input type="hidden" asp-for="BedsCount" />
-        <input type="hidden" asp-for="BathroomsCount" />
+    <partial name="_BasicsForm" model="Model" />
 
-        <div class="property-basics-counters">
-            <partial name="_CounterRows" model="basicsCounters" />
-        </div>
-
-        <button type="submit" class="property-basics-next">Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="property-basics-next">Далее</button>
 </div>
 
 @section Scripts {

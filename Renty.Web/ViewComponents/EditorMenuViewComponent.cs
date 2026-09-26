@@ -6,7 +6,6 @@ namespace Renty.Web.ViewComponents
     public class EditorMenuViewComponent : ViewComponent
     {
         private static readonly (string Name, string Action)[] MenuItems = [
-            ("Адрес", "Address"),
             ("Точное место", "Location"),
             ("Видимость местоположения", "LocationVisibility"),
             ("Тип жилья", "Category"),

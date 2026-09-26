@@ -1,0 +1,13 @@
+@model Renty.Web.Models.InputModels.Media.UploadPropertyImagesInputModel
+
+<div class="property-edit-photos-page">
+    <h2 class="property-edit-photos-page__title">Фото</h2>
+
+    <partial name="_PhotosForm" model="Model" />
+
+    <button type="submit" form="property-form" disabled>Сохранить</button>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/photos.js" asp-append-version="true"></script>
+}

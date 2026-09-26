@@ -1,0 +1,23 @@
+@model Renty.Web.Models.InputModels.Properties.PricingInputModel
+
+<form method="post" id="property-form" data-currency="@Model.Currency">
+    <input type="hidden" asp-for="Currency" />
+
+    <div class="pricing-card">
+        <label class="pricing-card__label" for="PricePerNight">Базовая цена</label>
+        <div class="pricing-card__value">
+            <span>@Model.Currency</span>
+            <input type="number" asp-for="PricePerNight" class="pricing-card__input" />
+        </div>
+    </div>
+
+    <div class="pricing-card">
+        <label class="pricing-card__label" for="WeekendPricePercent">Коэффициент выходных</label>
+        <div class="pricing-card__value">
+            <span>+</span>
+            <input type="number" asp-for="WeekendPricePercent" class="pricing-card__input pricing-card__input--percent" />
+            <span>%</span>
+        </div>
+        <span class="pricing-card__hint" id="weekendPriceHint"></span>
+    </div>
+</form>

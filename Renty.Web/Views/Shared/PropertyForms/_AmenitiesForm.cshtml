@@ -1,0 +1,18 @@
+@model Renty.Web.Models.PropertyCreate.AmenitiesPageViewModel
+
+<form method="post" id="property-form">
+    <div class="option-card-grid">
+        @foreach (var amenity in Model.Amenities)
+        {
+            <label class="option-card">
+                <input type="checkbox" class="option-card__input" name="AmenityIds" value="@amenity.Id" checked="@Model.Input.AmenityIds.Contains(amenity.Id)" />
+                <icon name="@amenity.IconName" class="option-card__icon" />
+                <span class="option-card__label">@amenity.Name</span>
+                @if (!string.IsNullOrEmpty(amenity.Description))
+                {
+                    <span class="option-card__description">@amenity.Description</span>
+                }
+            </label>
+        }
+    </div>
+</form>

@@ -1,0 +1,23 @@
+@model Renty.Web.Models.InputModels.Properties.BasicsInputModel
+@{
+    var basicsCounters = new List<CounterRowViewModel>
+    {
+        new() { Key = "maxGuests", Title = "Гости", Min = 1 },
+        new() { Key = "bedrooms", Title = "Спальни" },
+        new() { Key = "beds", Title = "Кровати" },
+        new() { Key = "bathrooms", Title = "Ванные" },
+    };
+}
+
+<form method="post" id="property-form">
+    <input type="hidden" asp-for="MaxGuests" />
+    <input type="hidden" asp-for="BedroomsCount" />
+    <input type="hidden" asp-for="BedsCount" />
+    <input type="hidden" asp-for="BathroomsCount" />
+    <input type="hidden" asp-for="Floor" />
+    <input type="hidden" asp-for="FloorsCount" />
+
+    <div class="property-basics-counters">
+        <partial name="_CounterRows" model="basicsCounters" />
+    </div>
+</form>

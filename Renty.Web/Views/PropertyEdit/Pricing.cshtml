@@ -1,0 +1,13 @@
+@model Renty.Web.Models.InputModels.Properties.PricingInputModel
+
+<div class="property-edit-pricing-page">
+    <h2 class="property-edit-pricing-page__title">Цена</h2>
+
+    <partial name="_PricingForm" model="Model" />
+
+    <button type="submit" form="property-form">Сохранить</button>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/pricing.js" asp-append-version="true"></script>
+}

@@ -1,7 +1,7 @@
 var picker = document.getElementById('photoPicker');
 var imagesInput = document.getElementById('Images');
 var grid = document.getElementById('photoGrid');
-var submitButton = imagesInput.closest('form').querySelector('button[type="submit"]');
+var submitButton = document.querySelector('button[type="submit"][form="' + imagesInput.form.id + '"]');
 
 var MIN_PHOTOS = 5;
 

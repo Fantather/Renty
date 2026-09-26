@@ -1,0 +1,13 @@
+@model Renty.Web.Models.InputModels.Properties.BasicsInputModel
+
+<div class="property-edit-basics-page">
+    <h2 class="property-edit-basics-page__title">Основная информация</h2>
+
+    <partial name="_BasicsForm" model="Model" />
+
+    <button type="submit" form="property-form">Сохранить</button>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/basics.js" asp-append-version="true"></script>
+}

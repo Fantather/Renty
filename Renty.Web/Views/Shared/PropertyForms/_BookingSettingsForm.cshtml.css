@@ -1,0 +1,47 @@
+.booking-option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+::deep .booking-option {
+    position: relative;
+    display: block;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+::deep .booking-option:hover {
+    background-color: var(--color-hover);
+}
+
+::deep .booking-option.is-selected {
+    border-width: 2px;
+    border-color: var(--color-text);
+    padding: 19px;
+}
+
+::deep .booking-option__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+::deep .booking-option__title {
+    font-weight: 600;
+}
+
+::deep .booking-option__badge {
+    display: block;
+    margin-top: 2px;
+    color: #2e7d32;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+::deep .booking-option__description {
+    margin: 8px 0 0;
+    color: var(--color-text-muted);
+}

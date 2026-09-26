@@ -1,0 +1,13 @@
+@model Renty.Web.Models.PropertyCreate.TagsPageViewModel
+
+<div class="property-edit-tags-page">
+    <h2 class="property-edit-tags-page__title">Отличительные черты</h2>
+
+    <partial name="_TagsForm" model="Model" />
+
+    <button type="submit" form="property-form">Сохранить</button>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/tags.js" asp-append-version="true"></script>
+}

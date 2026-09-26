@@ -1,0 +1,14 @@
+@model Renty.Web.Models.PropertyCreate.CategoryPageViewModel
+
+<form method="post" id="property-form">
+    <div class="option-card-grid">
+        @foreach (var category in Model.Categories)
+        {
+            <label class="option-card">
+                <input type="radio" class="option-card__input" asp-for="Input.CategoryId" value="@category.Id" />
+                <icon name="@category.IconName" class="option-card__icon" />
+                <span class="option-card__label">@category.Name</span>
+            </label>
+        }
+    </div>
+</form>

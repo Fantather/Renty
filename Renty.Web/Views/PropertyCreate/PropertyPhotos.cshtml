@@ -5,18 +5,12 @@
 
 <div class="property-photos-page">
     <h1 class="property-photos-page__title">Загрузите фото жилья</h1>
-    <div asp-validation-summary="All"></div>
 
     <p class="property-photos-page__subtitle">Нужно минимум 5 фотографий.</p>
 
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" asp-for="Images" multiple accept="image/*" hidden />
-        <input type="file" id="photoPicker" multiple accept="image/*" hidden />
+    <partial name="_PhotosForm" model="Model" />
 
-        <div class="photo-grid" id="photoGrid"></div>
-
-        <button type="submit" class="btn-primary property-photos-next" disabled>Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="btn-primary property-photos-next" disabled>Далее</button>
 </div>
 
 @section Scripts {

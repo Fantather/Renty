@@ -6,20 +6,9 @@
 <div class="property-tags-page">
     <h1 class="property-tags-page__title">Выберите одну или две отличительные черты</h1>
 
-    <form method="post">
-        <div class="option-card-grid">
-            @foreach (var tag in Model.Tags)
-            {
-                <label class="option-card">
-                    <input type="checkbox" class="option-card__input" name="TagIds" value="@tag.Id" />
-                    <icon name="@tag.IconName" class="option-card__icon" />
-                    <span class="option-card__label">@tag.Name</span>
-                </label>
-            }
-        </div>
+    <partial name="_TagsForm" model="Model" />
 
-        <button type="submit" class="property-tags-next">Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="property-tags-next">Далее</button>
 </div>
 
 @section Scripts {

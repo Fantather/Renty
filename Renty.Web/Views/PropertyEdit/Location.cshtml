@@ -1,0 +1,13 @@
+@model Renty.Web.Models.InputModels.Properties.LocationInputModel
+
+<div class="property-edit-location-page">
+    <h2 class="property-edit-location-page__title">Точное место</h2>
+
+    <partial name="_LocationForm" model="Model" />
+
+    <button type="submit" form="property-form">Сохранить</button>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/location-picker.js" asp-append-version="true"></script>
+}

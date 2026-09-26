@@ -7,9 +7,7 @@
     <h1 class="property-title-page__title">Придумайте, как будет называться ваше объявление</h1>
     <p class="property-title-page__subtitle">Краткое название — то, что нужно. Не беспокойтесь, вы всегда сможете отредактировать его позже.</p>
 
-    <form method="post">
-        <input-field asp-for="Name" placeholder="Название" max-length="100" multiline="true" />
+    <partial name="_TitleForm" model="Model" />
 
-        <button type="submit" class="property-title-next">Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="property-title-next">Далее</button>
 </div>

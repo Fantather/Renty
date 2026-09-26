@@ -1,0 +1,14 @@
+@model Renty.Web.Models.PropertyCreate.TagsPageViewModel
+
+<form method="post" id="property-form">
+    <div class="option-card-grid">
+        @foreach (var tag in Model.Tags)
+        {
+            <label class="option-card">
+                <input type="checkbox" class="option-card__input" name="TagIds" value="@tag.Id" checked="@Model.Input.TagIds.Contains(tag.Id)" />
+                <icon name="@tag.IconName" class="option-card__icon" />
+                <span class="option-card__label">@tag.Name</span>
+            </label>
+        }
+    </div>
+</form>

@@ -1,0 +1,26 @@
+@model Renty.Web.Models.PropertyCreate.LocationVisibilityPageViewModel
+
+<form method="post" id="property-form">
+    <div class="location-preview">
+        <div class="location-preview__map" id="locationPreviewMap"
+             data-lat="@Model.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+             data-lng="@Model.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+             data-api-key="@ViewData["GoogleMapsApiKey"]">
+            <div class="location-preview__canvas" id="locationPreviewCanvas"></div>
+            <div class="location-preview__pin">
+                <icon name="home-pin" />
+            </div>
+        </div>
+
+        <div class="location-preview__toggle-card">
+            <div class="location-preview__toggle-text">
+                <span class="location-preview__toggle-title">Показывать точное местоположение</span>
+                <p class="location-preview__toggle-description">Если вы разрешите, перед бронированием гости смогут увидеть на карте, где находится жильё.</p>
+            </div>
+            <label class="discount-toggle">
+                <input type="checkbox" asp-for="Input.ShowExactLocation" class="discount-toggle__input" id="showExactLocationInput" />
+                <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+            </label>
+        </div>
+    </div>
+</form>

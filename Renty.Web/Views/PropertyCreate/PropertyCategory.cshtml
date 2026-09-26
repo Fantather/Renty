@@ -6,20 +6,9 @@
 <div class="property-category-page">
     <h1 class="property-category-page__title">Что из перечисленного точнее описывает ваше жильё?</h1>
 
-    <form method="post">
-        <div class="option-card-grid">
-            @foreach (var category in Model.Categories)
-            {
-                <label class="option-card">
-                    <input type="radio" class="option-card__input" asp-for="Input.CategoryId" value="@category.Id" />
-                    <icon name="@category.IconName" class="option-card__icon" />
-                    <span class="option-card__label">@category.Name</span>
-                </label>
-            }
-        </div>
+    <partial name="_CategoryForm" model="Model" />
 
-        <button type="submit" class="property-category-next" disabled>Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="property-category-next" disabled>Далее</button>
 </div>
 
 @section Scripts {

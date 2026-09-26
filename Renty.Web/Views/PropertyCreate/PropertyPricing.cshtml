@@ -3,30 +3,12 @@
     ViewData["Title"] = "Цена";
 }
 
-<div class="property-pricing-page" data-currency="@Model.Currency">
+<div class="property-pricing-page">
     <h1 class="property-pricing-page__title">Теперь установите цены</h1>
 
-    <form method="post">
-        <div class="pricing-card">
-            <label class="pricing-card__label" for="PricePerNight">Базовая цена</label>
-            <div class="pricing-card__value">
-                <span>@Model.Currency</span>
-                <input type="number" asp-for="PricePerNight" class="pricing-card__input" />
-            </div>
-        </div>
+    <partial name="_PricingForm" model="Model" />
 
-        <div class="pricing-card">
-            <label class="pricing-card__label" for="WeekendPricePercent">Коэффициент выходных</label>
-            <div class="pricing-card__value">
-                <span>+</span>
-                <input type="number" asp-for="WeekendPricePercent" class="pricing-card__input pricing-card__input--percent" />
-                <span>%</span>
-            </div>
-            <span class="pricing-card__hint" id="weekendPriceHint"></span>
-        </div>
-
-        <button type="submit" class="property-pricing-next">Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="property-pricing-next">Далее</button>
 </div>
 
 @section Scripts {

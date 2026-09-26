@@ -7,23 +7,9 @@
     <h1 class="property-location-page__title">Указатель в нужном месте?</h1>
     <p class="property-location-page__subtitle">Гости увидят адрес, только когда оформят бронирование.</p>
 
-    <form method="post">
-        <input type="hidden" asp-for="Latitude" id="latitudeInput" />
-        <input type="hidden" asp-for="Longitude" id="longitudeInput" />
+    <partial name="_LocationForm" model="Model" />
 
-        <div class="location-map" id="locationMap"
-             data-lat="@Model.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)"
-             data-lng="@Model.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture)"
-             data-api-key="@ViewData["GoogleMapsApiKey"]">
-            <div class="location-map__canvas" id="locationMapCanvas"></div>
-            <div class="location-map__pin">
-                <icon name="home-pin" />
-            </div>
-            <div class="location-map__hint">Двигайте карту, чтобы установить метку в нужном месте</div>
-        </div>
-
-        <button type="submit" class="property-location-next">Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="property-location-next">Далее</button>
 </div>
 
 @section Scripts {

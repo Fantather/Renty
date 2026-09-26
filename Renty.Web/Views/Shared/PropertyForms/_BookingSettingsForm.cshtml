@@ -1,0 +1,17 @@
+@model Renty.Web.Models.InputModels.Properties.BookingSettingsInputModel
+
+<form method="post" id="property-form">
+    <div class="booking-option-list">
+        <label class="booking-option">
+            <input type="radio" class="booking-option__input" asp-for="InstantBookEnabled" value="false" />
+            <span class="booking-option__title">Одобрять бронирования вручную</span>
+            <span class="booking-option__badge">Рекомендуется</span>
+            <p class="booking-option__description">Вначале можно принимать решение по каждому запросу отдельно, а затем включить мгновенное бронирование, чтобы гости не ждали вашего ответа.</p>
+        </label>
+        <label class="booking-option">
+            <input type="radio" class="booking-option__input" asp-for="InstantBookEnabled" value="true" />
+            <span class="booking-option__title">Включить мгновенное бронирование</span>
+            <p class="booking-option__description">Гости смогут бронировать автоматически, без вашего подтверждения.</p>
+        </label>
+    </div>
+</form>

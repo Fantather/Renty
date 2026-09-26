@@ -1,0 +1,13 @@
+@model Renty.Web.Models.InputModels.Properties.DiscountsInputModel
+
+<div class="property-edit-discounts-page">
+    <h2 class="property-edit-discounts-page__title">Скидки</h2>
+
+    <partial name="_DiscountsForm" model="Model" />
+
+    <button type="submit" form="property-form">Сохранить</button>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/discounts.js" asp-append-version="true"></script>
+}

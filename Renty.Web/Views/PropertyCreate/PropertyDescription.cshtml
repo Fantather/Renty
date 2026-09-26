@@ -7,9 +7,7 @@
     <h1 class="property-description-page__title">Составьте описание</h1>
     <p class="property-description-page__subtitle">Расскажите, что делает ваше жильё особенным.</p>
 
-    <form method="post">
-        <input-field asp-for="Description" max-length="2000" multiline="true" />
+    <partial name="_DescriptionForm" model="Model" />
 
-        <button type="submit" class="property-description-next">Далее</button>
-    </form>
+    <button type="submit" form="property-form" class="property-description-next">Далее</button>
 </div>

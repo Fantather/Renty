@@ -20,7 +20,7 @@ var weeklyInput = document.getElementById('WeeklyDiscountPercent');
 var monthlyInput = document.getElementById('MonthlyDiscountPercent');
 var monthlyCard = monthlyInput.closest('.discount-card');
 var monthlyError = document.getElementById('monthlyDiscountError');
-var submitButton = monthlyInput.closest('form').querySelector('button[type="submit"]');
+var submitButton = document.querySelector('button[type="submit"][form="' + monthlyInput.form.id + '"]');
 
 function validateMonthly() {
     var weekly = Number(weeklyInput.value) || 0;
