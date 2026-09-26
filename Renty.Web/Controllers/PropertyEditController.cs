@@ -46,6 +46,35 @@ namespace Renty.Web.Controllers
             return RedirectToAction(nameof(Title), new { id });
         }
 
+        [HttpGet("address")]
+        public async Task<IActionResult> Address(Guid id, CancellationToken ct)
+        {
+            var draft = await LoadDraftAsync(id, ct);
+            if (draft == null)
+                return NotFound();
+
+            return View(ToAddressPage(draft));
+        }
+
+        [HttpPost("address")]
+        [ActionName(nameof(Address))]
+        public async Task<IActionResult> SaveAddress(Guid id, AddressInputModel model)
+        {
+            var dto = _mapper.Map<SavePropertyAddressDto>(model);
+            dto.HostId = CurrentUserId();
+            dto.PropertyId = id;
+
+            var result = await _mediator.Send(new SavePropertyAddressCommand(dto));
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Location), new { id });
+        }
+
         [HttpGet("location")]
         public async Task<IActionResult> Location(Guid id, CancellationToken ct)
         {
@@ -523,6 +552,16 @@ namespace Renty.Web.Controllers
         {
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
         }
+        private static AddressInputModel ToAddressPage(PropertyDraftDto draft) =>
+            new()
+            {
+                Address = draft.Address ?? string.Empty,
+                District = draft.District,
+                Street = draft.Street,
+                CityName = draft.CityName,
+                CountryName = draft.CountryName,
+                PlaceId = draft.PlaceId
+            };
 
         private static LocationVisibilityPageViewModel ToLocationVisibilityPage(PropertyDraftDto draft, LocationVisibilityInputModel input) =>
             new()

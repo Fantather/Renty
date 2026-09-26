@@ -89,6 +89,27 @@ namespace Renty.Web.Controllers
             return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });
         }
 
+        [HttpPost("address/{id:guid}")]
+        public async Task<IActionResult> SavePropertyAddress(Guid id, AddressInputModel model, CancellationToken ct)
+        {
+            var data = new SavePropertyAddressDto
+            {
+                RawAddress = model.Address,
+                PlaceId = model.PlaceId,
+                HostId = CurrentUserId(),
+                PropertyId = id
+            };
+            var result = await _mediator.Send(new SavePropertyAddressCommand(data), ct);
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                return View(nameof(PropertyAddress), model);
+            }
+
+            return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });
+        }
+
         // Заглушка: SavePropertyAddress пока не геокодит адрес (нет реального сохранения черновика),
         // поэтому карта стартует с захардкоженного центра, а не с координат введённого адреса.
         [HttpGet("location/{id:guid}")]
