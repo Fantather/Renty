@@ -1,25 +1,29 @@
 import { createSearchField } from '../shared/search-field.js';
-import { fetchPlaceSuggestions, endPlacesSession } from '../shared/places-autocomplete.js';
+import { fetchPlaceSuggestions, fetchPlaceDetails, endPlacesSession } from '../shared/places-autocomplete.js';
 
-var DETAIL_FIELD_IDS = ['Address', 'Street', 'District', 'CityName', 'CountryName'];
+var FIELD_TO_DETAIL_KEY = {
+    Address: 'streetName',
+    Street: 'streetNumber',
+    District: 'district',
+    CityName: 'cityName',
+    CountryName: 'countryName',
+};
 
-// TODO: подключить, когда бэк добавит эндпоинт деталей места по placeId.
-// Тогда selectSuggestion должен запросить детали (с тем же sessionToken), вызвать эту функцию
-// с ответом и только после этого вызвать endPlacesSession().
-function fillAddressFields(item) {
-    document.getElementById('Address').value = item.address;
-    document.getElementById('Street').value = item.street;
-    document.getElementById('District').value = item.district;
-    document.getElementById('CityName').value = item.cityName;
-    document.getElementById('CountryName').value = item.countryName;
+var DETAIL_FIELD_IDS = Object.keys(FIELD_TO_DETAIL_KEY);
+
+function fillAddressFields(details) {
+    DETAIL_FIELD_IDS.forEach(function (id) {
+        document.getElementById(id).value = details[FIELD_TO_DETAIL_KEY[id]];
+    });
     updateDetailsVisibility();
 }
 
-function selectSuggestion(item) {
+async function selectSuggestion(item) {
     document.getElementById('PlaceId').value = item.id;
-    document.getElementById('Address').value = item.title;
     endPlacesSession();
-    updateDetailsVisibility();
+
+    var addressDetails = await fetchPlaceDetails(item.id);
+    fillAddressFields(addressDetails);
 }
 
 createSearchField({

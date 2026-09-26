@@ -165,6 +165,14 @@ namespace Renty.Infrastructure.Services.GoogleGeocoding
                 {
                     dto.StreetName = component.LongName;
                 }
+                else if (component.Types.Contains("street_number"))
+                {
+                    dto.StreetNumber = component.LongName;
+                }
+                else if (component.Types.Contains("sublocality_level_1") || component.Types.Contains("sublocality"))
+                {
+                    dto.DistrictName ??= component.LongName;
+                }
                 dto.HasStreet = components.Any(c => c.Types.Contains("route"));
                 dto.HasStreetNumber = components.Any(c => c.Types.Contains("street_number"));
             }

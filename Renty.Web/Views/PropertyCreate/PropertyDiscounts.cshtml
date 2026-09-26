@@ -18,9 +18,9 @@
                     <span class="discount-card__title">Акция «Новое объявление»</span>
                     <p class="discount-card__description">Предложите скидку на первые 3 бронирования</p>
                 </div>
-                <label class="discount-toggle">
-                    <input type="checkbox" asp-for="NewListingDiscountEnabled" class="discount-toggle__input" />
-                    <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                <label class="toggle">
+                    <input type="checkbox" asp-for="NewListingDiscountEnabled" class="toggle__input" />
+                    <span class="toggle__track"><span class="toggle__knob"></span></span>
                 </label>
             </div>
 
@@ -33,9 +33,9 @@
                     <span class="discount-card__title">Скидка последней минуты</span>
                     <p class="discount-card__description">Для бронирований, оформленных менее чем за 14 дней до прибытия</p>
                 </div>
-                <label class="discount-toggle">
-                    <input type="checkbox" asp-for="LastMinuteDiscountEnabled" class="discount-toggle__input" />
-                    <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                <label class="toggle">
+                    <input type="checkbox" asp-for="LastMinuteDiscountEnabled" class="toggle__input" />
+                    <span class="toggle__track"><span class="toggle__knob"></span></span>
                 </label>
             </div>
 
@@ -48,9 +48,9 @@
                     <span class="discount-card__title">Недельная скидка</span>
                     <p class="discount-card__description">Для поездок длительностью от 7 ночей</p>
                 </div>
-                <label class="discount-toggle">
-                    <input type="checkbox" asp-for="WeeklyDiscountEnabled" class="discount-toggle__input" />
-                    <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                <label class="toggle">
+                    <input type="checkbox" asp-for="WeeklyDiscountEnabled" class="toggle__input" />
+                    <span class="toggle__track"><span class="toggle__knob"></span></span>
                 </label>
             </div>
 
@@ -64,9 +64,9 @@
                         <span class="discount-card__title">Месячная скидка</span>
                         <p class="discount-card__description">Для поездок длительностью от 28 ночей</p>
                     </div>
-                    <label class="discount-toggle">
-                        <input type="checkbox" asp-for="MonthlyDiscountEnabled" class="discount-toggle__input" />
-                        <span class="discount-toggle__track"><span class="discount-toggle__knob"></span></span>
+                    <label class="toggle">
+                        <input type="checkbox" asp-for="MonthlyDiscountEnabled" class="toggle__input" />
+                        <span class="toggle__track"><span class="toggle__knob"></span></span>
                     </label>
                 </div>
                 <p class="discount-card__error" id="monthlyDiscountError" hidden></p>

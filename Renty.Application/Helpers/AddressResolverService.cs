@@ -51,11 +51,10 @@ namespace Renty.Application.Helpers
 
             if (!string.IsNullOrWhiteSpace(dto.PlaceId))
             {
-                geoResult = await _geocodingService.GetAddressDetailsByPlaceIdAsync(dto.PlaceId);
+                geoResult = await _geocodingService.GetAddressDetailsByPlaceIdAsync(dto.PlaceId, ct);
             }
-
             // Если есть координаты, revers geocode
-            if (dto.Latitude.HasValue && dto.Longitude.HasValue)
+            else if (dto.Latitude.HasValue && dto.Longitude.HasValue)
             {
                 geoResult = await _geocodingService.GetAddressByCoordinatesAsync(dto.Latitude.Value, dto.Longitude.Value);
             }
@@ -71,9 +70,6 @@ namespace Renty.Application.Helpers
 
             if(geoResult == null)
                 return OperationResult<Address>.Fail("Не удалось определить координаты адреса. Укажите точку на карте вручную.");
-
-            if (!geoResult.HasStreet || !geoResult.HasStreetNumber)
-                return OperationResult<Address>.Fail("Пожалуйста, укажите полный адрес с названием улицы и номером дома, а не только город/район");
 
             // Если появился placeId после geocode
             if (!string.IsNullOrWhiteSpace(geoResult.PlaceId))

@@ -11,7 +11,7 @@ percentInputs.forEach(function (input) {
         if (value < 0) input.value = 0;
 
         if (Number(input.value) === 0) {
-            input.closest('.discount-card').querySelector('.discount-toggle__input').checked = false;
+            input.closest('.discount-card').querySelector('.toggle__input').checked = false;
         }
     });
 });

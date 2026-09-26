@@ -26,6 +26,13 @@ namespace Renty.Web.Controllers.Api
 
             return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Errors);
         }
+        [HttpGet("details")]
+        public async Task<IActionResult> Details([FromQuery] string placeId, CancellationToken ct)
+        {
+            var result = await _mediator.Send(new PlaceDetailsQuery(placeId), ct);
+
+            return result.IsSuccess ? Ok(result.Data) : BadRequest(result.Errors);
+        }
         // Авто заполнение для города
         [HttpGet("autocomplete-city")]
         public async Task<IActionResult> AutoCompleteCity([FromQuery]string input, [FromQuery]string sessionToken, CancellationToken ct)

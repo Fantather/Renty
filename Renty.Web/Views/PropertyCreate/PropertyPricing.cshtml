@@ -3,14 +3,14 @@
     ViewData["Title"] = "Цена";
 }
 
-<div class="property-pricing-page" data-currency="@Model.Currency">
+<div class="property-pricing-page" data-currency="$">
     <h1 class="property-pricing-page__title">Теперь установите цены</h1>
 
     <form method="post">
         <div class="pricing-card">
             <label class="pricing-card__label" for="PricePerNight">Базовая цена</label>
             <div class="pricing-card__value">
-                <span>@Model.Currency</span>
+                <span>$</span>
                 <input type="number" asp-for="PricePerNight" class="pricing-card__input" />
             </div>
         </div>

@@ -50,15 +50,18 @@
                 <button type="button" id="showDescriptionBtn" class="btn-outline">Показать ещё</button>
             </section>
 
-            <section id="rooms" class="property-rooms">
-                <h2>Где вы будете спать</h2>
-                <div class="property-rooms__grid">
-                    @foreach (var room in Model.Rooms)
-                    {
-                        <partial name="_RoomCard" model="room" />
-                    }
-                </div>
-            </section>
+            @if (Model.Rooms.Any())
+            {
+                <section id="rooms" class="property-rooms">
+                    <h2>Где вы будете спать</h2>
+                    <div class="property-rooms__grid">
+                        @foreach (var room in Model.Rooms)
+                        {
+                            <partial name="_RoomCard" model="room" />
+                        }
+                    </div>
+                </section>
+            }
 
             <section id="amenities" class="property-amenities">
                 <h2>Какие удобства вас ждут</h2>

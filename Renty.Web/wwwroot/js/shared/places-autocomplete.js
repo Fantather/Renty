@@ -13,6 +13,14 @@ export async function fetchPlaceSuggestions(query) {
     });
 }
 
+export async function fetchPlaceDetails(placeId) {
+    var res = await fetch('/api/places/details?placeId=' + encodeURIComponent(placeId));
+    if (!res.ok) return {};
+
+    var address = await res.json();
+    return address;
+}
+
 export function endPlacesSession() {
     sessionToken = null;
 }
