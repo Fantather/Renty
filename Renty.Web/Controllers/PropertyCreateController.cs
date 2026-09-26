@@ -40,6 +40,8 @@ namespace Renty.Web.Controllers
         [HttpGet("address")]
         public async Task<IActionResult> PropertyAddress(AddressInputModel? model)
         {
+            ModelState.Clear();
+
             if (model != null)
                 return View(model);
 
@@ -74,7 +76,7 @@ namespace Renty.Web.Controllers
         {
             var data = new SavePropertyAddressDto
             {
-                RawAddress = model.Address,
+                RawAddress = model.Address ?? string.Empty,
                 PlaceId = model.PlaceId,
                 HostId = CurrentUserId(),
             };
@@ -92,15 +94,12 @@ namespace Renty.Web.Controllers
         // Заглушка: SavePropertyAddress пока не геокодит адрес (нет реального сохранения черновика),
         // поэтому карта стартует с захардкоженного центра, а не с координат введённого адреса.
         [HttpGet("location/{id:guid}")]
-        public async Task<IActionResult> PropertyLocation(Guid id, LocationInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyLocation(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()), ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
-
-            if (model != null)
-                return View(model);
 
             ViewData["PropertyId"] = id;
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
@@ -121,6 +120,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
                 return View(nameof(PropertyLocation),model);
             }
 
@@ -390,6 +390,8 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            ModelState.Clear();
+
             if (model != null)
                 return View(model);
 
@@ -472,6 +474,8 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            ModelState.Clear();
+
             if (model != null)
                 return View(model);
 
@@ -529,10 +533,13 @@ namespace Renty.Web.Controllers
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
+
+            ModelState.Clear();
+
             if (model != null)
                 return View(model);
 
-            return View(new PricingInputModel 
+            return View(new PricingInputModel
             { 
                 PricePerNight = result.Data!.PricePerNight ?? 0,
                 Currency = result.Data!.Currency ?? string.Empty,

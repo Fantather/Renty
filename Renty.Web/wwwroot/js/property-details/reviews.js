@@ -6,10 +6,7 @@ import { createModal } from '../shared/popover.js';
 //     return await res.json();
 // }
 async function loadMoreReviews() {
-    return [
-        { authorName: 'Оксана', authorAvatarUrl: 'https://placehold.co/60x60', text: 'Все понравилось, обязательно вернёмся.', createdAt: '2026-08-10' },
-        { authorName: 'Дмитрий', authorAvatarUrl: 'https://placehold.co/60x60', text: 'Чисто, тихо, рядом с морем.', createdAt: '2026-08-02' },
-    ];
+    return [];
 }
 
 function buildReviewCard(review) {
