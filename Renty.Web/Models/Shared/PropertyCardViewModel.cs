@@ -4,6 +4,7 @@ namespace Renty.Web.Models.Shared
     {
         public Guid Id { get; set; }
         public string Slug { get; set; } = string.Empty;
+        public string? ActionUrl { get; set; }
         public List<string> ImageUrls { get; set; } = new();
         public bool IsFavorite { get; set; }
         public string City { get; set; } = string.Empty;
