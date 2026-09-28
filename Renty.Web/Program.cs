@@ -47,9 +47,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // При попытке войти без подтверждения email
-    // будет возвращать result.IsNotAllowed = true
     options.SignIn.RequireConfirmedEmail = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
 });
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>

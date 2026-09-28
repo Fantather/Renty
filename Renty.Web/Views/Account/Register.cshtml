@@ -8,6 +8,7 @@
         <h1 class="auth-card__title">Регистрация</h1>
 
         <form asp-controller="Account" asp-action="Register" method="post" class="auth-card__form">
+            <div asp-validation-summary="ModelOnly" class="auth-card__error"></div>
             <label class="auth-card__label" asp-for="Name">Имя</label>
             <input asp-for="Name" class="auth-card__input" />
             <span asp-validation-for="Name" class="auth-card__error"></span>
@@ -17,11 +18,23 @@
             <span asp-validation-for="Email" class="auth-card__error"></span>
 
             <label class="auth-card__label" asp-for="Password">Пароль</label>
-            <input asp-for="Password" class="auth-card__input" />
+            <div class="password-field">
+                <input asp-for="Password" class="auth-card__input" style="width: 100%; padding-right: 40px; box-sizing: border-box;" />
+                <button type="button" class="password-toggle" data-target="Password">
+                    <span class="eye-show"><icon name="eye" /></span>
+                    <span class="eye-hide" hidden><icon name="eye-off" /></span>
+                </button>
+            </div>
             <span asp-validation-for="Password" class="auth-card__error"></span>
 
             <label class="auth-card__label" asp-for="ConfirmPassword">Подтверждение пароля</label>
-            <input asp-for="ConfirmPassword" class="auth-card__input" />
+            <div class="password-field">
+                <input asp-for="ConfirmPassword" class="auth-card__input" style="width: 100%; padding-right: 40px; box-sizing: border-box;" />
+                <button type="button" class="password-toggle" data-target="ConfirmPassword">
+                    <span class="eye-show"><icon name="eye" /></span>
+                    <span class="eye-hide" hidden><icon name="eye-off" /></span>
+                </button>
+            </div>
             <span asp-validation-for="ConfirmPassword" class="auth-card__error"></span>
 
             <button type="submit" class="auth-card__submit">Зарегистрироваться</button>
@@ -37,3 +50,7 @@
         <p class="auth-card__footer">Уже есть аккаунт? <a asp-controller="Home" asp-action="Index">Войти</a></p>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/register/register.js" asp-append-version="true"></script>
+}
