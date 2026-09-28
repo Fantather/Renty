@@ -5,30 +5,21 @@ var guestsDismissible = createPopover('guestsSegment', 'guestsPopover', null);
 var guestsPopover = guestsDismissible.root;
 var guestsSegmentValue = document.getElementById('guestsSegmentValue');
 
-var countInputs = {
-    adult: document.getElementById('adultCountInput'),
-    child: document.getElementById('childCountInput'),
-    infant: document.getElementById('infantCountInput'),
-    pet: document.getElementById('petCountInput'),
-};
+var guestCountInput = document.getElementById('guestCountInput');
+var petsInput = document.getElementById('petsInput');
+var petsToggle = guestsPopover.querySelector('#petsToggle');
 
-var initialCounts = {
-    adult: parseInt(countInputs.adult.value, 10) || 0,
-    child: parseInt(countInputs.child.value, 10) || 0,
-    infant: parseInt(countInputs.infant.value, 10) || 0,
-    pet: parseInt(countInputs.pet.value, 10) || 0,
-};
+petsToggle.checked = petsInput.value === 'true';
 
 createCounter({
-    rows: guestsPopover.querySelectorAll('.counter-row'),
-    initialCounts: initialCounts,
+    rows: guestsPopover.querySelectorAll('[data-counter]'),
+    initialCounts: { guest: parseInt(guestCountInput.value, 10) || 0 },
     onChange: function (counts) {
-        countInputs.adult.value = counts.adult;
-        countInputs.child.value = counts.child;
-        countInputs.infant.value = counts.infant;
-        countInputs.pet.value = counts.pet;
-
-        var total = counts.adult + counts.child + counts.infant + counts.pet;
-        guestsSegmentValue.textContent = total > 0 ? 'Гостей: ' + total : 'Кто едет?';
+        guestCountInput.value = counts.guest;
+        guestsSegmentValue.textContent = counts.guest > 0 ? 'Гостей: ' + counts.guest : 'Кто едет?';
     },
+});
+
+petsToggle.addEventListener('change', function () {
+    petsInput.value = petsToggle.checked ? 'true' : 'false';
 });

@@ -1,9 +1,14 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
-
+    var confirmEmail = ViewData["email"]?.ToString();
 }
 
-<div>Сообщение с подтверждение почти было отправленно</div>
-<a asp-action="SendConfirmationEmail" asp-route="@ViewData["email"]">Отправить сообщение еще раз</a>
+<div class="confirmation-page">
+    <div class="auth-card confirmation-card">
+        <h1 class="auth-card__title">Подтвердите почту</h1>
+        <p>Письмо с подтверждением отправлено на <strong>@confirmEmail</strong>. Проверьте входящие.</p>
+        <form method="post" action="/Account/SendConfirmationEmail">
+            <input type="hidden" name="email" value="@confirmEmail" />
+            <button type="submit" class="btn-primary" style="width: 100%">Отправить письмо ещё раз</button>
+        </form>
+    </div>
+</div>

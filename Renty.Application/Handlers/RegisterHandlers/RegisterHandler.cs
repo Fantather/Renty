@@ -35,7 +35,7 @@ namespace Renty.Application.Handlers.RegisterHandlers
 
             var user = new ApplicationUser
             {
-                UserName = request.UserName,
+                UserName = request.Email,
                 Email = request.Email,
                 EmailConfirmed = false
             };

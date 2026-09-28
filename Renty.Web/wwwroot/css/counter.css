@@ -1,7 +1,8 @@
-/* Универсальная строка-счётчик с +/- — используется в попапе гостей, гостевом пикере
-   бронирования и на шаге "Основная информация" визарда создания квартиры. Не про
-   гостей конкретно, поэтому живёт не в guests.css. */
-.counter-row {
+/* Универсальная строка попапа (заголовок + подпись слева, произвольный контрол справа) —
+   используется в попапе гостей, гостевом пикере бронирования и на шаге "Основная информация"
+   визарда создания квартиры. Не про счётчики конкретно (см. чекбокс питомцев в
+   _GuestsPopoverRows.cshtml), поэтому живёт не в guests.css. */
+.popover-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -10,29 +11,29 @@
     border-bottom: 1px solid var(--color-border);
 }
 
-.counter-row:last-child {
+.popover-row:last-child {
     border-bottom: none;
 }
 
-.counter-row__title {
+.popover-row__title {
     margin: 0;
     font-weight: 700;
 }
 
-.counter-row__subtitle {
+.popover-row__subtitle {
     margin: 2px 0 0;
     font-size: 0.85rem;
     color: var(--color-text-muted);
 }
 
-.counter-row__controls {
+.popover-row__controls {
     display: flex;
     align-items: center;
     gap: 16px;
     flex-shrink: 0;
 }
 
-.counter-row__btn {
+.popover-row__btn {
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -44,16 +45,16 @@
     cursor: pointer;
 }
 
-.counter-row__btn:hover:not(:disabled) {
+.popover-row__btn:hover:not(:disabled) {
     background-color: var(--color-hover);
 }
 
-.counter-row__btn:disabled {
+.popover-row__btn:disabled {
     opacity: 0.3;
     cursor: default;
 }
 
-.counter-row__count {
+.popover-row__count {
     min-width: 16px;
     text-align: center;
 }

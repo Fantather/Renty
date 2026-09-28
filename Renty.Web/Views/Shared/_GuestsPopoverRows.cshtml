@@ -1,11 +1,18 @@
 @{
     var guestCounters = new List<CounterRowViewModel>
     {
-        new() { Key = "adult", Title = "Взрослые", Subtitle = "От 13 лет" },
-        new() { Key = "child", Title = "Дети", Subtitle = "Возраст от 2 до 12" },
-        new() { Key = "infant", Title = "Младенцы", Subtitle = "Младше 2" },
-        new() { Key = "pet", Title = "Домашние животные", Subtitle = "Путешествуете с животным-помощником?" },
+        new() { Key = "guest", Title = "Максимальное количество гостей", Min = 1 },
     };
 }
 
 <partial name="_CounterRows" model="guestCounters" />
+
+<div class="popover-row">
+    <p class="popover-row__title">Заезд с питомцами</p>
+    <label class="toggle">
+        <input type="checkbox" class="toggle__input" id="petsToggle" />
+        <span class="toggle__track">
+            <span class="toggle__knob"></span>
+        </span>
+    </label>
+</div>
