@@ -8,9 +8,9 @@ export function createCounter(options) {
     rows.forEach(function (row) {
         var key = row.dataset.counter;
         var min = parseInt(row.dataset.counterMin, 10) || 0;
-        var countEl = row.querySelector('.counter-row__count');
-        var minusBtn = row.querySelector('.counter-row__btn--minus');
-        var plusBtn = row.querySelector('.counter-row__btn--plus');
+        var countEl = row.querySelector('.popover-row__count');
+        var minusBtn = row.querySelector('.popover-row__btn--minus');
+        var plusBtn = row.querySelector('.popover-row__btn--plus');
 
         counts[key] = initialCounts[key] || min;
         renderCounter(key, countEl, minusBtn, min);
