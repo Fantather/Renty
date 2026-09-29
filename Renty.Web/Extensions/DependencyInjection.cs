@@ -36,6 +36,13 @@ namespace Renty.Web.DI
                 client.Timeout = TimeSpan.FromSeconds(30);
             });
             services.AddScoped<OwnedPropertyService>();
+
+            services.AddHttpClient<IAvatarDownloadService, AvatarDownloadService>(client =>
+            {
+                client.Timeout = TimeSpan.FromSeconds(30);
+            });
+
+
             return services;
         }
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration? config = null)

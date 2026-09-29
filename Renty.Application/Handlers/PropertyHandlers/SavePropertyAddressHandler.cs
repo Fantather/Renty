@@ -22,15 +22,18 @@ namespace Renty.Application.Handlers.PropertyHandlers
         private readonly IPropertyRepository _propertyRepository;
         private readonly AddressResolverService _addressResolverService;
         private readonly IMapper _mapper;
+        private readonly OwnedPropertyService _ownedPropertyService;
 
         public CreatePropertyCommandHandler(
         IPropertyRepository propertyRepository,
         AddressResolverService addressResolverService,
-        IMapper mapper)
+        IMapper mapper,
+        OwnedPropertyService ownedPropertyService)
         {
             _propertyRepository = propertyRepository;
             _addressResolverService = addressResolverService;
             _mapper = mapper;
+            _ownedPropertyService = ownedPropertyService;
         }
 
         public async Task<OperationResult<Guid>> Handle(SavePropertyAddressCommand request, CancellationToken cancellationToken)
@@ -43,13 +46,33 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             // перенос в проперти
             var property = _mapper.Map<Property>(dto);
-            property.AddressId = addressResult.Data.Id;
-            //а это айди городов из бд
-            property.CityId = addressResult.Data!.CityId!;
-            property.CountryId = addressResult.Data.City.CountryId;
-            property.AddressId = addressResult.Data!.Id;
 
-            await _propertyRepository.AddAsync(property, cancellationToken);
+            if (request.Data.PropertyId.HasValue)
+            {
+                var result = await _ownedPropertyService.GetOwnedPropertyAsync(request.Data.PropertyId.Value, request.Data.HostId, cancellationToken);
+
+                if (!result.IsSuccess)
+                    return OperationResult<Guid>.Fail(result.Errors.ToArray());
+
+                property = result.Data!;
+
+                property.AddressId = addressResult.Data!.Id;
+                property.CityId = addressResult.Data!.CityId!;
+                property.CountryId = addressResult.Data.City.CountryId;
+                property.AddressId = addressResult.Data!.Id;
+
+                await _propertyRepository.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                property.AddressId = addressResult.Data!.Id;
+                //а это айди городов из бд
+                property.CityId = addressResult.Data!.CityId!;
+                property.CountryId = addressResult.Data.City.CountryId;
+                property.AddressId = addressResult.Data!.Id;
+
+                await _propertyRepository.AddAsync(property, cancellationToken);
+            }
 
             return OperationResult<Guid>.Success(property.Id);
         }

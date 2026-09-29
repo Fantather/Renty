@@ -6,8 +6,8 @@ namespace Renty.Application.DTOs.CreateProperty
 {
     public class SavePropertyAddressDto
     {
-        //public string Title { get; set; } = string.Empty;
-        //public Guid CategoryId { get; set; }
+        // Айди недвижимости для изменения адреса
+        public Guid? PropertyId { get; set; }
         public Guid HostId { get; set; }
 
         // поля гугл мапс

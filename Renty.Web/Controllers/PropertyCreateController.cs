@@ -1,6 +1,7 @@
 using AspNetCoreGeneratedDocument;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Renty.Application.Commands.PropertyCommands;
@@ -19,6 +20,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Renty.Web.Controllers
 {
+    [Authorize]
     [Route("create-property")]
     public class PropertyCreateController : Controller
     {
@@ -86,6 +88,27 @@ namespace Renty.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
                 return View(nameof(PropertyAddress),model);
+            }
+
+            return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });
+        }
+
+        [HttpPost("address/{id:guid}")]
+        public async Task<IActionResult> SavePropertyAddress(Guid id, AddressInputModel model, CancellationToken ct)
+        {
+            var data = new SavePropertyAddressDto
+            {
+                RawAddress = model.Address,
+                PlaceId = model.PlaceId,
+                HostId = CurrentUserId(),
+                PropertyId = id
+            };
+            var result = await _mediator.Send(new SavePropertyAddressCommand(data), ct);
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                return View(nameof(PropertyAddress), model);
             }
 
             return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });
