@@ -9,5 +9,8 @@ namespace Renty.Web.Models.Search
         public PropertyFilterViewModel Filter { get; set; } = new();
         public int TotalCount { get; set; }     // Общее количество найденных квартир
         public string GoogleMapsApiKey { get; set; } = "";
+
+        public double? MapCenterLat { get; set; }
+        public double? MapCenterLng { get; set; }
     }
 }

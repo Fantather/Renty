@@ -63,6 +63,19 @@ namespace Renty.Web.Controllers
 
             var items = new List<PropertyCardViewModel>();
             var totalCount = 0;
+            double? mapCenterLat = null; 
+            double? mapCenterLng = null;
+
+            if (!hasBounds && (!string.IsNullOrEmpty(filter.PlaceId) || !string.IsNullOrEmpty(filter.Destination)))
+            {
+                var locationResult = await _mediator.Send(new ResolveSearchLocationQuery(filter.PlaceId, filter.Destination));
+
+                if (locationResult.IsSuccess && locationResult.Data != null)
+                {
+                    mapCenterLat = locationResult.Data.Latitude;
+                    mapCenterLng = locationResult.Data.Longitude;
+                }
+            }
 
             if (hasBounds)
             {
@@ -79,6 +92,7 @@ namespace Renty.Web.Controllers
                     GuestCount: filter.GuestCount,
                     UserId: currentUserId
                 ));
+                
 
                 if (mapResult.IsSuccess && mapResult.Data != null)
                 {
@@ -111,7 +125,9 @@ namespace Renty.Web.Controllers
             {
                 Properties = items,
                 Filter = filter,
-                TotalCount = totalCount
+                TotalCount = totalCount,
+                MapCenterLat = mapCenterLat,
+                MapCenterLng = mapCenterLng
             };
 
             // Запрос из search-map.js после сдвига или зума карты - отдаём только PartialView
