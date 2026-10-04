@@ -31,9 +31,9 @@ namespace Renty.Application.Handlers.PropertyHandlers
             var property = result.Data!;
 
 
-            var tagIds = property.PropertyTags.Select(t => t.TagId).ToList();
+            var tagIds = property.PropertyTags.Where(t => t.IsActive).Select(t => t.TagId).ToList();
 
-            var amenityIds = property.PropertyAmenities.Select(a => a.AmenityId).ToList();
+            var amenityIds = property.PropertyAmenities.Where(a => a.IsActive).Select(a => a.AmenityId).ToList();
 
             var images = property.PropertyImages.Select(i => new OrderedImageDto { ImageId = i.Id, IsPrimary = i.IsPrimary, ImageUrl = i.ImageUrl, DisplayOrder = i.DisplayOrder }).ToList();
 
