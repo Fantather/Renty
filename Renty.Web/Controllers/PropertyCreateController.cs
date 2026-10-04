@@ -334,15 +334,12 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("photos/{id:guid}")]
-        public async Task<IActionResult> PropertyPhotos(Guid id, UploadPropertyImagesInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyPhotos(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
-
-            if (model != null)
-                return View(model);
 
             var images = result.Data!.Images
                 .OrderBy(i => i.DisplayOrder)

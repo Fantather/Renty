@@ -13,7 +13,9 @@
         <input type="file" asp-for="Images" multiple accept="image/*" hidden />
         <input type="file" id="photoPicker" multiple accept="image/*" hidden />
 
-        <div class="photo-grid" id="photoGrid"></div>
+        <div id="orderedImagesFields"></div>
+
+        <div class="photo-grid" id="photoGrid" data-existing='@Json.Serialize(Model.ExistingImages)'></div>
 
         <button type="submit" class="btn-primary property-photos-next" disabled>Далее</button>
     </form>
