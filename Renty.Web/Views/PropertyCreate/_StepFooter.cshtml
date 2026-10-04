@@ -1,0 +1,12 @@
+@{
+    var backUrl = ViewData["BackUrl"] as string;
+    var nextLabel = ViewData["NextLabel"] as string ?? "Далее";
+}
+
+<div class="step-footer">
+    @if (backUrl != null)
+    {
+        <a href="@backUrl" class="btn-outline step-footer__back">Назад</a>
+    }
+    <button type="submit" class="step-footer__next">@nextLabel</button>
+</div>

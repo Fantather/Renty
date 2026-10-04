@@ -82,7 +82,3 @@
 ::deep .photo-tile--add:hover {
     background-color: var(--color-hover);
 }
-
-.property-photos-next {
-    margin-top: 24px;
-}

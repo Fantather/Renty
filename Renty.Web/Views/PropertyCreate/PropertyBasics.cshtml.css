@@ -18,18 +18,3 @@
     display: flex;
     flex-direction: column;
 }
-
-.property-basics-next {
-    margin-top: 24px;
-    padding: 12px 24px;
-    border: none;
-    border-radius: var(--radius-md);
-    background-color: var(--color-accent);
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.property-basics-next:hover {
-    background-color: var(--color-accent-hover);
-}

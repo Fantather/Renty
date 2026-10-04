@@ -16,6 +16,7 @@
 
 .location-preview {
     position: relative;
+    margin-bottom: 64px;
 }
 
 .location-preview__map {
@@ -75,19 +76,4 @@
     margin: 4px 0 0;
     color: var(--color-text-muted);
     font-size: 0.9rem;
-}
-
-.property-location-visibility-next {
-    margin-top: 64px;
-    padding: 12px 24px;
-    border: none;
-    border-radius: var(--radius-md);
-    background-color: var(--color-accent);
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.property-location-visibility-next:hover {
-    background-color: var(--color-accent-hover);
 }

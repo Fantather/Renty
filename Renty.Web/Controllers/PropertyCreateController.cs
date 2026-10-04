@@ -43,6 +43,7 @@ namespace Renty.Web.Controllers
         public async Task<IActionResult> PropertyAddress(AddressInputModel? model)
         {
             ModelState.Clear();
+            SetStepNav(nameof(PropertyAddress), null);
 
             if (model != null)
                 return View(model);
@@ -59,6 +60,7 @@ namespace Renty.Web.Controllers
             if (result.IsSuccess)
             {
                 var propertyDraft = result.Data!;
+                SetStepNav(nameof(PropertyAddress), id);
                 return View(new AddressInputModel
                 {
                     CityName = propertyDraft.CityName?.ToString() ?? "",
@@ -69,6 +71,7 @@ namespace Renty.Web.Controllers
                     PlaceId = propertyDraft.PlaceId,
                 });
             }
+            SetStepNav(nameof(PropertyAddress), id);
             return View(new AddressInputModel());
         }
 
@@ -87,6 +90,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyAddress), null);
                 return View(nameof(PropertyAddress),model);
             }
 
@@ -108,6 +112,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyAddress), id);
                 return View(nameof(PropertyAddress), model);
             }
 
@@ -127,6 +132,7 @@ namespace Renty.Web.Controllers
             ViewData["PropertyId"] = id;
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
 
+            SetStepNav(nameof(PropertyLocation), id);
             return View(new LocationInputModel
             {
                 Latitude = result.Data!.Latitude.HasValue ? result.Data.Latitude.Value : 50.4501,
@@ -144,6 +150,7 @@ namespace Renty.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
                 ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
+                SetStepNav(nameof(PropertyLocation), id);
                 return View(nameof(PropertyLocation),model);
             }
 
@@ -160,6 +167,7 @@ namespace Renty.Web.Controllers
 
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
 
+            SetStepNav(nameof(PropertyLocationVisibility), id);
             return View(new LocationVisibilityPageViewModel
             {
                 Input = new LocationVisibilityInputModel
@@ -181,6 +189,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyLocationVisibility), id);
                 return View(nameof(PropertyLocationVisibility),model);
             }
 
@@ -224,6 +233,7 @@ namespace Renty.Web.Controllers
                 }
             };
 
+            SetStepNav(nameof(PropertyCategory), id);
             return View(vm);
         }
 
@@ -236,6 +246,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyCategory), id);
                 return View(nameof(PropertyCategory),model);
             }
 
@@ -250,6 +261,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            SetStepNav(nameof(PropertyBasics), id);
             return View(new BasicsInputModel
             {
                 MaxGuests = result.Data!.MaxGuests.HasValue ? result.Data!.MaxGuests.Value : 1,
@@ -281,6 +293,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyBasics), id);
                 return View(nameof(PropertyBasics),model);
             }
 
@@ -315,6 +328,7 @@ namespace Renty.Web.Controllers
                 }
             };
 
+            SetStepNav(nameof(PropertyAmenities), id);
             return View(vm);
         }
 
@@ -327,6 +341,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ",result.Errors));
+                SetStepNav(nameof(PropertyAmenities), id);
                 return View(nameof(PropertyAmenities),model);
             }
 
@@ -349,6 +364,7 @@ namespace Renty.Web.Controllers
                 ImageUrl = i.ImageUrl
             }).ToList();
 
+            SetStepNav(nameof(PropertyPhotos), id);
             return View(new UploadPropertyImagesInputModel {
                 ExistingImages = images
             });
@@ -385,6 +401,7 @@ namespace Renty.Web.Controllers
                     ImageUrl = i.ImageUrl
                 }).ToList();
 
+                SetStepNav(nameof(PropertyPhotos), id);
                 return View(nameof(PropertyPhotos),model);
             }
 
@@ -399,6 +416,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            SetStepNav(nameof(PropertyTitle), id);
             return View(new TitleInputModel
             {
                 Name = result.Data!.Name ?? string.Empty
@@ -414,6 +432,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyTitle), id);
                 return View(nameof(PropertyTitle),model);
             }
 
@@ -450,6 +469,7 @@ namespace Renty.Web.Controllers
                 }
             };
 
+            SetStepNav(nameof(PropertyTags), id);
             return View(vm);
         }
 
@@ -462,6 +482,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyTags), id);
                 return View(nameof(PropertyTags),model);
             }
 
@@ -476,6 +497,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            SetStepNav(nameof(PropertyDescription), id);
             return View(new DescriptionInputModel
             {
                 Description = result.Data!.Description ?? string.Empty
@@ -491,6 +513,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyDescription), id);
                 return View(nameof(PropertyDescription),model);
             }
 
@@ -505,6 +528,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            SetStepNav(nameof(PropertyBookingSettings), id);
             return View(new BookingSettingsInputModel
             {
                 InstantBookEnabled = result.Data!.InstantBook ?? false
@@ -520,6 +544,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyBookingSettings), id);
                 return View(nameof(PropertyBookingSettings),model);
             }
 
@@ -534,6 +559,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            SetStepNav(nameof(PropertyPricing), id);
             return View(new PricingInputModel
             { 
                 PricePerNight = result.Data!.PricePerNight ?? 0,
@@ -551,6 +577,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyPricing), id);
                 return View(nameof(PropertyPricing),model);
             }
 
@@ -565,6 +592,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
+            SetStepNav(nameof(PropertyDiscounts), id);
             return View(new DiscountsInputModel
             {
                 MonthlyDiscountEnabled = result.Data!.Discounts?.MonthlyDiscountEnabled ?? true,
@@ -587,6 +615,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyDiscounts), id);
                 return View(nameof(PropertyDiscounts),model);
             }
 
@@ -596,6 +625,7 @@ namespace Renty.Web.Controllers
         [HttpGet("review/{id:guid}")]
         public IActionResult PropertyReview(Guid id)
         {
+            SetStepNav(nameof(PropertyReview), id);
             return View();
         }
 
@@ -608,6 +638,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyReview), id);
                 return View(nameof(PropertyReview));
             }
 
@@ -622,6 +653,22 @@ namespace Renty.Web.Controllers
             {
                 new { title = "Пример, Одесса", address = "ул. Примерная, 1", street = "ул. Примерная", district = "Приморский", cityId = "Одесса", countryId = "Украина" },
             });
+        }
+
+        private static readonly string[] Steps =
+        [
+            nameof(PropertyAddress), nameof(PropertyLocation), nameof(PropertyLocationVisibility),
+            nameof(PropertyCategory), nameof(PropertyBasics), nameof(PropertyAmenities),
+            nameof(PropertyPhotos), nameof(PropertyTitle), nameof(PropertyTags),
+            nameof(PropertyDescription), nameof(PropertyBookingSettings), nameof(PropertyPricing),
+            nameof(PropertyDiscounts), nameof(PropertyReview)
+        ];
+
+        private void SetStepNav(string step, Guid? id)
+        {
+            var index = Array.IndexOf(Steps, step);
+            ViewData["BackUrl"] = index > 0 ? Url.Action(Steps[index - 1], new { id }) : null;
+            ViewData["NextLabel"] = index == Steps.Length - 1 ? "Опубликовать" : "Далее";
         }
 
         private Guid CurrentUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
