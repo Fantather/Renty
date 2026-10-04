@@ -13,3 +13,5 @@ function updateSelection() {
 checkboxes.forEach(function (checkbox) {
     checkbox.addEventListener('change', updateSelection);
 });
+
+updateSelection();
