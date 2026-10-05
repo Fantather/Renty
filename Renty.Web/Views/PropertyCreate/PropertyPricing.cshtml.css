@@ -10,6 +10,8 @@
 }
 
 .pricing-card {
+    display: block;
+    cursor: text;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 20px;
