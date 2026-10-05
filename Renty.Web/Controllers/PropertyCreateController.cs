@@ -51,30 +51,6 @@ namespace Renty.Web.Controllers
             return View(new AddressInputModel());
         }
 
-        // Принимает айди недвижимости при возвращении на шаг назад
-        [HttpGet("address/{id:guid}")]
-        public async Task<IActionResult> PropertyAddress(Guid id, CancellationToken ct)
-        {
-            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
-
-            if (result.IsSuccess)
-            {
-                var propertyDraft = result.Data!;
-                SetStepNav(nameof(PropertyAddress), id);
-                return View(new AddressInputModel
-                {
-                    CityName = propertyDraft.CityName?.ToString() ?? "",
-                    CountryName = propertyDraft.CountryName?.ToString() ?? "",
-                    District = propertyDraft.District,
-                    Street = propertyDraft.Street,
-                    Address = propertyDraft.Address ?? "",
-                    PlaceId = propertyDraft.PlaceId,
-                });
-            }
-            SetStepNav(nameof(PropertyAddress), id);
-            return View(new AddressInputModel());
-        }
-
         // TODO: этот метод должен создавать черновик квартиры в БД и возвращать её id.
         [HttpPost("address")]
         public async Task<IActionResult> SavePropertyAddress(AddressInputModel model, CancellationToken ct)
@@ -92,28 +68,6 @@ namespace Renty.Web.Controllers
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
                 SetStepNav(nameof(PropertyAddress), null);
                 return View(nameof(PropertyAddress),model);
-            }
-
-            return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });
-        }
-
-        [HttpPost("address/{id:guid}")]
-        public async Task<IActionResult> SavePropertyAddress(Guid id, AddressInputModel model, CancellationToken ct)
-        {
-            var data = new SavePropertyAddressDto
-            {
-                RawAddress = model.Address,
-                PlaceId = model.PlaceId,
-                HostId = CurrentUserId(),
-                PropertyId = id
-            };
-            var result = await _mediator.Send(new SavePropertyAddressCommand(data), ct);
-
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
-                SetStepNav(nameof(PropertyAddress), id);
-                return View(nameof(PropertyAddress), model);
             }
 
             return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });

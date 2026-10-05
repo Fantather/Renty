@@ -66,7 +66,7 @@ namespace Renty.Web.Controllers
                     City = p.City,
                     Country = p.Country,
                     CreatedAt = p.CreatedAt,
-                    ActionUrl = Url.Action("PropertyAddress", "PropertyCreate", new { id = p.Id})
+                    ActionUrl = Url.Action("PropertyLocation", "PropertyCreate", new { id = p.Id})
                 }).ToList(),
                 Published = result.Data!.Published.Select(p => new UserPropertyCardViewModel
                 {
