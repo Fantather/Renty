@@ -143,8 +143,15 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                var draft = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()), ct);
+                ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
                 SetStepNav(nameof(PropertyLocationVisibility), id);
-                return View(nameof(PropertyLocationVisibility),model);
+                return View(nameof(PropertyLocationVisibility), new LocationVisibilityPageViewModel
+                {
+                    Input = model,
+                    Latitude = draft.Data?.Latitude ?? 50.4501,
+                    Longitude = draft.Data?.Longitude ?? 30.5234
+                });
             }
 
             return RedirectToAction(nameof(PropertyCategory), new { id });
@@ -295,8 +302,13 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ",result.Errors));
+                var amenities = await _mediator.Send(new GetAmenitiesQuery(), ct);
                 SetStepNav(nameof(PropertyAmenities), id);
-                return View(nameof(PropertyAmenities),model);
+                return View(nameof(PropertyAmenities), new AmenitiesPageViewModel
+                {
+                    Amenities = amenities.Data!.Select(a => _mapper.Map<AmenityViewModel>(a)).ToList(),
+                    Input = model
+                });
             }
 
             return RedirectToAction(nameof(PropertyPhotos), new { id });
@@ -436,8 +448,13 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                var tags = await _mediator.Send(new GetTagsQuery(), ct);
                 SetStepNav(nameof(PropertyTags), id);
-                return View(nameof(PropertyTags),model);
+                return View(nameof(PropertyTags), new TagsPageViewModel
+                {
+                    Tags = tags.Data!.Select(t => _mapper.Map<TagViewModel>(t)).ToList(),
+                    Input = model
+                });
             }
 
             return RedirectToAction(nameof(PropertyDescription), new { id });
