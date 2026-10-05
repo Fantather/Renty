@@ -25,12 +25,12 @@ var submitButton = monthlyInput.closest('form').querySelector('button[type="subm
 function validateMonthly() {
     var weekly = Number(weeklyInput.value) || 0;
     var monthly = Number(monthlyInput.value) || 0;
-    var isInvalid = monthly <= weekly;
+    var isInvalid = monthly < weekly;
 
     monthlyCard.classList.toggle('discount-card--error', isInvalid);
     monthlyError.hidden = !isInvalid;
     monthlyError.textContent = isInvalid
-        ? 'Скидка за месяц должна быть больше скидки за неделю, которая составляет ' + weekly + '%'
+        ? 'Скидка за месяц не может быть меньше скидки за неделю, которая составляет ' + weekly + '%'
         : '';
     submitButton.disabled = isInvalid;
 }
