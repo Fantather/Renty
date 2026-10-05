@@ -83,6 +83,18 @@
     margin: 6px 0 0;
 }
 
+.property-card__price-original {
+    margin-right: 4px;
+    color: var(--color-text-muted);
+}
+
+.property-card__discount {
+    margin: 2px 0 0;
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
 ::deep .property-card__star {
     color: var(--color-text);
 }

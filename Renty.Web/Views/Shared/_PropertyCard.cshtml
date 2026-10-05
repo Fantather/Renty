@@ -32,6 +32,16 @@
         </div>
         <p class="property-card__category">@Model.CategoryName</p>
         <p class="property-card__duration">@Model.DurationLabel</p>
-        <p class="property-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ночь</p>
+        <p class="property-card__price">
+            @if (Model.OriginalPricePerNight > Model.PricePerNight)
+            {
+                <s class="property-card__price-original">$@Model.OriginalPricePerNight.Value.ToString("0")</s>
+            }
+            <strong>$@Model.PricePerNight.ToString("0")</strong> ночь
+        </p>
+        @if (!string.IsNullOrEmpty(Model.DiscountLabel))
+        {
+            <p class="property-card__discount">@Model.DiscountLabel</p>
+        }
     </div>
 </div>
