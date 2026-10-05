@@ -594,10 +594,15 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("review/{id:guid}")]
-        public IActionResult PropertyReview(Guid id)
+        public async Task<IActionResult> PropertyReview(Guid id, CancellationToken ct)
         {
+            var card = await BuildReviewCardAsync(id, ct);
+
+            if (card == null)
+                return RedirectToAction(nameof(PropertyAddress));
+
             SetStepNav(nameof(PropertyReview), id);
-            return View();
+            return View(card);
         }
 
         // TODO: опубликовать объявление (сменить статус черновика) и перенаправить на страницу объекта.
@@ -609,8 +614,13 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                var card = await BuildReviewCardAsync(id, ct);
+
+                if (card == null)
+                    return RedirectToAction(nameof(PropertyAddress));
+
                 SetStepNav(nameof(PropertyReview), id);
-                return View(nameof(PropertyReview));
+                return View(nameof(PropertyReview), card);
             }
 
             return RedirectToAction("Index", "Home");
@@ -634,6 +644,27 @@ namespace Renty.Web.Controllers
             nameof(PropertyDescription), nameof(PropertyBookingSettings), nameof(PropertyPricing),
             nameof(PropertyDiscounts), nameof(PropertyReview)
         ];
+
+        private async Task<PropertyCardViewModel?> BuildReviewCardAsync(Guid id, CancellationToken ct)
+        {
+            var draft = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()), ct);
+
+            if (!draft.IsSuccess)
+                return null;
+
+            var categories = await _mediator.Send(new GetCategoriesQuery(), ct);
+            var cover = draft.Data!.Images.OrderBy(i => i.DisplayOrder).FirstOrDefault();
+
+            return new PropertyCardViewModel
+            {
+                Id = id,
+                ImageUrls = cover != null ? new List<string> { cover.ImageUrl } : new List<string>(),
+                City = draft.Data.CityName ?? string.Empty,
+                Country = draft.Data.CountryName ?? string.Empty,
+                CategoryName = categories.Data?.Categories.FirstOrDefault(c => c.Id == draft.Data.CategoryId)?.Name ?? string.Empty,
+                PricePerNight = draft.Data.PricePerNight ?? 0
+            };
+        }
 
         private void SetStepNav(string step, Guid? id)
         {
