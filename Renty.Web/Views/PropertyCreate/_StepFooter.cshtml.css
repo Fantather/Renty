@@ -1,9 +1,28 @@
 .step-footer {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: var(--color-surface);
+}
+
+.step-footer__progress {
+    height: 6px;
+    background-color: var(--color-border);
+}
+
+.step-footer__progress-fill {
+    height: 100%;
+    background-color: var(--color-text);
+}
+
+.step-footer__bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-top: 24px;
+    padding: 16px var(--page-gutter);
 }
 
 .step-footer__next {
@@ -25,4 +44,10 @@
     background-color: var(--color-border);
     color: var(--color-text-muted);
     cursor: not-allowed;
+}
+
+@media (max-width: 767px) {
+    .step-footer__bar {
+        padding-inline: 16px;
+    }
 }

@@ -669,6 +669,8 @@ namespace Renty.Web.Controllers
             var index = Array.IndexOf(Steps, step);
             ViewData["BackUrl"] = index > 0 ? Url.Action(Steps[index - 1], new { id }) : null;
             ViewData["NextLabel"] = index == Steps.Length - 1 ? "Опубликовать" : "Далее";
+            ViewData["StepFooter"] = true;
+            ViewData["StepProgress"] = (index + 1) * 100 / Steps.Length;
         }
 
         private Guid CurrentUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
