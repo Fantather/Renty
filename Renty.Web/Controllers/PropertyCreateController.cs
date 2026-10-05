@@ -667,7 +667,10 @@ namespace Renty.Web.Controllers
         private void SetStepNav(string step, Guid? id)
         {
             var index = Array.IndexOf(Steps, step);
-            ViewData["BackUrl"] = index > 0 ? Url.Action(Steps[index - 1], new { id }) : null;
+            var previous = index > 0 ? Steps[index - 1] : null;
+            ViewData["BackUrl"] = previous != null && previous != nameof(PropertyAddress)
+                ? Url.Action(previous, new { id })
+                : null;
             ViewData["NextLabel"] = index == Steps.Length - 1 ? "Опубликовать" : "Далее";
             ViewData["StepFooter"] = true;
             ViewData["StepProgress"] = (index + 1) * 100 / Steps.Length;
