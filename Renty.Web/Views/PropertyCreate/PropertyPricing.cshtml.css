@@ -10,8 +10,6 @@
 }
 
 .pricing-card {
-    display: block;
-    cursor: text;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 20px;
@@ -45,8 +43,10 @@
     outline: none;
     font: inherit;
     field-sizing: content;
-    min-width: 2ch;
-    padding: 0;
+    min-width: calc(2ch + 24px);
+    position: relative;
+    padding: 8px 12px;
+    margin: -8px -12px;
     background: none;
     appearance: textfield;
 }
