@@ -38,9 +38,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
             // Убираем дубликаты
             var requestedIds = request.Amenities.Distinct().ToList();
 
-            if (!requestedIds.Any())
-                return OperationResult<Guid>.Fail("The list of amenities is empty");
-
             // Проверка существования айди до попытки сохранить
             var existingIds = await _amenityRepository.GetExistingIdsAsync(requestedIds, cancellationToken);
 

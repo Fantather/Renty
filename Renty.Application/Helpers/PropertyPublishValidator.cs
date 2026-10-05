@@ -38,9 +38,6 @@ namespace Renty.Application.Helpers
             if (property?.PropertyTags == null || !property.PropertyTags.Any(pt => pt.IsActive))
                 missing.Add(nameof(property.PropertyTags));
 
-            if (property?.PropertyAmenities == null || !property.PropertyAmenities.Any(pa => pa.IsActive))
-                missing.Add(nameof(property.PropertyAmenities));
-
             return missing;
         }
     }
