@@ -16,6 +16,7 @@
 
 .property-review-preview {
     max-width: 360px;
+    margin: 0 auto;
     padding: 16px;
     background-color: var(--color-surface);
     border-radius: var(--radius-lg);
