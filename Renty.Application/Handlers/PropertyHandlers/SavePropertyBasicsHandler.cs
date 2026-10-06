@@ -42,6 +42,8 @@ namespace Renty.Application.Handlers.PropertyHandlers
             if(input.BathroomsCount < 0 || input.BedsCount < 0 || input.BedroomsCount < 0)
                 return OperationResult<Guid>.Fail("Quantity data cannot be less than zero.");
 
+            int minRoomCount = input.BathroomsCount + input.BedroomsCount;
+
             if(property.Details == null)
             {
                 var details = new PropertyDetails
@@ -52,7 +54,8 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     BedsCount = input.BedsCount,
                     PropertyId = property.Id,
                     Floor = input.Floor,
-                    FloorsCount = input.FloorsCount
+                    FloorsCount = input.FloorsCount,
+                    RoomsCount = minRoomCount
                 };
                 property.Details = details;
             }
@@ -64,6 +67,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 property.Details.BedsCount = input.BedsCount;
                 property.Details.Floor = input.Floor;
                 property.Details.FloorsCount = input.FloorsCount;
+                property.Details.RoomsCount = minRoomCount;
             }
 
             await _propertyRepository.UpdateAsync(property, cancellationToken);

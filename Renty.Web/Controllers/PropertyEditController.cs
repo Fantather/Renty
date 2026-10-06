@@ -1,5 +1,6 @@
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.DTOs.CreateProperty;
@@ -14,6 +15,7 @@ using System.Security.Claims;
 
 namespace Renty.Web.Controllers
 {
+    [Authorize]
     [Route("edit-property/{id:guid}")]
     public class PropertyEditController : Controller
     {

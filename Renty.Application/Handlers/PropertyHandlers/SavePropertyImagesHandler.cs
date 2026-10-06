@@ -35,6 +35,9 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var property = result.Data!;
 
+            if (request.OrderedImages.Count == 0 && request.Files.Count == 0)
+                return OperationResult<List<OrderedImageDto>>.Fail("No images to save");
+
             var keepIds = request.OrderedImages
                 .Where(o => o.Type == OrderedImageType.Existing)
                 .Select(o => o.Id)
@@ -131,14 +134,15 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 });
             }
 
-            // Пока не отправляются с формы OrderedImageRef
-            for (int position = 0; position < newImagesByIndex.Count; position++)
+            if (request.OrderedImages.Count == 0)
             {
-                var orderRef = newImagesByIndex[position];
+                for (int position = 0; position < newImagesByIndex.Count; position++)
+                {
+                    var orderRef = newImagesByIndex[position];
 
-                orderRef.DisplayOrder = position;
-                orderRef.IsPrimary = position == 0;
-
+                    orderRef.DisplayOrder = position;
+                    orderRef.IsPrimary = position == 0;
+                }
             }
             await _imageRepository.AddRangeAsync(newImagesByIndex.Values, cancellationToken);
 

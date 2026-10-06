@@ -1,0 +1,46 @@
+@using Renty.Web.Models.PropertyDrafts
+@model PropertyDraftsViewModel
+
+@{
+    ViewData["Title"] = "Мои квартиры";
+}
+
+<div class="my-properties">
+    <h1 class="my-properties__title">Мои квартиры</h1>
+
+    <section class="my-properties__section">
+        <h2 class="my-properties__section-title">Черновики</h2>
+
+        @if (!Model.Drafts.Any())
+        {
+            <p class="my-properties__empty">Нет незавершённых черновиков</p>
+        }
+        else
+        {
+            <div class="my-properties__grid">
+                @foreach (var card in Model.Drafts)
+                {
+                    <partial name="_PropertyCard" model="card" />
+                }
+            </div>
+        }
+    </section>
+
+    <section class="my-properties__section">
+        <h2 class="my-properties__section-title">Опубликованные</h2>
+
+        @if (!Model.Published.Any())
+        {
+            <p class="my-properties__empty">Нет опубликованных квартир</p>
+        }
+        else
+        {
+            <div class="my-properties__grid">
+                @foreach (var card in Model.Published)
+                {
+                    <partial name="_PropertyCard" model="card" />
+                }
+            </div>
+        }
+    </section>
+</div>

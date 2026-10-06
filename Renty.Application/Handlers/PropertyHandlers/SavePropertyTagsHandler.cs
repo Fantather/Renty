@@ -43,16 +43,19 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var existingIds = await _tagRepository.GetExistingIdsAsync(request.TagIds, cancellationToken);
 
-            var missingIds = existingIds.Except(request.TagIds);
+            var missingIds = requestIds.Except(existingIds);
 
             if (missingIds.Any())
                 return OperationResult<Guid>.Fail($"Unknown tags: {string.Join(", ", missingIds)}");
+
+            foreach (var tag in property.PropertyTags)
+                tag.IsActive = requestIds.Contains(tag.TagId);
 
             var currentIds = property.PropertyTags
                 .Select(t=>t.TagId)
                 .ToHashSet();
 
-            var toAdd = requestIds.Where(id => !currentIds.Contains(id));
+            var toAdd = requestIds.Where(id => !currentIds.Contains(id)).ToList();
             var newTags = new List<PropertyTag>();
 
             foreach(var id in toAdd)
@@ -67,13 +70,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 newTags.Add(tag);
             }
             await _propertyTagRepository.AddRangeAsync(newTags,cancellationToken);
-
-            var toRemove = currentIds.Where(id => !requestIds.Contains(id));
-
-            foreach(var tag in property.PropertyTags.Where(t => toRemove.Contains(t.TagId)))
-            {
-                tag.IsActive = false;
-            }
 
             await _propertyRepository.SaveChangesAsync(cancellationToken);
 

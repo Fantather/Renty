@@ -30,6 +30,7 @@ namespace Renty.Application.Handlers.UserHandlers
             var user = await _context.Users
                 .Include(u => u.Languages)
                 .Include(u => u.Facts)
+                .Include(u => u.HomeCity)
                 .FirstOrDefaultAsync(u => u.Id == currentUserId.Value, cancellationToken);
 
             if (user == null)

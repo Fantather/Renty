@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Locations;
@@ -163,6 +163,11 @@ namespace Renty.Infrastructure.Repository
                     c.CountryId == countryId &&
                     (c.Name.ToLower() == term || (c.NameRu != null && c.NameRu.ToLower() == term)),
                     ct);
+        }
+
+        public async Task<City?> GetByPlaceIdAsync(string placeId, CancellationToken ct = default)
+        {
+            return await _dbSet.FirstOrDefaultAsync(c => c.PlaceId == placeId, ct);
         }
     }
 }

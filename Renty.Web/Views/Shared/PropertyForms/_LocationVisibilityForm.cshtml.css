@@ -1,5 +1,6 @@
 .location-preview {
     position: relative;
+    margin-bottom: 40px;
 }
 
 .location-preview__map {

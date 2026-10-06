@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Renty.Application.Commands.LoginCommands;
 using Renty.Application.Common;
 using Renty.Application.DTOs.Login;
+using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,13 @@ namespace Renty.Application.Handlers.LoginHandlers
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        public ExternalLoginCallbackHandler(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        private readonly IAvatarDownloadService _avatarDownloadService;
+        public ExternalLoginCallbackHandler(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,
+            IAvatarDownloadService avatarDownloadService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _avatarDownloadService = avatarDownloadService;
         }
         public async Task<OperationResult<ExternalLoginCallbackResponse>> Handle(ExternalLoginCallbackCommand request, CancellationToken cancellationToken)
         {
@@ -50,9 +54,12 @@ namespace Renty.Application.Handlers.LoginHandlers
             // Если новый пользователь - нужно создать аккаунт
             else
             {
-                // Достаём email из claims, который пришёл от Google
+                // Достаём email, givenName, surname, picture из claims, который пришёл от Google
 
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+                var lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+                var avatarUrl = info.Principal.FindFirstValue("picture");
 
                 // Без email мы не можем создать пользователя
                 if(email == null)
@@ -68,10 +75,20 @@ namespace Renty.Application.Handlers.LoginHandlers
                     {
                         UserName = email,
                         Email = email,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        FirstName =firstName ?? string.Empty,
+                        LastName = lastName ?? string.Empty,
                     };
 
                     await _userManager.CreateAsync(user);
+
+                    // Если есть аватарка - загружаем её и устанавливаем её новый путь в пользователе
+                    if (!string.IsNullOrWhiteSpace(avatarUrl))
+                    {
+                        var localAvatarUrl = await _avatarDownloadService.DownloadAndSaveAsync(avatarUrl, user.Id, cancellationToken);
+                        user.AvatarUrl = localAvatarUrl;
+                        await _userManager.UpdateAsync(user);
+                    }
                 }
 
                 // Связываем пользователя с Google логином

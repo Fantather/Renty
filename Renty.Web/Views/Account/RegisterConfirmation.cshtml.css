@@ -1,0 +1,13 @@
+.confirmation-page {
+    display: flex;
+    justify-content: center;
+    padding: 48px 16px;
+}
+
+.confirmation-card {
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+}

@@ -128,7 +128,10 @@
                         <span>@generationFact.Type.GetDescription() @generationFact.Value</span>
                     }
                 </div>
-                <input type="checkbox" id="generationToggle" />
+                <label class="toggle">
+                    <input type="checkbox" id="generationToggle" class="toggle__input" />
+                    <span class="toggle__track"><span class="toggle__knob"></span></span>
+                </label>
             </div>
             <button type="button" class="btn-primary" id="generationModalSave">Сохранить</button>
         </div>

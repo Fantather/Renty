@@ -1,0 +1,28 @@
+.property-review-page {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 48px 16px;
+}
+
+.property-review-page__title {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.property-review-page__subtitle {
+    margin: 8px 0 32px;
+    color: var(--color-text-muted);
+}
+
+.property-review-preview {
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.property-review-preview ::deep .property-card__favorite {
+    display: none;
+}

@@ -1,5 +1,5 @@
 export function limitCheckboxSelection(checkboxes, max) {
-    var selected = checkboxes.filter(function (checkbox) { return checkbox.checked; });
+    var selected = checkboxes.filter(function (c) { return c.checked; });
 
     checkboxes.forEach(function (checkbox) {
         checkbox.addEventListener('change', function () {

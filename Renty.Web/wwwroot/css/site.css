@@ -147,6 +147,11 @@ html {
     height: var(--search-strip-height);
 }
 
+.body--step-footer {
+    margin-bottom: 0;
+    padding-bottom: 88px;
+}
+
 .site-header--sticky {
     position: sticky;
     top: 0px;

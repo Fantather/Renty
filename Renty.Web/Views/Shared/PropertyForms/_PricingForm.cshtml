@@ -1,12 +1,10 @@
 @model Renty.Web.Models.InputModels.Properties.PricingInputModel
 
-<form method="post" id="property-form" data-currency="@Model.Currency">
-    <input type="hidden" asp-for="Currency" />
-
+<form method="post" id="property-form" data-currency="$">
     <div class="pricing-card">
         <label class="pricing-card__label" for="PricePerNight">Базовая цена</label>
         <div class="pricing-card__value">
-            <span>@Model.Currency</span>
+            <span>$</span>
             <input type="number" asp-for="PricePerNight" class="pricing-card__input" />
         </div>
     </div>

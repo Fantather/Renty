@@ -1,4 +1,5 @@
 import { createModal } from '../shared/popover.js';
+import { fetchCitySuggestions, resolveCity, endPlacesSession } from '../shared/places-autocomplete.js';
 
 var factModal = createModal('factModal', 'factModalClose');
 
@@ -122,17 +123,9 @@ var homeCitySaveBtn = document.getElementById('homeCityModalSave');
 var homeCityIdInput = document.getElementById('homeCityIdInput');
 var homeCityDisplayInput = document.getElementById('homeCityDisplayInput');
 
-// TODO: заглушка вместо CityController.SearchCity — когда понадобится реальный поиск,
-// заменить mockCities на fetch('/City/search?searchTerm=' + encodeURIComponent(query)).
-var mockCities = [
-    { id: '11111111-1111-1111-1111-111111111111', name: 'Алмере', country: 'Нидерланды' },
-    { id: '22222222-2222-2222-2222-222222222222', name: 'Алкмар', country: 'Нидерланды' },
-    { id: '33333333-3333-3333-3333-333333333333', name: 'Алсмер', country: 'Нидерланды' },
-    { id: '44444444-4444-4444-4444-444444444444', name: 'Одесса', country: 'Украина' },
-    { id: '55555555-5555-5555-5555-555555555555', name: 'Киев', country: 'Украина' }
-];
-
 var selectedCity = null;
+var citySearchTimer;
+var citySearchRequestId = 0;
 
 function buildCheckmark() {
     var check = document.createElement('span');
@@ -146,7 +139,7 @@ function buildCityItem(city) {
     item.className = 'edit-profile__option-row';
 
     var label = document.createElement('span');
-    label.textContent = city.name + ', ' + city.country;
+    label.textContent = city.country ? city.name + ', ' + city.country : city.name;
     item.appendChild(label);
 
     if (selectedCity && selectedCity.id === city.id) {
@@ -166,20 +159,23 @@ function buildCityItem(city) {
     return item;
 }
 
-function renderCityResults(query) {
+async function renderCityResults(query) {
+    var requestId = ++citySearchRequestId;
     homeCityResults.innerHTML = '';
 
     if (!query) return;
 
-    var q = query.toLowerCase();
-    mockCities
-        .filter(function (city) { return city.name.toLowerCase().startsWith(q); })
-        .forEach(function (city) {
-            homeCityResults.appendChild(buildCityItem(city));
-        });
+    var cities = await fetchCitySuggestions(query);
+    if (requestId !== citySearchRequestId) return;
+
+    cities.forEach(function (city) {
+        homeCityResults.appendChild(buildCityItem(city));
+    });
 }
 
 homeCityTrigger.addEventListener('click', function () {
+    clearTimeout(citySearchTimer);
+    citySearchRequestId++;
     selectedCity = null;
     homeCitySearch.value = '';
     homeCityResults.innerHTML = '';
@@ -189,17 +185,28 @@ homeCityTrigger.addEventListener('click', function () {
 });
 
 homeCitySearch.addEventListener('input', function () {
-    renderCityResults(homeCitySearch.value);
+    clearTimeout(citySearchTimer);
+    citySearchTimer = setTimeout(function () {
+        renderCityResults(homeCitySearch.value);
+    }, 250);
 });
 
-homeCitySaveBtn.addEventListener('click', function () {
+homeCitySaveBtn.addEventListener('click', async function () {
     if (!selectedCity) return;
 
-    var display = selectedCity.name + ', ' + selectedCity.country;
+    homeCitySaveBtn.disabled = true;
+    var resolved = await resolveCity(selectedCity.id);
 
-    homeCityIdInput.value = selectedCity.id;
-    homeCityDisplayInput.value = display;
-    homeCityRowLabel.textContent = 'Где я живу: ' + display;
+    if (!resolved) {
+        homeCitySaveBtn.disabled = false;
+        return;
+    }
+
+    endPlacesSession();
+
+    homeCityIdInput.value = resolved.cityId;
+    homeCityDisplayInput.value = resolved.displayName;
+    homeCityRowLabel.textContent = 'Где я живу: ' + resolved.displayName;
 
     homeCityModal.close();
 });

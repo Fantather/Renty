@@ -30,7 +30,6 @@ namespace Renty.Web.Controllers
                     currentUserId = parsedId;
                 }
             }
-            var guestCount = (filter.AdultCount ?? 0) + (filter.ChildCount ?? 0) + (filter.InfantCount ?? 0) + (filter.PetCount ?? 0);
 
             var propertiesQuery = new GetPropertiesQuery
             {
@@ -38,13 +37,13 @@ namespace Renty.Web.Controllers
                 CheckInDate = filter.CheckInDate?.ToDateTime(TimeOnly.MinValue),
                 // полный чекаут день недоступен
                 CheckOutDate = filter.CheckOutDate?.ToDateTime(TimeOnly.MaxValue),
-                GuestCount = guestCount > 0 ? guestCount : null,
+                GuestCount = filter.GuestCount > 0 ? filter.GuestCount : null,
+                PetsAllowed = filter.Pets,
                 //передача фильтра по городу и стране в запрос
                 Destination = filter.Destination,
 
                 Page=1,
                 PageSize = 20,
-
                 UserId = currentUserId
             };
 

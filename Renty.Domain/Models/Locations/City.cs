@@ -28,6 +28,8 @@ namespace Renty.Domain.Models.Locations
 
         public decimal? Longitude { get; set; }
 
+        public string? PlaceId { get; set; }
+
         // вместо удаления
         public bool IsActive { get; set; } = true;
 

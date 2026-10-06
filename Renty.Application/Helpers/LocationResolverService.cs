@@ -1,5 +1,7 @@
+using Renty.Application.Common;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Locations;
+using Renty.Domain.ServiceModels.Locations;
 
 
 namespace Renty.Application.Services
@@ -82,6 +84,41 @@ namespace Renty.Application.Services
             return city;
         }
 
+        public async Task<City> ResolveCityFromInputAsync(string? placeId, string? cityText, CancellationToken ct = default)
+        {
+            if (!string.IsNullOrWhiteSpace(placeId))
+            {
+                var existingByPlaceId = await _cityRepository.GetByPlaceIdAsync(placeId, ct);
+                if (existingByPlaceId != null)
+                    return existingByPlaceId;
+            }
 
+            AddressDetailsDto? geoResult;
+
+            if (!string.IsNullOrWhiteSpace(placeId))
+            {
+                geoResult = await _geocodingService.GetAddressDetailsByPlaceIdAsync(placeId, ct);
+            }
+            else if (!string.IsNullOrWhiteSpace(cityText))
+            {
+                geoResult = await _geocodingService.GetAddressDetailsAsync(cityText, ct);
+            }
+            else
+                throw new Exception("Укажите город");
+
+            if (geoResult == null)
+                throw new Exception("Не удалось определить город.Проверьте написание.");
+
+            var country = await ResolveCountryAsync(geoResult.CountryName, geoResult.CountryCode, ct);
+            var city = await ResolveCityAsync(geoResult.CityName, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
+
+            if (string.IsNullOrWhiteSpace(city.PlaceId) && geoResult.PlaceId != null)
+            {
+                city.PlaceId = geoResult.PlaceId;
+                await _cityRepository.UpdateAsync(city, ct);
+            }
+
+            return city;
+        }
     }
 }

@@ -240,6 +240,9 @@ namespace Renty.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<string>("PlaceId")
+                        .HasColumnType("text");
+
                     b.Property<Guid?>("RegionId")
                         .HasColumnType("uuid");
 
@@ -252,6 +255,9 @@ namespace Renty.Infrastructure.Migrations
                     b.HasIndex("Name");
 
                     b.HasIndex("NameRu");
+
+                    b.HasIndex("PlaceId")
+                        .IsUnique();
 
                     b.HasIndex("RegionId");
 
@@ -690,6 +696,11 @@ namespace Renty.Infrastructure.Migrations
 
                     b.Property<int>("MaxGuests")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("PetsAllowed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
 
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uuid");

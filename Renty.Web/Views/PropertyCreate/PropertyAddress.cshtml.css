@@ -23,18 +23,3 @@
     display: flex;
     flex-direction: column;
 }
-
-.property-create-card__submit {
-    margin-top: 24px;
-    padding: 12px;
-    border: none;
-    border-radius: var(--radius-md);
-    background-color: var(--color-accent);
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.property-create-card__submit:hover {
-    background-color: var(--color-accent-hover);
-}

@@ -1,9 +1,21 @@
 @model PropertyCardViewModel
 
+@{
+    var cardUrl = Model.ActionUrl
+        ?? Url.Action("Details", "Properties", new { slug = Model.Slug });
+}
+
 <div class="property-card" data-property-slug="@Model.Slug">
     <div class="property-card__image-wrap">
-        <a asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.Slug" class="property-card__image-link">
-            <img src="@Model.ImageUrls.First()" alt="@Model.City, @Model.Country" class="property-card__image" />
+        <a href="@cardUrl" class="property-card__image-link">
+            @if (Model.ImageUrls.Count > 0)
+            {
+                <img src="@Model.ImageUrls.First()" alt="@Model.City, @Model.Country" class="property-card__image" />
+            }
+            else
+            {
+                <div class="property-card__image property-card__image--empty"></div>
+            }
         </a>
         <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")">
             <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
@@ -12,7 +24,7 @@
 
     <div class="property-card__body">
         <div class="property-card__title-row">
-            <a asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.Slug" class="property-card__location">@Model.City, @Model.Country</a>
+            <a href="@cardUrl" class="property-card__location">@Model.City, @Model.Country</a>
             <span class="property-card__rating">
                 <icon name="star" class="property-card__star" />
                 @Model.Rating.ToString("0.00")
@@ -20,6 +32,16 @@
         </div>
         <p class="property-card__category">@Model.CategoryName</p>
         <p class="property-card__duration">@Model.DurationLabel</p>
-        <p class="property-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ночь</p>
+        <p class="property-card__price">
+            @if (Model.OriginalPricePerNight > Model.PricePerNight)
+            {
+                <s class="property-card__price-original">$@Model.OriginalPricePerNight.Value.ToString("0")</s>
+            }
+            <strong>$@Model.PricePerNight.ToString("0")</strong> ночь
+        </p>
+        @if (!string.IsNullOrEmpty(Model.DiscountLabel))
+        {
+            <p class="property-card__discount">@Model.DiscountLabel</p>
+        }
     </div>
 </div>

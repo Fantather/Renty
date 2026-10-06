@@ -70,7 +70,7 @@ namespace Renty.Domain.Interfaces
         /// <returns>Город или null</returns>
         Task<City?> GetCityByNameAndCountryAsync(string cityName, Guid countryId, CancellationToken ct = default);
 
-        
 
+        Task<City?> GetByPlaceIdAsync(string placeId, CancellationToken ct = default);
     }
 }

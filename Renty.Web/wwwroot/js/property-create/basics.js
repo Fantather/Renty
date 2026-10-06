@@ -24,7 +24,7 @@ function syncInputs(counts) {
 syncInputs(initialCounts);
 
 createCounter({
-    rows: document.querySelectorAll('.property-basics-counters .counter-row'),
+    rows: document.querySelectorAll('.property-basics-counters .popover-row'),
     initialCounts: initialCounts,
     onChange: syncInputs,
 });

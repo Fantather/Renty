@@ -23,7 +23,7 @@ namespace Renty.Application.Handlers.AutocompleteHandlers
             if (string.IsNullOrEmpty(request.Input) || request.Input.Length < minLength)
                 return OperationResult<List<AddressSuggestionDto>>.Success(new ());
 
-            var result = await _autocompleteService.SearchLocations(request.Input, request.SessionToken.ToString(), ct: cancellationToken);
+            var result = await _autocompleteService.SearchLocations(request.Input, request.SessionToken, ct: cancellationToken);
 
             return OperationResult<List<AddressSuggestionDto>>.Success(result);
         }

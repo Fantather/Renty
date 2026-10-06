@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,9 @@ builder.Services.AddAuthentication(options =>
     options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
     options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
     options.CallbackPath = "/signin-google";
+
+    options.ClaimActions.MapJsonKey("picture", "picture");
+    options.ClaimActions.MapJsonKey("locale", "locale");
 });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -53,9 +57,9 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole<Guid>>()
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // При попытке войти без подтверждения email
-    // будет возвращать result.IsNotAllowed = true
     options.SignIn.RequireConfirmedEmail = true;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
 });
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
@@ -92,6 +96,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles();
 app.MapStaticAssets();
 
 app.MapControllerRoute(

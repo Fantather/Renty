@@ -12,7 +12,7 @@ loadGoogleMapsScript(mapEl.dataset.apiKey).then(function () {
 
     map.addListener('idle', function () {
         var center = map.getCenter();
-        latitudeInput.value = center.lat();
-        longitudeInput.value = center.lng();
+        latitudeInput.value = String(center.lat()).replace('.', ',');
+        longitudeInput.value = String(center.lng()).replace('.', ',');
     });
 });

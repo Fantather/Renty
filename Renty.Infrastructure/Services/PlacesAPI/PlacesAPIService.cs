@@ -19,6 +19,48 @@ namespace Renty.Infrastructure.Services.PlacesAPI
             _httpClient = httpClient;
         }
 
+        public async Task<List<CitySuggestionDto>> SearchCities(string input, string sessionToken, string languageCode = "ru", CancellationToken ct = default)
+        {
+            if (string.IsNullOrEmpty(input))
+                return new();
+
+            var body = new
+            {
+                input,
+                languageCode,
+                sessionToken,
+                includedPrimaryTypes = new[] { "locality", "administrative_area_level_3" }
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://places.googleapis.com/v1/places:autocomplete")
+            {
+                Content = JsonContent.Create(body),
+            };
+
+            request.Headers.Add("X-Goog-Api-Key", _options.GeocodingApiKey);
+            request.Headers.Add("Accept-Language", languageCode);
+            request.Headers.Add("X-Goog-FieldMask",
+                "suggestions.placePrediction.placeId,suggestions.placePrediction.structuredFormat.mainText.text,suggestions.placePrediction.structuredFormat.secondaryText.text,suggestions.placePrediction.types");
+
+            var response = await _httpClient.SendAsync(request, ct);
+
+            if (!response.IsSuccessStatusCode)
+                return new();
+
+            var payload = await response.Content.ReadFromJsonAsync<GooglePlacesResponse>(ct);
+
+            if (payload == null)
+                return new();
+
+            return payload.Suggestions
+                .Select(s => new CitySuggestionDto
+                {
+                    PlaceId = s.PlacePrediction.PlaceId,
+                    CityName = s.PlacePrediction.StructuredFormat.MainText.Text,
+                    CountryName = s.PlacePrediction.StructuredFormat.SecondaryText?.Text // обычно тут "Украина"/страна или регион+страна
+                }).ToList();
+        }
+
         public async Task<List<AddressSuggestionDto>> SearchLocations(string input, string sessionToken, string languageCode = "ru", CancellationToken ct = default)
         {
             if (string.IsNullOrEmpty(input))

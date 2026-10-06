@@ -32,7 +32,10 @@
     outline: none;
     font: inherit;
     field-sizing: content;
-    padding: 0;
+    min-width: calc(2ch + 24px);
+    position: relative;
+    padding: 8px 12px;
+    margin: -8px -12px;
     background: none;
     appearance: textfield;
 }

@@ -16,6 +16,7 @@ namespace Renty.Infrastructure.Configurations.Locations
             builder.HasIndex(c => c.CountryId);
             builder.HasIndex(c => c.RegionId);
             builder.HasIndex(c => new { c.Latitude, c.Longitude });
+            builder.HasIndex(c => c.PlaceId).IsUnique();
             builder.HasIndex(c => c.IsActive);
 
             builder.HasIndex(c => c.NameRu);

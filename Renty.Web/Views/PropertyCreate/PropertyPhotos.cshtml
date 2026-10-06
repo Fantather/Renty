@@ -5,12 +5,13 @@
 
 <div class="property-photos-page">
     <h1 class="property-photos-page__title">Загрузите фото жилья</h1>
+    <div asp-validation-summary="All"></div>
 
     <p class="property-photos-page__subtitle">Нужно минимум 5 фотографий.</p>
 
     <partial name="_PhotosForm" model="Model" />
 
-    <button type="submit" form="property-form" class="btn-primary property-photos-next" disabled>Далее</button>
+    <partial name="_StepFooter" />
 </div>
 
 @section Scripts {

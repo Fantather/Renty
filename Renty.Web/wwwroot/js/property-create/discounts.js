@@ -11,7 +11,7 @@ percentInputs.forEach(function (input) {
         if (value < 0) input.value = 0;
 
         if (Number(input.value) === 0) {
-            input.closest('.discount-card').querySelector('.discount-toggle__input').checked = false;
+            input.closest('.discount-card').querySelector('.toggle__input').checked = false;
         }
     });
 });
@@ -25,12 +25,12 @@ var submitButton = document.querySelector('button[type="submit"][form="' + month
 function validateMonthly() {
     var weekly = Number(weeklyInput.value) || 0;
     var monthly = Number(monthlyInput.value) || 0;
-    var isInvalid = monthly <= weekly;
+    var isInvalid = monthly < weekly;
 
     monthlyCard.classList.toggle('discount-card--error', isInvalid);
     monthlyError.hidden = !isInvalid;
     monthlyError.textContent = isInvalid
-        ? 'Скидка за месяц должна быть больше скидки за неделю, которая составляет ' + weekly + '%'
+        ? 'Скидка за месяц не может быть меньше скидки за неделю, которая составляет ' + weekly + '%'
         : '';
     submitButton.disabled = isInvalid;
 }

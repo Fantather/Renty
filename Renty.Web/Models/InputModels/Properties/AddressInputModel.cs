@@ -6,15 +6,16 @@ namespace Renty.Web.Models.InputModels.Properties
     {
         public string? PlaceId { get; set; }
 
-        [Required(ErrorMessage = "Адрес обязателен")]
-        public string Address { get; set; } = string.Empty;
+        public string? Address { get; set; }
 
         public string? Street { get; set; }
 
         public string? District { get; set; }
 
+        [Required(ErrorMessage = "Город обязателен")]
         public string? CityName { get; set; }
 
+        [Required(ErrorMessage = "Страна обязательна")]
         public string? CountryName { get; set; }
     }
 }

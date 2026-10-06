@@ -6,10 +6,11 @@
 <div class="property-location-visibility-page">
     <h1 class="property-location-visibility-page__title">Выберите, как гости будут видеть ваше местоположение на карте</h1>
     <p class="property-location-visibility-page__subtitle">Гости увидят адрес, только когда оформят бронирование. До этого им показывается приблизительное местоположение.</p>
+    <div asp-validation-summary="All"></div>
 
     <partial name="_LocationVisibilityForm" model="Model" />
 
-    <button type="submit" form="property-form" class="property-location-visibility-next">Далее</button>
+    <partial name="_StepFooter" />
 </div>
 
 @section Scripts {
