@@ -662,7 +662,8 @@ namespace Renty.Web.Controllers
                 City = draft.Data.CityName ?? string.Empty,
                 Country = draft.Data.CountryName ?? string.Empty,
                 CategoryName = categories.Data?.Categories.FirstOrDefault(c => c.Id == draft.Data.CategoryId)?.Name ?? string.Empty,
-                PricePerNight = draft.Data.PricePerNight ?? 0
+                PricePerNight = draft.Data.PricePerNight ?? 0,
+                ShowFavorite = false
             };
         }
 

@@ -26,14 +26,14 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var response = new GetUserPropertiesResponse
             {
-                Drafts = properties.Where(p => p.Status == PropertyStatusEnum.Draft).Select(p => new PropertyCardModel
+                Drafts = properties.Where(p => p.Status != PropertyStatusEnum.Active).Select(p => new PropertyCardModel
                 {
                     Id = p.Id,
                     City = string.IsNullOrEmpty(p.City.NameRu) ? p.City.Name : p.City.NameRu,
                     Country = string.IsNullOrEmpty(p.Country.NameRu) ? p.Country.Name : p.Country.NameRu,
                     CreatedAt = p.CreatedAt
                 }).ToList(),
-                Published = properties.Where(p => p.Status == PropertyStatusEnum.Draft).Select(p => new PropertyCardModel
+                Published = properties.Where(p => p.Status == PropertyStatusEnum.Active).Select(p => new PropertyCardModel
                 {
                     Id = p.Id,
                     CategoryName = p.Category!.Name,

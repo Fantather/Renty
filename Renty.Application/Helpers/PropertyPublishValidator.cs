@@ -29,9 +29,6 @@ namespace Renty.Application.Helpers
             if (property?.CategoryId == null || property.Category == null)
                 missing.Add(nameof(property.Category));
 
-            if (property?.Discounts == null || !property.Discounts.Any())
-                missing.Add(nameof(property.Discounts));
-
             if (property?.Details == null)
                 missing.Add(nameof(property.Details));
 

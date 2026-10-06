@@ -17,9 +17,12 @@
                 <div class="property-card__image property-card__image--empty"></div>
             }
         </a>
-        <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")">
-            <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
-        </button>
+        @if (Model.ShowFavorite)
+        {
+            <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")">
+                <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
+            </button>
+        }
     </div>
 
     <div class="property-card__body">

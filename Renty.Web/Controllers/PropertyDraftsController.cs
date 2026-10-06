@@ -22,7 +22,7 @@ namespace Renty.Web.Controllers
         public async Task<IActionResult> Index(CancellationToken ct)
         {
             // Для карточек на этой странице обязательно передавать ActionUrl —
-            // черновики ведут на PropertyCreate/PropertyLocation/{id}, опубликованные на PropertyEdit/Title/{id}.
+            // и черновики, и опубликованные ведут на PropertyEdit/Title/{id}.
             var result = await _mediator.Send(new GetUserPropertiesQuery(CurrentUserId()));
 
             var vm = new PropertyDraftsViewModel
@@ -32,7 +32,8 @@ namespace Renty.Web.Controllers
                     Id = p.Id,
                     City = p.City,
                     Country = p.Country,
-                    ActionUrl = Url.Action("PropertyLocation", "PropertyCreate", new { id = p.Id})
+                    ActionUrl = Url.Action("Title", "PropertyEdit", new { id = p.Id }),
+                    ShowFavorite = false
                 }).ToList(),
                 Published = result.Data!.Published.Select(p => new PropertyCardViewModel
                 {
@@ -42,7 +43,8 @@ namespace Renty.Web.Controllers
                     Rating = p.Rating,
                     City = p.City,
                     Country = p.Country,
-                    ActionUrl = Url.Action("Title", "PropertyEdit", new { id = p.Id })
+                    ActionUrl = Url.Action("Title", "PropertyEdit", new { id = p.Id }),
+                    ShowFavorite = false
                 }).ToList()
             };
 

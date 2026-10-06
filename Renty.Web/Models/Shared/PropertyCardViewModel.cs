@@ -7,6 +7,7 @@ namespace Renty.Web.Models.Shared
         public string? ActionUrl { get; set; }
         public List<string> ImageUrls { get; set; } = new();
         public bool IsFavorite { get; set; }
+        public bool ShowFavorite { get; set; } = true;
         public string City { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public decimal Rating { get; set; }
