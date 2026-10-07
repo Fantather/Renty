@@ -49,6 +49,15 @@
     height: 18px;
 }
 
+::deep .property-card__favorite-icon--on,
+.property-card__favorite.is-active ::deep .property-card__favorite-icon--off {
+    display: none;
+}
+
+.property-card__favorite.is-active ::deep .property-card__favorite-icon--on {
+    display: block;
+}
+
 .property-card__body {
     padding-top: 10px;
 }

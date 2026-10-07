@@ -20,7 +20,8 @@
         @if (Model.ShowFavorite)
         {
             <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")">
-                <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
+                <icon name="outline-heart" class="property-card__favorite-icon property-card__favorite-icon--off" />
+                <icon name="heart" class="property-card__favorite-icon property-card__favorite-icon--on" />
             </button>
         }
     </div>
