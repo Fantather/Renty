@@ -1,4 +1,4 @@
-﻿using Renty.Domain.Models.User;
+using Renty.Domain.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,5 +32,6 @@ namespace Renty.Domain.Interfaces
         /// <param name="ct">Токен отмены</param>
         /// <returns>True, если недвижимость была добавлена в избранное, иначе false</returns>
         Task<bool> ToggleFavoriteAsync(Guid userId, Guid propertyId, CancellationToken ct = default);
+        Task<bool> ToggleFavoriteAsync(Guid userId, string slug, CancellationToken ct = default);
     }
 }

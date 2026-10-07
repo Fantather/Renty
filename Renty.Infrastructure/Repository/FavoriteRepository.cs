@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
@@ -17,9 +17,13 @@ namespace Renty.Infrastructure.Repository
             return await _dbSet
                 .Where(f => f.UserId == userId)
                 .Include(f => f.Property)
-                    .ThenInclude(p => p.City) 
+                    .ThenInclude(p => p.City)
                 .Include(f => f.Property)
-                    .ThenInclude(p => p.PropertyImages) 
+                    .ThenInclude(p => p.Country) 
+                .Include(f => f.Property)
+                    .ThenInclude(p => p.Category)
+                .Include(f => f.Property)
+                    .ThenInclude(p => p.PropertyImages)
                 .AsNoTracking()
                 .OrderByDescending(f => f.CreatedAt)
                 .ToListAsync(ct);
@@ -36,14 +40,17 @@ namespace Renty.Infrastructure.Repository
             var favorite = await _dbSet
                 .FirstOrDefaultAsync(f => f.UserId == userId && f.PropertyId == propertyId, ct);
 
+            bool isNowFavorite;
+
             if (favorite != null)
             {
-                // Если уже есть в избранном - удаляем
+                // Было в избранном - удаляем
                 _dbSet.Remove(favorite);
+                isNowFavorite = false;
             }
             else
             {
-                // Если нет - добавляем
+                // Не было - добавляем
                 favorite = new Favorite
                 {
                     UserId = userId,
@@ -51,10 +58,26 @@ namespace Renty.Infrastructure.Repository
                     CreatedAt = DateTime.UtcNow
                 };
                 await _dbSet.AddAsync(favorite, ct);
+                isNowFavorite = true;
             }
 
             await _context.SaveChangesAsync(ct);
-            return favorite == null; 
+            return isNowFavorite; 
+        }
+
+        public async Task<bool> ToggleFavoriteAsync(Guid userId, string slug, CancellationToken ct = default)
+        {
+            var propertyId = await _context.Properties
+                .Where(p => p.Slug == slug)
+                .Select(p => p.Id)
+                .FirstOrDefaultAsync(ct);
+
+            if (propertyId == Guid.Empty)
+            {
+                throw new Exception("Property not found"); 
+            }
+
+            return await ToggleFavoriteAsync(userId, propertyId, ct);
         }
     }
 }

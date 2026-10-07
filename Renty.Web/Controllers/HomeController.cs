@@ -72,7 +72,7 @@ namespace Renty.Web.Controllers
             var vm = new HomeIndexViewModel
             {
                 Properties = propertiesVm,
-                Filter = filter,
+                Filter = filter,    
             };
 
             return View(vm);
