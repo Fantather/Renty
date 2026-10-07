@@ -25,5 +25,9 @@ namespace Renty.Web.Models.Users
         public List<UserFactViewModel> Facts { get; set; } = new();
 
         public List<ReviewViewModel> Reviews { get; set; } = new();
+
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+
     }
 }

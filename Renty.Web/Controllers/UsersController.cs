@@ -1,14 +1,15 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Renty.Application.Commands;
 using Renty.Application.Commands.EditCommands;
 using Renty.Application.DTOs.GetUser;
 using Renty.Application.Queries;
 using Renty.Web.Models.InputModels.Users;
+using Renty.Web.Models.Shared;
 using Renty.Web.Models.Users;
 using System.Security.Claims;
-using Renty.Web.Models.Shared;
 
 namespace Renty.Web.Controllers
 {
@@ -23,7 +24,7 @@ namespace Renty.Web.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Profile(Guid? id)
+        public async Task<IActionResult> Profile(Guid? id, int page = 1)
         {
             Guid? currentUserId = null;
             var currentUserIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -38,7 +39,7 @@ namespace Renty.Web.Controllers
                 return BadRequest();
 
             // айли просмотренного профиля
-            var query = new GetUserProfileQuery(targetUserId, currentUserId);
+            var query = new GetUserProfileQuery(targetUserId, currentUserId, page, 20);
             var result = await _mediator.Send(query);
 
             if (!result.IsSuccess)
