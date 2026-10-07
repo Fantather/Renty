@@ -1,4 +1,4 @@
-﻿using Renty.Domain.Models.User;
+using Renty.Domain.Models.User;
 
 namespace Renty.Domain.Interfaces
 {
@@ -11,6 +11,27 @@ namespace Renty.Domain.Interfaces
         /// <param name="ct">Токен отмены</param>
         /// <returns>Список отзывов</returns>
         Task<IEnumerable<Review>> GetReviewsByPropertyIdAsync(Guid propertyId, CancellationToken ct = default);
+
+        /// <summary>
+        /// пагинированные отзывы по айди
+        /// </summary>
+        /// <param name="propertyId"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<(IEnumerable<Review> Reviews, int TotalCount)> GetReviewsByPropertyIdPaginatedAsync(Guid propertyId, int page, int pageSize, CancellationToken ct = default);
+
+        /// <summary>
+        /// пагинированные отзывы по слагу
+        /// </summary>
+        /// <param name="slug"></param>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="ct"></param>
+        /// <returns></returns>
+        Task<(IEnumerable<Review> Reviews, int TotalCount)> GetReviewsByPropertySlugPaginatedAsync(string slug, int page, int pageSize, CancellationToken ct = default);
+
 
         /// <summary>
         /// Получить все отзывы, оставленные конкретным пользователем по его идентификатору
