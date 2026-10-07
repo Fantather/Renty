@@ -1,0 +1,16 @@
+@model List<PropertyCardViewModel>
+
+@{
+    ViewData["Title"] = "Избранное";
+}
+
+<div class="favorites">
+    <h1 class="favorites__title">Избранное</h1>
+
+    <div class="favorites__grid">
+        @foreach (var card in Model)
+        {
+            <partial name="_PropertyCard" model="card" />
+        }
+    </div>
+</div>
