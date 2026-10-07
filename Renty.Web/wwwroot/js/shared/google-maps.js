@@ -27,3 +27,16 @@ export function createMap(container, center, options) {
         mapId: 'DEMO_MAP_ID',
     }, options));
 }
+
+export var APPROXIMATE_RADIUS = 300;
+
+export function createApproximateCircle(options) {
+    return new google.maps.Circle(Object.assign({
+        radius: APPROXIMATE_RADIUS,
+        fillColor: '#000',
+        fillOpacity: 0.15,
+        strokeColor: '#000',
+        strokeOpacity: 0.3,
+        strokeWeight: 1,
+    }, options));
+}

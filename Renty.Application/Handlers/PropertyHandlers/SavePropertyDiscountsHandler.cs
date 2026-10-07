@@ -30,101 +30,53 @@ namespace Renty.Application.Handlers.PropertyHandlers
                 return OperationResult<Unit>.Fail(result.Errors.ToArray());
 
             var property = result.Data!;
+            var input = request.DiscountsInput;
+            var newDiscounts = new List<Discount>();
 
-            //var existing = await _discountRepository.GetActiveByPropertyIdAsync(property.Id, false, ct:cancellationToken);
-            var existing = property.Discounts.Where(d => d.IsActive);
+            SaveDiscount(property, DiscountTypeEnum.LastMinute, input.LastMinuteDiscountEnabled, input.LastMinuteDiscountPercent,
+                d => d.DaysBeforeCheckIn = 14, newDiscounts);
+            SaveDiscount(property, DiscountTypeEnum.Monthly, input.MonthlyDiscountEnabled, input.MonthlyDiscountPercent,
+                d => d.MinNights = 28, newDiscounts);
+            SaveDiscount(property, DiscountTypeEnum.NewListingPromo, input.NewListingDiscountEnabled, input.NewListingDiscountPercent,
+                d => d.MaxUses = 3, newDiscounts);
+            SaveDiscount(property, DiscountTypeEnum.Weekly, input.WeeklyDiscountEnabled, input.WeeklyDiscountPercent,
+                d => d.MinNights = 7, newDiscounts);
 
-            var desiredTypes = new HashSet<DiscountTypeEnum>();
-            var discounts = new List<Discount>();
-
-            if (request.DiscountsInput.LastMinuteDiscountEnabled)
-            {
-                desiredTypes.Add(DiscountTypeEnum.LastMinute);
-                var discount = existing.FirstOrDefault(d => d.Type == DiscountTypeEnum.LastMinute);
-                if(discount != null)
-                {
-                    discount.Percentage = request.DiscountsInput.LastMinuteDiscountPercent;
-                }
-                else
-                {
-                    discounts.Add(new Discount
-                    {
-                        Type = DiscountTypeEnum.LastMinute,
-                        Percentage = request.DiscountsInput.LastMinuteDiscountPercent,
-                        IsActive = true,
-                        PropertyId = property.Id,
-                        DaysBeforeCheckIn = 14
-                    });
-                }
-            }
-            if (request.DiscountsInput.MonthlyDiscountEnabled)
-            {
-                desiredTypes.Add(DiscountTypeEnum.Monthly);
-                var discount = existing.FirstOrDefault(d => d.Type == DiscountTypeEnum.Monthly);
-                if (discount != null)
-                {
-                    discount.Percentage = request.DiscountsInput.MonthlyDiscountPercent;
-                }
-                else
-                    discounts.Add(new Discount
-                    {
-                        Type = DiscountTypeEnum.Monthly,
-                        Percentage = request.DiscountsInput.MonthlyDiscountPercent,
-                        IsActive = true,
-                        PropertyId = property.Id,
-                        MinNights = 28
-                    });
-            }
-            if (request.DiscountsInput.NewListingDiscountEnabled)
-            {
-                desiredTypes.Add(DiscountTypeEnum.NewListingPromo);
-                var discount = existing.FirstOrDefault(d => d.Type == DiscountTypeEnum.NewListingPromo);
-                if (discount != null)
-                {
-                    discount.Percentage = request.DiscountsInput.NewListingDiscountPercent;
-                }
-                else
-                    discounts.Add(new Discount
-                    {
-                        Type = DiscountTypeEnum.NewListingPromo,
-                        Percentage = request.DiscountsInput.NewListingDiscountPercent,
-                        IsActive = true,
-                        PropertyId = property.Id,
-                        MaxUses = 3
-                    });
-            }
-            if (request.DiscountsInput.WeeklyDiscountEnabled)
-            {
-                desiredTypes.Add(DiscountTypeEnum.Weekly);
-                var discount = existing.FirstOrDefault(d => d.Type == DiscountTypeEnum.Weekly);
-                if (discount != null)
-                {
-                    discount.Percentage = request.DiscountsInput.WeeklyDiscountPercent;
-                }
-                else
-                    discounts.Add(new Discount
-                    {
-                        Type = DiscountTypeEnum.Weekly,
-                        Percentage = request.DiscountsInput.WeeklyDiscountPercent,
-                        IsActive = true,
-                        PropertyId = property.Id,
-                        MinNights = 7
-                    });
-            }
-
-            await _discountRepository.AddRangeAsync(discounts, cancellationToken);
-
-            var toDelete = (await _discountRepository.GetActiveByPropertyIdAsync(property.Id, noTracking:false, ct:cancellationToken))
-                .Where(m => !desiredTypes.Contains(m.Type));
-
-            foreach(var discount in toDelete)
-            {
-                discount.IsActive = false;
-            }
-
+            await _discountRepository.AddRangeAsync(newDiscounts, cancellationToken);
             await _discountRepository.SaveChangesAsync(cancellationToken);
 
             return OperationResult<Unit>.Success(new Unit());
+        }
+
+        private static void SaveDiscount(Property property, DiscountTypeEnum type, bool enabled, decimal percent,
+            Action<Discount> setRules, List<Discount> newDiscounts)
+        {
+            var sameType = property.Discounts
+                .Where(d => d.Type == type)
+                .OrderByDescending(d => d.Id)
+                .ToList();
+
+            var discount = sameType.FirstOrDefault();
+
+            foreach (var old in sameType.Skip(1))
+                old.IsActive = false;
+
+            if (discount == null)
+            {
+                if (!enabled)
+                    return;
+
+                discount = new Discount
+                {
+                    Type = type,
+                    PropertyId = property.Id
+                };
+                setRules(discount);
+                newDiscounts.Add(discount);
+            }
+
+            discount.Percentage = percent;
+            discount.IsActive = enabled;
         }
     }
 }

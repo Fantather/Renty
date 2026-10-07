@@ -1,6 +1,7 @@
 @model Renty.Web.Models.InputModels.Properties.AddressInputModel
 @{
     ViewData["Title"] = "Адрес объявления";
+    ViewData["FormId"] = "address-form";
 }
 
 <div class="property-create-page">
@@ -8,28 +9,9 @@
         <h1 class="property-create-card__title">Подтвердите адрес</h1>
         <div asp-validation-summary="All"></div>
 
-        <form class="property-create-card__form" method="post" id="property-form">
-            <div class="search-field">
-                <input type="text" id="search" class="input-field__input" placeholder="Начните вводить адрес" autocomplete="off" />
-                <div id="search-popover" class="popover-panel search-field__results" hidden>
-                    <template>
-                        <icon name="map-pin" />
-                    </template>
-                </div>
-            </div>
+        <partial name="_AddressForm" model="Model" />
 
-            <input type="hidden" asp-for="PlaceId" />
-
-            <div id="address-details">
-                <input-field asp-for="Address" placeholder="Улица, дом" />
-                <input-field asp-for="Street" placeholder="Квартира или номер дома" />
-                <input-field asp-for="District" placeholder="Район" />
-                <input-field asp-for="CityName" placeholder="Город" />
-                <input-field asp-for="CountryName" placeholder="Страна" />
-            </div>
-
-            <partial name="_StepFooter" />
-        </form>
+        <partial name="_StepFooter" />
     </div>
 </div>
 

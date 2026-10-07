@@ -39,24 +39,28 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             var discounts = new DiscountsInputDto();
 
-            foreach(var discount in property.Discounts.Where(d => d.IsActive))
+            var latestByType = property.Discounts
+                .GroupBy(d => d.Type)
+                .Select(g => g.OrderByDescending(d => d.Id).First());
+
+            foreach(var discount in latestByType)
             {
                 switch (discount.Type)
                 {
                     case DiscountTypeEnum.LastMinute:
-                        discounts.LastMinuteDiscountEnabled = true;
+                        discounts.LastMinuteDiscountEnabled = discount.IsActive;
                         discounts.LastMinuteDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                     case DiscountTypeEnum.NewListingPromo:
-                        discounts.NewListingDiscountEnabled = true;
+                        discounts.NewListingDiscountEnabled = discount.IsActive;
                         discounts.NewListingDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                     case DiscountTypeEnum.Monthly:
-                        discounts.MonthlyDiscountEnabled = true;
+                        discounts.MonthlyDiscountEnabled = discount.IsActive;
                         discounts.MonthlyDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                     case DiscountTypeEnum.Weekly:
-                        discounts.WeeklyDiscountEnabled = true;
+                        discounts.WeeklyDiscountEnabled = discount.IsActive;
                         discounts.WeeklyDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                 }

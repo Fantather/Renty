@@ -1,6 +1,7 @@
 @model PropertyCardViewModel
 @{
     ViewData["Title"] = "Публикация";
+    ViewData["FormId"] = "review-form";
 }
 
 <div class="property-review-page">
@@ -12,7 +13,7 @@
         <partial name="_PropertyCard" model="Model" />
     </div>
 
-    <form method="post" id="property-form">
+    <form method="post" id="review-form">
         <partial name="_StepFooter" />
     </form>
 </div>

@@ -8,7 +8,8 @@ namespace Renty.Web.Mappers.CreateProperty
     {
         public AddressProfile()
         {
-            CreateMap<AddressInputModel, SavePropertyAddressDto>();
+            CreateMap<AddressInputModel, SavePropertyAddressDto>()
+                .ForMember(dest => dest.RawAddress, opt => opt.MapFrom(src => src.Address));
         }
     }
 }

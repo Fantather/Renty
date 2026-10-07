@@ -1,0 +1,91 @@
+.property-edit-location-page {
+    max-width: 640px;
+}
+
+.property-edit-location-page__title {
+    margin: 0 0 32px;
+}
+
+.property-edit-location-page__rows {
+    display: flex;
+    flex-direction: column;
+}
+
+.location-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 20px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    color: var(--color-text);
+    text-align: left;
+    cursor: pointer;
+}
+
+.location-row:hover {
+    background-color: var(--color-hover);
+}
+
+.location-row__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.location-row__title {
+    font-size: 1rem;
+}
+
+.location-row__subtitle {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+}
+
+.location-row ::deep .location-row__chevron {
+    flex-shrink: 0;
+    transform: rotate(-90deg);
+}
+
+.location-editor {
+    position: relative;
+    margin-bottom: 32px;
+}
+
+.location-editor__actions {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.location-editor__button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+}
+
+.location-editor__button:hover {
+    background-color: var(--color-hover);
+}
+
+.location-editor__button--primary {
+    background-color: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
+}
+
+.location-editor__button--primary:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.location-editor__errors {
+    margin-top: 8px;
+}

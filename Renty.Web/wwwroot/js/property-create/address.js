@@ -50,3 +50,10 @@ detailFields.forEach(function (field) {
 });
 
 updateDetailsVisibility();
+
+var placeIdInput = document.getElementById('PlaceId');
+var allFieldsEmpty = detailFields.every(function (field) { return field.value.trim() === ''; });
+
+if (placeIdInput.value && allFieldsEmpty) {
+    fetchPlaceDetails(placeIdInput.value).then(fillAddressFields);
+}

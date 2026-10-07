@@ -46,3 +46,7 @@
     white-space: nowrap;
     pointer-events: none;
 }
+
+.location-map--locked .location-map__hint {
+    display: none;
+}
