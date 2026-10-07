@@ -43,32 +43,11 @@ namespace Renty.Web.Controllers
         public async Task<IActionResult> PropertyAddress(AddressInputModel? model)
         {
             ModelState.Clear();
+            SetStepNav(nameof(PropertyAddress), null);
 
             if (model != null)
                 return View(model);
 
-            return View(new AddressInputModel());
-        }
-
-        // Принимает айди недвижимости при возвращении на шаг назад
-        [HttpGet("address/{id:guid}")]
-        public async Task<IActionResult> PropertyAddress(Guid id, CancellationToken ct)
-        {
-            var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
-
-            if (result.IsSuccess)
-            {
-                var propertyDraft = result.Data!;
-                return View(new AddressInputModel
-                {
-                    CityName = propertyDraft.CityName?.ToString() ?? "",
-                    CountryName = propertyDraft.CountryName?.ToString() ?? "",
-                    District = propertyDraft.District,
-                    Street = propertyDraft.Street,
-                    Address = propertyDraft.Address ?? "",
-                    PlaceId = propertyDraft.PlaceId,
-                });
-            }
             return View(new AddressInputModel());
         }
 
@@ -87,28 +66,8 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyAddress), null);
                 return View(nameof(PropertyAddress),model);
-            }
-
-            return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });
-        }
-
-        [HttpPost("address/{id:guid}")]
-        public async Task<IActionResult> SavePropertyAddress(Guid id, AddressInputModel model, CancellationToken ct)
-        {
-            var data = new SavePropertyAddressDto
-            {
-                RawAddress = model.Address,
-                PlaceId = model.PlaceId,
-                HostId = CurrentUserId(),
-                PropertyId = id
-            };
-            var result = await _mediator.Send(new SavePropertyAddressCommand(data), ct);
-
-            if (!result.IsSuccess)
-            {
-                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
-                return View(nameof(PropertyAddress), model);
             }
 
             return RedirectToAction(nameof(PropertyLocation), new { id = result.Data });
@@ -127,6 +86,7 @@ namespace Renty.Web.Controllers
             ViewData["PropertyId"] = id;
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
 
+            SetStepNav(nameof(PropertyLocation), id);
             return View(new LocationInputModel
             {
                 Latitude = result.Data!.Latitude.HasValue ? result.Data.Latitude.Value : 50.4501,
@@ -144,6 +104,7 @@ namespace Renty.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
                 ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
+                SetStepNav(nameof(PropertyLocation), id);
                 return View(nameof(PropertyLocation),model);
             }
 
@@ -151,7 +112,7 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("location-visibility/{id:guid}")]
-        public async Task<IActionResult> PropertyLocationVisibility(Guid id, LocationVisibilityInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyLocationVisibility(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()), ct);
 
@@ -160,17 +121,13 @@ namespace Renty.Web.Controllers
 
             ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
 
+            SetStepNav(nameof(PropertyLocationVisibility), id);
             return View(new LocationVisibilityPageViewModel
             {
-                
-                Input = model == null 
-                ? new LocationVisibilityInputModel
-                { 
-                    ShowExactLocation = result.Data.ShowExactLocation.HasValue
-                        ? result.Data!.ShowExactLocation!.Value
-                        : true
-                }
-                : model,
+                Input = new LocationVisibilityInputModel
+                {
+                    ShowExactLocation = result.Data!.ShowExactLocation ?? true
+                },
                 Latitude = result.Data!.Latitude.HasValue ? result.Data.Latitude.Value : 50.4501,
                 Longitude = result.Data!.Longitude.HasValue ? result.Data.Longitude.Value : 30.5234
 
@@ -186,7 +143,15 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
-                return View(nameof(PropertyLocationVisibility),model);
+                var draft = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()), ct);
+                ViewData["GoogleMapsApiKey"] = _configuration["GoogleMaps:ApiKey"] ?? string.Empty;
+                SetStepNav(nameof(PropertyLocationVisibility), id);
+                return View(nameof(PropertyLocationVisibility), new LocationVisibilityPageViewModel
+                {
+                    Input = model,
+                    Latitude = draft.Data?.Latitude ?? 50.4501,
+                    Longitude = draft.Data?.Longitude ?? 30.5234
+                });
             }
 
             return RedirectToAction(nameof(PropertyCategory), new { id });
@@ -195,7 +160,7 @@ namespace Renty.Web.Controllers
         // Заглушка: PropertiesCategory — это темы для фильтра на главной ("Красивые виды",
         // "У моря" и т.п.), не тип жилья. Настоящий справочник типов жилья ещё не существует.
         [HttpGet("category/{id:guid}")]
-        public async Task<IActionResult> PropertyCategory(Guid id, CategoryInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyCategory(Guid id, CancellationToken ct)
         {
             // TODO: SavePropertyAddress пока не создаёт черновик в БД (нет ключа Google Geocoding API),
             // поэтому GetPropertyDraftQuery тут всегда фейлится и рвёт визард на первом шаге.
@@ -223,14 +188,13 @@ namespace Renty.Web.Controllers
                     Name = c.Name,
                     IconName = c.IconName ?? "star"
                 }).ToList(),
-                Input = model == null
-                ? new CategoryInputModel
+                Input = new CategoryInputModel
                 {
-                    CategoryId = result.Data.CategoryId.HasValue ? result.Data.CategoryId.Value : Guid.Empty
+                    CategoryId = result.Data!.CategoryId ?? Guid.Empty
                 }
-                : model
             };
 
+            SetStepNav(nameof(PropertyCategory), id);
             return View(vm);
         }
 
@@ -243,6 +207,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyCategory), id);
                 return View(nameof(PropertyCategory),model);
             }
 
@@ -250,15 +215,14 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("basics/{id:guid}")]
-        public async Task<IActionResult> PropertyBasics(Guid id, BasicsInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyBasics(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
-            if (model != null)
-                return View(model);
 
+            SetStepNav(nameof(PropertyBasics), id);
             return View(new BasicsInputModel
             {
                 MaxGuests = result.Data!.MaxGuests.HasValue ? result.Data!.MaxGuests.Value : 1,
@@ -290,6 +254,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyBasics), id);
                 return View(nameof(PropertyBasics),model);
             }
 
@@ -299,7 +264,7 @@ namespace Renty.Web.Controllers
 
         // Заглушка: реального Query/Handler над IAmenityRepository ещё нет.
         [HttpGet("amenities/{id:guid}")]
-        public async Task<IActionResult> PropertyAmenities(Guid id, AmenitiesInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyAmenities(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
@@ -318,14 +283,13 @@ namespace Renty.Web.Controllers
                 //    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000104"), Name = "Стиральная машина", Description = "Стиральная машина для гостей", IconName = "star" },
                 //},
                 Amenities = resultAmenities.Data!.Select(a => _mapper.Map<AmenityViewModel>(a)).ToList(),
-                Input = model == null 
-                ? new AmenitiesInputModel
+                Input = new AmenitiesInputModel
                 {
                     AmenityIds = result.Data!.AmenityIds
                 }
-                : model
             };
 
+            SetStepNav(nameof(PropertyAmenities), id);
             return View(vm);
         }
 
@@ -338,22 +302,25 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ",result.Errors));
-                return View(nameof(PropertyAmenities),model);
+                var amenities = await _mediator.Send(new GetAmenitiesQuery(), ct);
+                SetStepNav(nameof(PropertyAmenities), id);
+                return View(nameof(PropertyAmenities), new AmenitiesPageViewModel
+                {
+                    Amenities = amenities.Data!.Select(a => _mapper.Map<AmenityViewModel>(a)).ToList(),
+                    Input = model
+                });
             }
 
             return RedirectToAction(nameof(PropertyPhotos), new { id });
         }
 
         [HttpGet("photos/{id:guid}")]
-        public async Task<IActionResult> PropertyPhotos(Guid id, UploadPropertyImagesInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyPhotos(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
-
-            if (model != null)
-                return View(model);
 
             var images = result.Data!.Images
                 .OrderBy(i => i.DisplayOrder)
@@ -363,6 +330,7 @@ namespace Renty.Web.Controllers
                 ImageUrl = i.ImageUrl
             }).ToList();
 
+            SetStepNav(nameof(PropertyPhotos), id);
             return View(new UploadPropertyImagesInputModel {
                 ExistingImages = images
             });
@@ -399,6 +367,7 @@ namespace Renty.Web.Controllers
                     ImageUrl = i.ImageUrl
                 }).ToList();
 
+                SetStepNav(nameof(PropertyPhotos), id);
                 return View(nameof(PropertyPhotos),model);
             }
 
@@ -406,18 +375,14 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("title/{id:guid}")]
-        public async Task<IActionResult> PropertyTitle(Guid id, TitleInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyTitle(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
-            ModelState.Clear();
-
-            if (model != null)
-                return View(model);
-
+            SetStepNav(nameof(PropertyTitle), id);
             return View(new TitleInputModel
             {
                 Name = result.Data!.Name ?? string.Empty
@@ -433,6 +398,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyTitle), id);
                 return View(nameof(PropertyTitle),model);
             }
 
@@ -441,7 +407,7 @@ namespace Renty.Web.Controllers
 
         // Заглушка: реального Query/Handler над справочником Tag ещё нет.
         [HttpGet("tags/{id:guid}")]
-        public async Task<IActionResult> PropertyTags(Guid id, TagsInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyTags(Guid id, CancellationToken ct)
         {
 
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
@@ -463,14 +429,13 @@ namespace Renty.Web.Controllers
                 //    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000206"), Name = "Простор", IconName = "star" },
                 //},
                 Tags = resultTags!.Data!.Select(t => _mapper.Map<TagViewModel>(t)).ToList(),
-                Input = model == null 
-                ? new TagsInputModel 
-                        { 
-                            TagIds = result.Data!.TagIds 
-                        }
-                : model
+                Input = new TagsInputModel
+                {
+                    TagIds = result.Data!.TagIds
+                }
             };
 
+            SetStepNav(nameof(PropertyTags), id);
             return View(vm);
         }
 
@@ -483,26 +448,31 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
-                return View(nameof(PropertyTags),model);
+                var tags = await _mediator.Send(new GetTagsQuery(), ct);
+                SetStepNav(nameof(PropertyTags), id);
+                return View(nameof(PropertyTags), new TagsPageViewModel
+                {
+                    Tags = tags.Data!.Select(t => _mapper.Map<TagViewModel>(t)).ToList(),
+                    Input = model
+                });
             }
 
             return RedirectToAction(nameof(PropertyDescription), new { id });
         }
 
         [HttpGet("description/{id:guid}")]
-        public async Task<IActionResult> PropertyDescription(Guid id, DescriptionInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyDescription(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
-            ModelState.Clear();
-
-            if (model != null)
-                return View(model);
-
-            return View(new DescriptionInputModel());
+            SetStepNav(nameof(PropertyDescription), id);
+            return View(new DescriptionInputModel
+            {
+                Description = result.Data!.Description ?? string.Empty
+            });
         }
 
         // TODO: сохранить Description квартиры.
@@ -514,6 +484,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyDescription), id);
                 return View(nameof(PropertyDescription),model);
             }
 
@@ -521,17 +492,18 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("booking-settings/{id:guid}")]
-        public async Task<IActionResult> PropertyBookingSettings(Guid id, BookingSettingsInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyBookingSettings(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
-            if (model != null)
-                return View(model);
-
-            return View(new BookingSettingsInputModel());
+            SetStepNav(nameof(PropertyBookingSettings), id);
+            return View(new BookingSettingsInputModel
+            {
+                InstantBookEnabled = result.Data!.InstantBook ?? false
+            });
         }
 
         // TODO: сохранить InstantBookEnabled квартиры (принимаются ли заявки на бронирование автоматически).
@@ -543,6 +515,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyBookingSettings), id);
                 return View(nameof(PropertyBookingSettings),model);
             }
 
@@ -550,18 +523,14 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("pricing/{id:guid}")]
-        public async Task<IActionResult> PropertyPricing(Guid id, PricingInputModel? model, CancellationToken ct)
+        public async Task<IActionResult> PropertyPricing(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
 
-            ModelState.Clear();
-
-            if (model != null)
-                return View(model);
-
+            SetStepNav(nameof(PropertyPricing), id);
             return View(new PricingInputModel
             { 
                 PricePerNight = result.Data!.PricePerNight ?? 0,
@@ -579,6 +548,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyPricing), id);
                 return View(nameof(PropertyPricing),model);
             }
 
@@ -586,15 +556,14 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("discounts/{id:guid}")]
-        public async Task<IActionResult> PropertyDiscounts(Guid id, DiscountsInputModel model, CancellationToken ct)
+        public async Task<IActionResult> PropertyDiscounts(Guid id, CancellationToken ct)
         {
             var result = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()),ct);
 
             if (!result.IsSuccess)
                 return RedirectToAction(nameof(PropertyAddress));
-            if (model != null)
-                return View(model);
 
+            SetStepNav(nameof(PropertyDiscounts), id);
             return View(new DiscountsInputModel
             {
                 MonthlyDiscountEnabled = result.Data!.Discounts?.MonthlyDiscountEnabled ?? true,
@@ -617,6 +586,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                SetStepNav(nameof(PropertyDiscounts), id);
                 return View(nameof(PropertyDiscounts),model);
             }
 
@@ -624,9 +594,15 @@ namespace Renty.Web.Controllers
         }
 
         [HttpGet("review/{id:guid}")]
-        public IActionResult PropertyReview(Guid id)
+        public async Task<IActionResult> PropertyReview(Guid id, CancellationToken ct)
         {
-            return View();
+            var card = await BuildReviewCardAsync(id, ct);
+
+            if (card == null)
+                return RedirectToAction(nameof(PropertyAddress));
+
+            SetStepNav(nameof(PropertyReview), id);
+            return View(card);
         }
 
         // TODO: опубликовать объявление (сменить статус черновика) и перенаправить на страницу объекта.
@@ -638,7 +614,13 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
-                return View(nameof(PropertyReview));
+                var card = await BuildReviewCardAsync(id, ct);
+
+                if (card == null)
+                    return RedirectToAction(nameof(PropertyAddress));
+
+                SetStepNav(nameof(PropertyReview), id);
+                return View(nameof(PropertyReview), card);
             }
 
             return RedirectToAction("Index", "Home");
@@ -652,6 +634,49 @@ namespace Renty.Web.Controllers
             {
                 new { title = "Пример, Одесса", address = "ул. Примерная, 1", street = "ул. Примерная", district = "Приморский", cityId = "Одесса", countryId = "Украина" },
             });
+        }
+
+        private static readonly string[] Steps =
+        [
+            nameof(PropertyAddress), nameof(PropertyLocation), nameof(PropertyLocationVisibility),
+            nameof(PropertyCategory), nameof(PropertyBasics), nameof(PropertyAmenities),
+            nameof(PropertyPhotos), nameof(PropertyTitle), nameof(PropertyTags),
+            nameof(PropertyDescription), nameof(PropertyBookingSettings), nameof(PropertyPricing),
+            nameof(PropertyDiscounts), nameof(PropertyReview)
+        ];
+
+        private async Task<PropertyCardViewModel?> BuildReviewCardAsync(Guid id, CancellationToken ct)
+        {
+            var draft = await _mediator.Send(new GetPropertyDraftQuery(id, CurrentUserId()), ct);
+
+            if (!draft.IsSuccess)
+                return null;
+
+            var categories = await _mediator.Send(new GetCategoriesQuery(), ct);
+            var cover = draft.Data!.Images.OrderBy(i => i.DisplayOrder).FirstOrDefault();
+
+            return new PropertyCardViewModel
+            {
+                Id = id,
+                ImageUrls = cover != null ? new List<string> { cover.ImageUrl } : new List<string>(),
+                City = draft.Data.CityName ?? string.Empty,
+                Country = draft.Data.CountryName ?? string.Empty,
+                CategoryName = categories.Data?.Categories.FirstOrDefault(c => c.Id == draft.Data.CategoryId)?.Name ?? string.Empty,
+                PricePerNight = draft.Data.PricePerNight ?? 0,
+                ShowFavorite = false
+            };
+        }
+
+        private void SetStepNav(string step, Guid? id)
+        {
+            var index = Array.IndexOf(Steps, step);
+            var previous = index > 0 ? Steps[index - 1] : null;
+            ViewData["BackUrl"] = previous != null && previous != nameof(PropertyAddress)
+                ? Url.Action(previous, new { id })
+                : null;
+            ViewData["NextLabel"] = index == Steps.Length - 1 ? "Опубликовать" : "Далее";
+            ViewData["StepFooter"] = true;
+            ViewData["StepProgress"] = (index + 1) * 100 / Steps.Length;
         }
 
         private Guid CurrentUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);

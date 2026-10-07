@@ -31,32 +31,36 @@ namespace Renty.Application.Handlers.PropertyHandlers
             var property = result.Data!;
 
 
-            var tagIds = property.PropertyTags.Select(t => t.TagId).ToList();
+            var tagIds = property.PropertyTags.Where(t => t.IsActive).Select(t => t.TagId).ToList();
 
-            var amenityIds = property.PropertyAmenities.Select(a => a.AmenityId).ToList();
+            var amenityIds = property.PropertyAmenities.Where(a => a.IsActive).Select(a => a.AmenityId).ToList();
 
             var images = property.PropertyImages.Select(i => new OrderedImageDto { ImageId = i.Id, IsPrimary = i.IsPrimary, ImageUrl = i.ImageUrl, DisplayOrder = i.DisplayOrder }).ToList();
 
             var discounts = new DiscountsInputDto();
 
-            foreach(var discount in property.Discounts.Where(d => d.IsActive))
+            var latestByType = property.Discounts
+                .GroupBy(d => d.Type)
+                .Select(g => g.OrderByDescending(d => d.Id).First());
+
+            foreach(var discount in latestByType)
             {
                 switch (discount.Type)
                 {
                     case DiscountTypeEnum.LastMinute:
-                        discounts.LastMinuteDiscountEnabled = true;
+                        discounts.LastMinuteDiscountEnabled = discount.IsActive;
                         discounts.LastMinuteDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                     case DiscountTypeEnum.NewListingPromo:
-                        discounts.NewListingDiscountEnabled = true;
+                        discounts.NewListingDiscountEnabled = discount.IsActive;
                         discounts.NewListingDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                     case DiscountTypeEnum.Monthly:
-                        discounts.MonthlyDiscountEnabled = true;
+                        discounts.MonthlyDiscountEnabled = discount.IsActive;
                         discounts.MonthlyDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                     case DiscountTypeEnum.Weekly:
-                        discounts.WeeklyDiscountEnabled = true;
+                        discounts.WeeklyDiscountEnabled = discount.IsActive;
                         discounts.WeeklyDiscountPercent = Convert.ToInt32(discount.Percentage);
                         break;
                 }

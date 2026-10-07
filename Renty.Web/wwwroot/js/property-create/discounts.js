@@ -20,17 +20,17 @@ var weeklyInput = document.getElementById('WeeklyDiscountPercent');
 var monthlyInput = document.getElementById('MonthlyDiscountPercent');
 var monthlyCard = monthlyInput.closest('.discount-card');
 var monthlyError = document.getElementById('monthlyDiscountError');
-var submitButton = monthlyInput.closest('form').querySelector('button[type="submit"]');
+var submitButton = document.querySelector('button[type="submit"][form="' + monthlyInput.form.id + '"]');
 
 function validateMonthly() {
     var weekly = Number(weeklyInput.value) || 0;
     var monthly = Number(monthlyInput.value) || 0;
-    var isInvalid = monthly <= weekly;
+    var isInvalid = monthly < weekly;
 
     monthlyCard.classList.toggle('discount-card--error', isInvalid);
     monthlyError.hidden = !isInvalid;
     monthlyError.textContent = isInvalid
-        ? 'Скидка за месяц должна быть больше скидки за неделю, которая составляет ' + weekly + '%'
+        ? 'Скидка за месяц не может быть меньше скидки за неделю, которая составляет ' + weekly + '%'
         : '';
     submitButton.disabled = isInvalid;
 }

@@ -1,0 +1,72 @@
+@model Renty.Web.Models.PropertyEdit.LocationEditPageViewModel
+@{
+    var id = ViewContext.RouteData.Values["id"];
+}
+
+<div class="property-edit-location-page">
+    <h2 class="property-edit-location-page__title">Местоположение</h2>
+
+    <div class="location-editor" id="location-editor" data-submit-url="@Url.Action("SaveLocation", "PropertyEdit", new { id })" data-approximate="@(Model.ShowExactLocation ? "false" : "true")">
+        <partial name="_LocationForm" model="Model.Location" />
+
+        <div class="location-editor__actions">
+            <button type="button" class="location-editor__button" id="location-adjust">Корректировать</button>
+            <button type="button" class="location-editor__button" id="location-cancel" hidden>Отмена</button>
+            <button type="submit" form="location-form" class="location-editor__button location-editor__button--primary" id="location-save" hidden>Сохранить</button>
+        </div>
+
+        <ul class="side-panel__errors location-editor__errors"></ul>
+    </div>
+
+    <div class="property-edit-location-page__rows">
+        <button type="button" class="location-row" data-panel="address-panel">
+            <span class="location-row__text">
+                <span class="location-row__title">Адрес</span>
+                <span class="location-row__subtitle">@(string.IsNullOrEmpty(Model.AddressSummary) ? "Не указан" : Model.AddressSummary)</span>
+            </span>
+            <icon name="chevron" class="location-row__chevron" />
+        </button>
+
+        <button type="button" class="location-row" data-panel="location-visibility-panel">
+            <span class="location-row__text">
+                <span class="location-row__title">Как показывать на карте</span>
+                <span class="location-row__subtitle">@(Model.ShowExactLocation ? "Показывать точное место" : "Показывать примерное место")</span>
+            </span>
+            <icon name="chevron" class="location-row__chevron" />
+        </button>
+    </div>
+</div>
+
+<div class="modal-overlay side-panel" id="address-panel" data-submit-url="@Url.Action("SaveAddress", "PropertyEdit", new { id })" hidden>
+    <div class="modal-panel side-panel__panel">
+        <button type="button" class="modal-panel__close" id="address-panel-close">✕</button>
+        <h3 class="side-panel__title">Адрес</h3>
+        <div class="side-panel__body">
+            <partial name="_AddressForm" model="Model.Address" />
+        </div>
+        <ul class="side-panel__errors"></ul>
+        <div class="side-panel__footer">
+            <button type="submit" form="address-form" class="btn-primary">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay side-panel" id="location-visibility-panel" data-submit-url="@Url.Action("SaveLocationVisibility", "PropertyEdit", new { id })" hidden>
+    <div class="modal-panel side-panel__panel">
+        <button type="button" class="modal-panel__close" id="location-visibility-panel-close">✕</button>
+        <h3 class="side-panel__title">Как показывать на карте</h3>
+        <div class="side-panel__body">
+            <partial name="_LocationVisibilityForm" model="Model.Visibility" />
+        </div>
+        <ul class="side-panel__errors"></ul>
+        <div class="side-panel__footer">
+            <button type="submit" form="location-visibility-form" class="btn-primary">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/address.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/property-create/location-visibility.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/property-edit/location.js" asp-append-version="true"></script>
+}

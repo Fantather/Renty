@@ -1,11 +1,14 @@
 var picker = document.getElementById('photoPicker');
 var imagesInput = document.getElementById('Images');
 var grid = document.getElementById('photoGrid');
-var submitButton = imagesInput.closest('form').querySelector('button[type="submit"]');
+var orderedImagesFields = document.getElementById('orderedImagesFields');
+var submitButton = document.querySelector('button[type="submit"][form="' + imagesInput.form.id + '"]');
 
 var MIN_PHOTOS = 5;
 
-var photos = [];
+var photos = JSON.parse(grid.dataset.existing || '[]').map(function (image) {
+    return { isExisting: true, id: image.id, url: image.imageUrl };
+});
 var draggedIndex = null;
 
 function renderGrid() {
@@ -33,7 +36,7 @@ function renderGrid() {
         removeBtn.className = 'photo-tile__remove';
         removeBtn.textContent = '✕';
         removeBtn.addEventListener('click', function () {
-            URL.revokeObjectURL(photo.url);
+            if (!photo.isExisting) URL.revokeObjectURL(photo.url);
             photos.splice(index, 1);
             renderGrid();
         });
@@ -80,11 +83,31 @@ picker.addEventListener('change', function () {
     renderGrid();
 });
 
+function addHiddenField(name, value) {
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value;
+    orderedImagesFields.appendChild(input);
+}
+
 submitButton.addEventListener('click', function () {
+    orderedImagesFields.innerHTML = '';
     var dataTransfer = new DataTransfer();
-    photos.forEach(function (photo) {
-        dataTransfer.items.add(photo.file);
+
+    photos.forEach(function (photo, index) {
+        var prefix = 'OrderedImages[' + index + '].';
+
+        if (photo.isExisting) {
+            addHiddenField(prefix + 'Type', 'Existing');
+            addHiddenField(prefix + 'Id', photo.id);
+        } else {
+            addHiddenField(prefix + 'Type', 'New');
+            addHiddenField(prefix + 'FileIndex', dataTransfer.items.length);
+            dataTransfer.items.add(photo.file);
+        }
     });
+
     imagesInput.files = dataTransfer.files;
 });
 

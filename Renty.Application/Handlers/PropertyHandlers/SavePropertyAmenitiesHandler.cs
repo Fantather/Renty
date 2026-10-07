@@ -38,9 +38,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
             // Убираем дубликаты
             var requestedIds = request.Amenities.Distinct().ToList();
 
-            if (!requestedIds.Any())
-                return OperationResult<Guid>.Fail("The list of amenities is empty");
-
             // Проверка существования айди до попытки сохранить
             var existingIds = await _amenityRepository.GetExistingIdsAsync(requestedIds, cancellationToken);
 
@@ -51,11 +48,15 @@ namespace Renty.Application.Handlers.PropertyHandlers
             
 
             var property = result.Data!;
+
+            foreach (var amenity in property.PropertyAmenities)
+                amenity.IsActive = requestedIds.Contains(amenity.AmenityId);
+
             var currentIds = property.PropertyAmenities
                 .Select(a => a.AmenityId)
                 .ToHashSet();
 
-            var toAdd = requestedIds.Where(id => !currentIds.Contains(id));
+            var toAdd = requestedIds.Where(id => !currentIds.Contains(id)).ToList();
             var newAmenities = new List<PropertyAmenity>();
 
             foreach(var amenityId in toAdd)
@@ -72,12 +73,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
             }
 
             await _propertyAmenityRepository.AddRangeAsync(newAmenities, cancellationToken);
-
-            var toRemove = currentIds.Where(id => !requestedIds.Contains(id)).ToList();
-
-            foreach (var amenity in property.PropertyAmenities.Where(pa => toRemove.Contains(pa.AmenityId)))
-                amenity.IsActive = false;
-
 
             await _propertyRepository.SaveChangesAsync(cancellationToken);
 

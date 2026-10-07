@@ -1,9 +1,19 @@
+@model PropertyCardViewModel
 @{
     ViewData["Title"] = "Публикация";
+    ViewData["FormId"] = "review-form";
 }
 
-<h1>Поздравляем! Пора опубликовать объявление</h1>
-<div asp-validation-summary="All"></div>
-<form method="post">
-    <button type="submit">Опубликовать</button>
-</form>
+<div class="property-review-page">
+    <h1 class="property-review-page__title">Поздравляем! Пора опубликовать объявление</h1>
+    <p class="property-review-page__subtitle">Вот что увидят гости. Проверьте детали объявления перед публикацией.</p>
+    <div asp-validation-summary="All"></div>
+
+    <div class="property-review-preview" inert>
+        <partial name="_PropertyCard" model="Model" />
+    </div>
+
+    <form method="post" id="review-form">
+        <partial name="_StepFooter" />
+    </form>
+</div>

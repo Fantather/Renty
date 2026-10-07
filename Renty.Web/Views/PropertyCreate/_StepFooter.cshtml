@@ -1,0 +1,19 @@
+@{
+    var backUrl = ViewData["BackUrl"] as string;
+    var nextLabel = ViewData["NextLabel"] as string ?? "Далее";
+    var progress = ViewData["StepProgress"] as int? ?? 0;
+    var formId = ViewData["FormId"] as string;
+}
+
+<div class="step-footer">
+    <div class="step-footer__progress">
+        <div class="step-footer__progress-fill" style="width: @progress%"></div>
+    </div>
+    <div class="step-footer__bar">
+        @if (backUrl != null)
+        {
+            <a href="@backUrl" class="btn-outline step-footer__back">Назад</a>
+        }
+        <button type="submit" form="@formId" class="step-footer__next">@nextLabel</button>
+    </div>
+</div>

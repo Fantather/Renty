@@ -1,7 +1,7 @@
 var priceInput = document.getElementById('PricePerNight');
 var percentInput = document.getElementById('WeekendPricePercent');
 var hint = document.getElementById('weekendPriceHint');
-var currency = document.querySelector('.property-pricing-page').dataset.currency;
+var currency = priceInput.form.dataset.currency;
 
 function updateHint() {
     var price = Number(priceInput.value) || 0;

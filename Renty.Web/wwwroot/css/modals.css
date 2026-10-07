@@ -37,3 +37,54 @@
 .modal-panel__close:hover {
     background-color: var(--color-hover);
 }
+
+.side-panel {
+    justify-content: flex-end;
+    padding: 0;
+    transition: background-color 0.25s ease, visibility 0.25s;
+}
+
+.side-panel[hidden] {
+    display: flex;
+    visibility: hidden;
+    background-color: transparent;
+}
+
+.side-panel__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 560px;
+    height: 100%;
+    max-height: none;
+    border-radius: 0;
+    transition: transform 0.25s ease;
+}
+
+.side-panel[hidden] .side-panel__panel {
+    transform: translateX(100%);
+}
+
+.side-panel__title {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.side-panel__body {
+    flex: 1;
+}
+
+.side-panel__errors {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-like);
+    font-size: 0.85rem;
+}
+
+.side-panel__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+}
