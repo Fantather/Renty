@@ -1,5 +1,7 @@
+@using System.Text.Json
 @model UserProfileViewModel
 @{
+    var reviewsJsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
     ViewData["Title"] = Model.FullName;
 }
 
@@ -85,22 +87,28 @@
     {
         <section class="user-profile__reviews">
             <h2><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount отзывов</h2>
-            <div class="user-profile__reviews-grid">
-                @foreach (var review in Model.Reviews)
-                {
-                    <div class="review-card">
-                        <div class="review-card__header">
-                            <img class="review-card__avatar" src="@review.AuthorAvatarUrl" alt="@review.AuthorName" />
-                            <div>
-                                <p class="review-card__author">@review.AuthorName</p>
-                                <p class="review-card__date">@review.CreatedAt.ToString("d MMMM yyyy")</p>
-                            </div>
-                        </div>
-                        <p class="review-card__text">@review.Text</p>
-                    </div>
-                }
-            </div>
+            <div class="user-profile__reviews-grid" id="profileReviewsList"></div>
+
+            @if (Model.Reviews.Count > 4 || Model.TotalPages > 1)
+            {
+                <button type="button" id="profileLoadMoreReviewsBtn" class="btn-outline">Показать ещё</button>
+            }
         </section>
+
+        <div id="profileReviewsModal" class="modal-overlay" hidden>
+            <div class="modal-panel">
+                <button type="button" id="closeProfileReviewsModalBtn" class="modal-panel__close">×</button>
+                <h2>Отзывы</h2>
+                <div class="user-profile__reviews-grid" id="profileAllReviewsList" data-current-page="@Model.CurrentPage" data-total-pages="@Model.TotalPages"></div>
+                <div id="profileReviewsSentinel"></div>
+            </div>
+        </div>
     }
 
 </article>
+
+<script type="application/json" id="profileReviewsData">@Html.Raw(JsonSerializer.Serialize(Model.Reviews, reviewsJsonOptions))</script>
+
+@section Scripts {
+    <script src="~/js/users/profile-reviews.js" type="module" asp-append-version="true"></script>
+}

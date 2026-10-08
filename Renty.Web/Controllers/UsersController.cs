@@ -50,6 +50,14 @@ namespace Renty.Web.Controllers
             return View(vm);
         }
 
+        //FOROLGA
+        // Контроллер для подгрузки комментариев в Модалку со страницы пользователя
+        [HttpGet]
+        public IActionResult Reviews(Guid? id, int page = 1)
+        {
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> Edit()
         {
