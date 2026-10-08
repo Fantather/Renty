@@ -69,5 +69,20 @@ namespace Renty.Web.Controllers
 
             return Json(result.Data);
         }
+
+        [HttpGet("properties/{slug}/reviews")]
+        public async Task<IActionResult> Reviews(string slug, [FromQuery] int page = 1)
+        {
+            // Передаем слаг вместо айди
+            var query = new GetPropertyReviewsQuery(Slug: slug, Page: page, PageSize: 10);
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Json(result.Data);
+        }
     }
 }

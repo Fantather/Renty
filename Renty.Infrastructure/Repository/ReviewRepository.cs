@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 using Renty.Infrastructure.Data;
@@ -49,6 +49,44 @@ namespace Renty.Infrastructure.Repository
 
             await _context.SaveChangesAsync(ct);
             return true;
+        }
+        ///
+        public async Task<(IEnumerable<Review> Reviews, int TotalCount)> GetReviewsByPropertyIdPaginatedAsync(Guid propertyId, int page, int pageSize, CancellationToken ct = default)
+        {
+            var query = _dbSet.Where(r => r.PropertyId == propertyId);
+
+            var totalCount = await query.CountAsync(ct);
+
+            var reviews = await query
+                .Include(r => r.User)
+                .Include(r => r.Property)
+                    .ThenInclude(p => p.Host)
+                .AsNoTracking()
+                .OrderByDescending(r => r.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(ct);
+
+            return (reviews, totalCount);
+        }
+
+        public async Task<(IEnumerable<Review> Reviews, int TotalCount)> GetReviewsByPropertySlugPaginatedAsync(string slug, int page, int pageSize, CancellationToken ct = default)
+        {
+            var query = _dbSet.Where(r => r.Property.Slug == slug);
+
+            var totalCount = await query.CountAsync(ct);
+
+            var reviews = await query
+                .Include(r => r.User)
+                .Include(r => r.Property)
+                    .ThenInclude(p => p.Host)
+                .AsNoTracking()
+                .OrderByDescending(r => r.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(ct);
+
+            return (reviews, totalCount);
         }
     }
 }
