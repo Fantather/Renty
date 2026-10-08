@@ -8,6 +8,7 @@ namespace Renty.Web.Models.Search
         public CategoryStripViewModel CategoryStrip { get; set; } = new();  // Все категории для вывода в панели фильтра
         public PropertyFilterViewModel Filter { get; set; } = new();
         public int TotalCount { get; set; }     // Общее количество найденных квартир
+        public PaginationViewModel Pagination { get; set; } = new();
         public string GoogleMapsApiKey { get; set; } = "";
 
         public double? MapCenterLat { get; set; }

@@ -20,6 +20,7 @@ if (mapEl && canvasEl && resultsEl) {
     var fetchController = null;
     var refreshTimer = null;
     var initialMapFitDone = false;
+    var lastBounds = null;
 
     function readMarkers() {
         var dataEl = document.getElementById('searchMapData');
@@ -156,11 +157,13 @@ if (mapEl && canvasEl && resultsEl) {
             });
         }
 
-        function refreshResults(bounds) {
+        function refreshResults(bounds, page) {
             if (fetchController) fetchController.abort();
             fetchController = new AbortController();
 
             var params = paramsWithBounds(new URLSearchParams(window.location.search), bounds);
+            params.delete('page');
+            if (page > 1) params.set('page', page);
 
             fetch('/Search?' + params.toString(), {
                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
@@ -175,11 +178,21 @@ if (mapEl && canvasEl && resultsEl) {
                     resultsEl.innerHTML = html;
                     syncMarkers(readMarkers());
                     wireCards();
+                    if (page) resultsEl.scrollIntoView({ block: 'start' });
                 })
                 .catch(function (err) {
                     if (err.name !== 'AbortError') console.error('Search refresh failed', err);
                 });
         }
+
+        resultsEl.addEventListener('click', function (e) {
+            var link = e.target.closest('.page-nav a');
+            if (!link || !lastBounds) return;
+
+            e.preventDefault();
+            var page = Number(new URL(link.href).searchParams.get('page'));
+            refreshResults(lastBounds, page);
+        });
 
         var initialItems = readMarkers();
         syncMarkers(initialItems);
@@ -218,6 +231,7 @@ if (mapEl && canvasEl && resultsEl) {
             var sw = mapBounds.getSouthWest();
             var bounds = { north: ne.lat(), south: sw.lat(), east: ne.lng(), west: sw.lng() };
 
+            lastBounds = bounds;
             syncSearchBar(bounds);
 
             clearTimeout(refreshTimer);
