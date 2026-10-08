@@ -1,9 +1,10 @@
 @model Renty.Web.Models.InputModels.Properties.DescriptionInputModel
+@{
+    ViewData["FormId"] = "description-form";
+}
 
 <div class="property-edit-description-page">
     <h2 class="property-edit-description-page__title">Описание</h2>
 
     <partial name="_DescriptionForm" model="Model" />
-
-    <button type="submit" form="description-form">Сохранить</button>
 </div>

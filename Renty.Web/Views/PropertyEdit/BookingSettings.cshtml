@@ -1,11 +1,12 @@
 @model Renty.Web.Models.InputModels.Properties.BookingSettingsInputModel
+@{
+    ViewData["FormId"] = "booking-settings-form";
+}
 
 <div class="property-edit-booking-settings-page">
     <h2 class="property-edit-booking-settings-page__title">Параметры бронирования</h2>
 
     <partial name="_BookingSettingsForm" model="Model" />
-
-    <button type="submit" form="booking-settings-form">Сохранить</button>
 </div>
 
 @section Scripts {

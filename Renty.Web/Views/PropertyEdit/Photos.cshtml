@@ -1,11 +1,12 @@
 @model Renty.Web.Models.InputModels.Media.UploadPropertyImagesInputModel
+@{
+    ViewData["FormId"] = "photos-form";
+}
 
 <div class="property-edit-photos-page">
     <h2 class="property-edit-photos-page__title">Фото</h2>
 
     <partial name="_PhotosForm" model="Model" />
-
-    <button type="submit" form="photos-form" disabled>Сохранить</button>
 </div>
 
 @section Scripts {

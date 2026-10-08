@@ -18,6 +18,11 @@
         <div asp-validation-summary="All"></div>
         @RenderBody()
     </section>
+
+    @if (ViewData["FormId"] is string)
+    {
+        <partial name="_EditorFooter" />
+    }
 </div>
 
 @section Scripts {

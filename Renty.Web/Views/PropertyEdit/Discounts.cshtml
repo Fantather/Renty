@@ -1,11 +1,12 @@
 @model Renty.Web.Models.InputModels.Properties.DiscountsInputModel
+@{
+    ViewData["FormId"] = "discounts-form";
+}
 
 <div class="property-edit-discounts-page">
     <h2 class="property-edit-discounts-page__title">Скидки</h2>
 
     <partial name="_DiscountsForm" model="Model" />
-
-    <button type="submit" form="discounts-form">Сохранить</button>
 </div>
 
 @section Scripts {

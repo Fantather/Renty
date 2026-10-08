@@ -1,11 +1,12 @@
 @model Renty.Web.Models.PropertyCreate.CategoryPageViewModel
+@{
+    ViewData["FormId"] = "category-form";
+}
 
 <div class="property-edit-category-page">
     <h2 class="property-edit-category-page__title">Тип жилья</h2>
 
     <partial name="_CategoryForm" model="Model" />
-
-    <button type="submit" form="category-form" disabled>Сохранить</button>
 </div>
 
 @section Scripts {
