@@ -13,11 +13,15 @@ document.addEventListener('click', function (e) {
 
     fetch('/Favorites/ToggleFavorite', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+        },
         body: JSON.stringify(slug)
     })
         .then(function (response) {
-            if (response.status === 401 || response.redirected) {
+            if (response.status === 401) {
                 loginModal.open();
                 return null;
             }

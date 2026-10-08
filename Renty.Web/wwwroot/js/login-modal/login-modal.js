@@ -1,6 +1,13 @@
 import { createModal } from '../shared/popover.js';
 
 export var loginModal = createModal('loginModal', 'loginModalClose');
+
+var url = new URL(window.location.href);
+if (url.searchParams.has('login')) {
+    url.searchParams.delete('login');
+    history.replaceState(null, '', url);
+    loginModal.open();
+}
 var form = document.getElementById('loginForm');
 form.addEventListener('submit', function(event) {
     event.preventDefault();

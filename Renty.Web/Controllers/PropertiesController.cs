@@ -70,6 +70,8 @@ namespace Renty.Web.Controllers
             return Json(result.Data);
         }
 
+        //FOROLGA
+        // Отдавать отзывы в формате ReviewViewModel (authorName, authorAvatarUrl, rating, text, createdAt), как Users/Reviews
         [HttpGet("properties/{slug}/reviews")]
         public async Task<IActionResult> Reviews(string slug, [FromQuery] int page = 1)
         {

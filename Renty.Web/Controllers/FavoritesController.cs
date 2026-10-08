@@ -45,6 +45,7 @@ namespace Renty.Web.Controllers
         /// AJAX-метод для переключения статуса избранного (добавить/удалить)
         /// </summary>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ToggleFavorite([FromBody] string slug)
         {
             var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);

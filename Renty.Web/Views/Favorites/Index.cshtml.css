@@ -10,6 +10,10 @@
     margin-bottom: 1.5rem;
 }
 
+.favorites__empty {
+    color: var(--color-text-muted);
+}
+
 .favorites__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
