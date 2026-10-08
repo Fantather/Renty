@@ -66,6 +66,8 @@ namespace Renty.Application.Handlers.UserHandlers
                 IconName = f.Type.GetMeta().IconName
             }).ToList() ?? new List<UserFactDto>();
 
+            //FOROLGA
+            // Добавить в ReviewDto PropertySlug и PropertyName и заполнить их из r.Property — на странице профиля отзыв ведёт на квартиру
             var reviewDtos = reviews.Select(r => new ReviewDto
             {
                 Id = r.Id,

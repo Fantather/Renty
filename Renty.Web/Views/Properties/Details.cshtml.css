@@ -159,6 +159,10 @@
     gap: 24px;
 }
 
+.modal-panel .property-reviews__grid {
+    grid-template-columns: 1fr;
+}
+
 .property-location__map {
     margin-top: 12px;
     height: 480px;
