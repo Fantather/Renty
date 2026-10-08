@@ -13,6 +13,12 @@
             <vc:editor-menu />
         </nav>
     </aside>
+    <script>
+        try {
+            var editorSidebarScroll = sessionStorage.getItem('editorSidebarScroll');
+            if (editorSidebarScroll !== null) document.querySelector('.editor__sidebar').scrollTop = Number(editorSidebarScroll);
+        } catch (e) { }
+    </script>
 
     <section class="editor__content">
         <div asp-validation-summary="All"></div>
@@ -26,5 +32,6 @@
 </div>
 
 @section Scripts {
+    <script type="module" src="~/js/property-edit/editor-menu.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 }

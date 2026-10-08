@@ -13,7 +13,7 @@ var DETAIL_FIELD_IDS = Object.keys(FIELD_TO_DETAIL_KEY);
 
 function fillAddressFields(details) {
     DETAIL_FIELD_IDS.forEach(function (id) {
-        document.getElementById(id).value = details[FIELD_TO_DETAIL_KEY[id]];
+        document.getElementById(id).value = details[FIELD_TO_DETAIL_KEY[id]] ?? '';
     });
     updateDetailsVisibility();
 }
