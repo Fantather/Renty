@@ -13,7 +13,7 @@ var DETAIL_FIELD_IDS = Object.keys(FIELD_TO_DETAIL_KEY);
 
 function fillAddressFields(details) {
     DETAIL_FIELD_IDS.forEach(function (id) {
-        document.getElementById(id).value = details[FIELD_TO_DETAIL_KEY[id]];
+        document.getElementById(id).value = details[FIELD_TO_DETAIL_KEY[id]] ?? '';
     });
     updateDetailsVisibility();
 }
@@ -50,3 +50,10 @@ detailFields.forEach(function (field) {
 });
 
 updateDetailsVisibility();
+
+var placeIdInput = document.getElementById('PlaceId');
+var allFieldsEmpty = detailFields.every(function (field) { return field.value.trim() === ''; });
+
+if (placeIdInput.value && allFieldsEmpty) {
+    fetchPlaceDetails(placeIdInput.value).then(fillAddressFields);
+}

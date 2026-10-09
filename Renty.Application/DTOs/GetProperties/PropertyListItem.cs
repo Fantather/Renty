@@ -10,6 +10,8 @@ namespace Renty.Application.DTOs.GetProperties
     /// </summary>
     public class PropertyListItem
     {
+        //public Guid Id { get; set; }
+
         public string Slug { get; set; } = null!;
 
         public string PropertyName { get; set; } = string.Empty;

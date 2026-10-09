@@ -32,7 +32,7 @@ namespace Renty.Web.Models.Properties
         public List<AmenityViewModel> Amenities { get; set; } = new(); // список удобств квартиры
         public List<RoomViewModel> Rooms { get; set; } = new();
 
-        public List<ReviewViewModel> Reviews { get; set; } = new(); // только уже отрисованная порция — остальные подгружаются через loadMoreReviews()
+        public ReviewsPageViewModel ReviewsPage { get; set; } = new();
 
         public string? HouseRules { get; set; }
 

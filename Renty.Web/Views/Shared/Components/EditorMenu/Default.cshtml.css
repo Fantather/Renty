@@ -1,0 +1,26 @@
+.editor-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px 5px;
+}
+
+.editor-menu__item {
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+}
+    .editor-menu__item:hover {
+        background-color: var(--color-hover);
+    }
+
+.editor-menu__is-active {
+    border: 2px solid var(--color-text);
+}
+
+.editor-menu__title {
+    font-weight: 600;
+}

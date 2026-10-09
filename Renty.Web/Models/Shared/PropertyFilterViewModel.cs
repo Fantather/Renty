@@ -20,5 +20,10 @@ namespace Renty.Web.Models.Shared
         public double? South { get; set; }
         public double? East { get; set; }
         public double? West { get; set; }
+
+        //placeid
+        public string? PlaceId { get; set; }
+
+
     }
 }

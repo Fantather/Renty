@@ -1,0 +1,80 @@
+.discount-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.discount-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.discount-card--has-error {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.discount-card__row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.discount-card--error {
+    border-color: var(--color-like);
+}
+
+.discount-card__error {
+    margin: 8px 0 0;
+    color: var(--color-like);
+    font-size: 0.85rem;
+}
+
+.discount-card__percent {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 2px;
+    flex-shrink: 0;
+    width: 64px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+::deep .discount-card__percent-input {
+    border: none;
+    outline: none;
+    font: inherit;
+    field-sizing: content;
+    padding: 0;
+    background: none;
+    appearance: textfield;
+}
+
+::deep .discount-card__percent-input::-webkit-inner-spin-button,
+::deep .discount-card__percent-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.discount-card__info {
+    flex: 1;
+}
+
+.discount-card__title {
+    display: block;
+    font-weight: 600;
+}
+
+.discount-card__description {
+    margin: 4px 0 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}

@@ -1,0 +1,14 @@
+@model Renty.Web.Models.InputModels.Media.UploadPropertyImagesInputModel
+@{
+    ViewData["FormId"] = "photos-form";
+}
+
+<div class="property-edit-photos-page">
+    <h2 class="property-edit-photos-page__title">Фото</h2>
+
+    <partial name="_PhotosForm" model="Model" />
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/photos.js" asp-append-version="true"></script>
+}

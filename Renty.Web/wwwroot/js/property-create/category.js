@@ -1,5 +1,5 @@
 var inputs = document.querySelectorAll('.option-card__input');
-var nextButton = document.querySelector('.property-category-next');
+var nextButton = document.querySelector('button[type="submit"][form="' + inputs[0].form.id + '"]');
 
 function updateSelection() {
     var anyChecked = false;

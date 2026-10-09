@@ -1,15 +1,14 @@
 @model Renty.Web.Models.InputModels.Properties.DescriptionInputModel
 @{
     ViewData["Title"] = "Описание";
+    ViewData["FormId"] = "description-form";
 }
 
 <div class="property-description-page">
     <h1 class="property-description-page__title">Составьте описание</h1>
     <p class="property-description-page__subtitle">Расскажите, что делает ваше жильё особенным.</p>
 
-    <form method="post">
-        <input-field asp-for="Description" max-length="2000" multiline="true" />
+    <partial name="_DescriptionForm" model="Model" />
 
-        <button type="submit" class="property-description-next">Далее</button>
-    </form>
+    <partial name="_StepFooter" />
 </div>

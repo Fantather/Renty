@@ -11,7 +11,6 @@ namespace Renty.Web.Models.InputModels.Media
         // Уже сохраненные фото
         public List<ExistingImageInputModel> ExistingImages { get; set; } = new();
 
-        [Required(ErrorMessage = "Выберите хотя бы одно фото")]
         //формат файов что был отправлен через  форму. Просто сперва загрузили
         public List<IFormFile> Images { get; set; } = new();
 

@@ -1,0 +1,14 @@
+.editor-footer {
+    grid-column: 2;
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 100px;
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+}
+
+.editor-footer__save {
+    padding: 12px 24px;
+}

@@ -1,6 +1,7 @@
 @model Renty.Web.Models.InputModels.Media.UploadPropertyImagesInputModel
 @{
     ViewData["Title"] = "Фото";
+    ViewData["FormId"] = "photos-form";
 }
 
 <div class="property-photos-page">
@@ -9,14 +10,9 @@
 
     <p class="property-photos-page__subtitle">Нужно минимум 5 фотографий.</p>
 
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" asp-for="Images" multiple accept="image/*" hidden />
-        <input type="file" id="photoPicker" multiple accept="image/*" hidden />
+    <partial name="_PhotosForm" model="Model" />
 
-        <div class="photo-grid" id="photoGrid"></div>
-
-        <button type="submit" class="btn-primary property-photos-next" disabled>Далее</button>
-    </form>
+    <partial name="_StepFooter" />
 </div>
 
 @section Scripts {

@@ -1,0 +1,88 @@
+@model PaginationViewModel
+
+@{
+    var current = Model.CurrentPage;
+    var total = Model.TotalPages;
+
+    var pages = new List<int?>();
+    if (total <= 7)
+    {
+        for (var i = 1; i <= total; i++) pages.Add(i);
+    }
+    else if (current <= 3)
+    {
+        for (var i = 1; i <= 4; i++) pages.Add(i);
+        pages.Add(null);
+        pages.Add(total);
+    }
+    else if (current >= total - 2)
+    {
+        pages.Add(1);
+        pages.Add(null);
+        for (var i = total - 3; i <= total; i++) pages.Add(i);
+    }
+    else
+    {
+        pages.Add(1);
+        pages.Add(null);
+        for (var i = current - 1; i <= current + 1; i++) pages.Add(i);
+        pages.Add(null);
+        pages.Add(total);
+    }
+
+    string PageUrl(int page)
+    {
+        var query = Context.Request.Query
+            .Where(q => !string.Equals(q.Key, "page", StringComparison.OrdinalIgnoreCase))
+            .ToList();
+        query.Add(new KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>("page", page.ToString()));
+        return Context.Request.Path + QueryString.Create(query).ToString();
+    }
+}
+
+@if (total > 1)
+{
+    <nav class="page-nav">
+        @if (current > 1)
+        {
+            <a class="page-nav__arrow page-nav__arrow--prev" href="@PageUrl(current - 1)">
+                <icon name="chevron-right" class="page-nav__arrow-icon" />
+            </a>
+        }
+        else
+        {
+            <span class="page-nav__arrow page-nav__arrow--prev page-nav__arrow--disabled">
+                <icon name="chevron-right" class="page-nav__arrow-icon" />
+            </span>
+        }
+
+        @foreach (var number in pages)
+        {
+            if (number == null)
+            {
+                <span class="page-nav__ellipsis">…</span>
+            }
+            else if (number == current)
+            {
+                <span class="page-nav__page page-nav__page--current">@number</span>
+            }
+            else
+            {
+                <a class="page-nav__page" href="@PageUrl(number.Value)">@number</a>
+            }
+        }
+
+        @if (current < total)
+        {
+            <a class="page-nav__arrow" href="@PageUrl(current + 1)">
+                <icon name="chevron-right" class="page-nav__arrow-icon" />
+            </a>
+        }
+        else
+        {
+            <span class="page-nav__arrow page-nav__arrow--disabled">
+                <icon name="chevron-right" class="page-nav__arrow-icon" />
+            </span>
+        }
+    </nav>
+}

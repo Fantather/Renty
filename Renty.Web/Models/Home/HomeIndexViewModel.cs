@@ -6,5 +6,6 @@ namespace Renty.Web.Models.Home
     {
         public List<PropertyCardViewModel> Properties { get; set; } = new();
         public PropertyFilterViewModel Filter { get; set; } = new();
+        public PaginationViewModel Pagination { get; set; } = new();
     }
 }

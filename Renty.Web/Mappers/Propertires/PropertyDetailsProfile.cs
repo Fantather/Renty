@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Renty.Application.DTOs.GetProperty;
 using Renty.Web.Models.Properties;
+using Renty.Web.Models.Shared;
 using System;
 using System.Linq;
 
@@ -12,6 +13,10 @@ namespace Renty.Web.Mappers.Properties
         {
 
             CreateMap<RatingBreakdownDto, RatingBreakdownViewModel>();
+
+            CreateMap<GetPropertyDetailsResponse, ReviewsPageViewModel>()
+                .ForMember(dest => dest.CurrentPage, opt => opt.MapFrom(src => 1))
+                .ForMember(dest => dest.TotalPages, opt => opt.MapFrom(src => 1));
 
 
             CreateMap<GetPropertyDetailsResponse, PropertyDetailsViewModel>()
@@ -36,6 +41,8 @@ namespace Renty.Web.Mappers.Properties
                     src.BookedRanges != null
                         ? src.BookedRanges.Select(b => new ValueTuple<DateTime, DateTime>(b.From, b.To)).ToList()
                         : new List<(DateTime, DateTime)>()))
+
+                .ForMember(dest => dest.ReviewsPage, opt => opt.MapFrom(src => src))
 
                 .ForMember(dest => dest.GoogleMapsApiKey, opt => opt.Ignore());
 

@@ -41,7 +41,7 @@ namespace Renty.Web.Controllers
         /// запрос из search-map.js после сдвига или зума карты — только PartialView _SearchResults (заголовок, карточки, JSON пинов).
         /// Если заданы границы карты (North/South/East/West), они заменяют Destination.
         /// </summary>
-        public async Task<IActionResult> Index(PropertyFilterViewModel filter)
+        public async Task<IActionResult> Index(PropertyFilterViewModel filter, int page = 1)
         {
             var currentUserId = Guid.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out var parsedId) ? parsedId : (Guid?)null;
             var checkIn = filter.CheckInDate.HasValue
@@ -63,6 +63,20 @@ namespace Renty.Web.Controllers
 
             var items = new List<PropertyCardViewModel>();
             var totalCount = 0;
+            var pagination = new PaginationViewModel { CurrentPage = page };
+            double? mapCenterLat = null; 
+            double? mapCenterLng = null;
+
+            if (!hasBounds && (!string.IsNullOrEmpty(filter.PlaceId) || !string.IsNullOrEmpty(filter.Destination)))
+            {
+                var locationResult = await _mediator.Send(new ResolveSearchLocationQuery(filter.PlaceId, filter.Destination));
+
+                if (locationResult.IsSuccess && locationResult.Data != null)
+                {
+                    mapCenterLat = locationResult.Data.Latitude;
+                    mapCenterLng = locationResult.Data.Longitude;
+                }
+            }
 
             if (hasBounds)
             {
@@ -77,13 +91,18 @@ namespace Renty.Web.Controllers
                     CheckOutDate: checkOut,
                     PetsAllowed: filter.Pets,
                     GuestCount: filter.GuestCount,
-                    UserId: currentUserId
+                    UserId: currentUserId,
+                    Page: page
                 ));
+                
 
                 if (mapResult.IsSuccess && mapResult.Data != null)
                 {
                     items = _mapper.Map<List<PropertyCardViewModel>>(mapResult.Data.Properties);
                     totalCount = mapResult.Data.TotalCount;
+
+                    //FOROLGA
+                    pagination.TotalPages = (int)Math.Ceiling(mapResult.Data.TotalCount / (double)mapResult.Data.PageSize);
                 }
             }
             else
@@ -96,14 +115,17 @@ namespace Renty.Web.Controllers
                     CheckOutDate = checkOut,
                     Destination = filter.Destination,
                     GuestCount = filter.GuestCount,
+                    PlaceId = filter.PlaceId,
                     PetsAllowed = filter.Pets,
                     UserId = currentUserId,
+                    Page = page,
                 });
-
+                    
                 if (propertiesResult.IsSuccess && propertiesResult.Data != null)
                 {
                     items = _mapper.Map<List<PropertyCardViewModel>>(propertiesResult.Data.Properties);
                     totalCount = propertiesResult.Data.TotalCount;
+                    pagination.TotalPages = propertiesResult.Data.TotalPages;
                 }
             }
 
@@ -111,7 +133,10 @@ namespace Renty.Web.Controllers
             {
                 Properties = items,
                 Filter = filter,
-                TotalCount = totalCount
+                TotalCount = totalCount,
+                Pagination = pagination,
+                MapCenterLat = mapCenterLat,
+                MapCenterLng = mapCenterLng
             };
 
             // Запрос из search-map.js после сдвига или зума карты - отдаём только PartialView

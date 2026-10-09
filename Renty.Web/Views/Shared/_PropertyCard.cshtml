@@ -17,9 +17,13 @@
                 <div class="property-card__image property-card__image--empty"></div>
             }
         </a>
-        <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")">
-            <icon name="@(Model.IsFavorite ? "heart" : "outline-heart")" class="property-card__favorite-icon" />
-        </button>
+        @if (Model.ShowFavorite)
+        {
+            <button type="button" class="property-card__favorite @(Model.IsFavorite ? "is-active" : "")">
+                <icon name="outline-heart" class="property-card__favorite-icon property-card__favorite-icon--off" />
+                <icon name="heart" class="property-card__favorite-icon property-card__favorite-icon--on" />
+            </button>
+        }
     </div>
 
     <div class="property-card__body">
@@ -32,6 +36,16 @@
         </div>
         <p class="property-card__category">@Model.CategoryName</p>
         <p class="property-card__duration">@Model.DurationLabel</p>
-        <p class="property-card__price"><strong>$@Model.PricePerNight.ToString("0")</strong> ночь</p>
+        <p class="property-card__price">
+            @if (Model.OriginalPricePerNight > Model.PricePerNight)
+            {
+                <s class="property-card__price-original">$@Model.OriginalPricePerNight.Value.ToString("0")</s>
+            }
+            <strong>$@Model.PricePerNight.ToString("0")</strong> ночь
+        </p>
+        @if (!string.IsNullOrEmpty(Model.DiscountLabel))
+        {
+            <p class="property-card__discount">@Model.DiscountLabel</p>
+        }
     </div>
 </div>

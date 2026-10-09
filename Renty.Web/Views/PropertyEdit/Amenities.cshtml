@@ -1,0 +1,14 @@
+@model Renty.Web.Models.PropertyCreate.AmenitiesPageViewModel
+@{
+    ViewData["FormId"] = "amenities-form";
+}
+
+<div class="property-edit-amenities-page">
+    <h2 class="property-edit-amenities-page__title">Удобства</h2>
+
+    <partial name="_AmenitiesForm" model="Model" />
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/amenities.js" asp-append-version="true"></script>
+}

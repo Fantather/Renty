@@ -12,4 +12,6 @@
     }
 </div>
 
+<partial name="_Pagination" model="Model.Pagination" />
+
 <script type="application/json" id="searchMapData">@Html.Raw(JsonSerializer.Serialize(Model.Properties, mapJsonOptions))</script>

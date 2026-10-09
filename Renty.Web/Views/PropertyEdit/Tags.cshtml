@@ -1,0 +1,14 @@
+@model Renty.Web.Models.PropertyCreate.TagsPageViewModel
+@{
+    ViewData["FormId"] = "tags-form";
+}
+
+<div class="property-edit-tags-page">
+    <h2 class="property-edit-tags-page__title">Отличительные черты</h2>
+
+    <partial name="_TagsForm" model="Model" />
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/tags.js" asp-append-version="true"></script>
+}

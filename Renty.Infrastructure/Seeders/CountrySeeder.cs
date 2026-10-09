@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Models.Locations;
 using Renty.Infrastructure.Data;
 using System;
@@ -16,13 +16,13 @@ namespace Renty.Infrastructure.Seeders
             }
             try
             {
-                var ukraine = await SeedCountryAsync(context, "Украина", "UA", "UAH", "+380");
+                var ukraine = await SeedCountryAsync(context, "Ukraine", "Украина", "UA", "UAH", "+380");
 
-                var kyivRegion = await SeedRegionAsync(context, "Киевская", ukraine.Id);
-                var odesaRegion = await SeedRegionAsync(context, "Одесская", ukraine.Id);
+                var kyivRegion = await SeedRegionAsync(context, "Kyivska", "Киевская", ukraine.Id);
+                var odesaRegion = await SeedRegionAsync(context, "Odeska", "Одесская", ukraine.Id);
 
-                await SeedCityAsync(context, "Киев", kyivRegion.Id, ukraine.Id, 50.4501m, 30.5234m);
-                await SeedCityAsync(context, "Одесса", odesaRegion.Id, ukraine.Id, 46.4825m, 30.7233m);
+                await SeedCityAsync(context, "Kyiv", "Киев", kyivRegion.Id, ukraine.Id, 50.4501m, 30.5234m);
+                await SeedCityAsync(context, "Odesa", "Одесса", odesaRegion.Id, ukraine.Id, 46.4825m, 30.7233m);
 
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@ namespace Renty.Infrastructure.Seeders
             }
         }
 
-        private static async Task<Country> SeedCountryAsync(AppDbContext context, string countryName, string countryCode, string currencyCode, string phoneCode)
+        private static async Task<Country> SeedCountryAsync(AppDbContext context, string countryName, string countryNameRu, string countryCode, string currencyCode, string phoneCode)
         {
             if (await context.Countries.AnyAsync(c => c.Name == countryName))
             {
@@ -42,6 +42,7 @@ namespace Renty.Infrastructure.Seeders
             {
                 Id = Guid.CreateVersion7(),
                 Name = countryName,
+                NameRu = countryNameRu,
                 CountryCode = countryCode,
                 CurrencyCode = currencyCode,
                 PhoneCode = phoneCode,
@@ -51,10 +52,11 @@ namespace Renty.Infrastructure.Seeders
             await context.Countries.AddAsync(country);
             await context.SaveChangesAsync();
 
-            return country; 
+            return country;
         }
 
-        private static async Task<Region> SeedRegionAsync(AppDbContext context, string regionName, Guid countryId)
+        // Добавлен параметр regionNameRu
+        private static async Task<Region> SeedRegionAsync(AppDbContext context, string regionName, string regionNameRu, Guid countryId)
         {
             if (!await context.Countries.AnyAsync(c => c.Id == countryId))
             {
@@ -69,6 +71,7 @@ namespace Renty.Infrastructure.Seeders
             {
                 Id = Guid.CreateVersion7(),
                 Name = regionName,
+                NameRu = regionNameRu, 
                 CountryId = countryId,
                 IsActive = true
             };
@@ -79,7 +82,7 @@ namespace Renty.Infrastructure.Seeders
             return region;
         }
 
-        private static async Task<City> SeedCityAsync(AppDbContext context, string cityName, Guid regionId, Guid countryId, decimal latitude, decimal longitude)
+        private static async Task<City> SeedCityAsync(AppDbContext context, string cityName, string cityNameRu, Guid regionId, Guid countryId, decimal latitude, decimal longitude)
         {
             if (!await context.Countries.AnyAsync(c => c.Id == countryId))
             {
@@ -98,6 +101,7 @@ namespace Renty.Infrastructure.Seeders
             {
                 Id = Guid.CreateVersion7(),
                 Name = cityName,
+                NameRu = cityNameRu, 
                 RegionId = regionId,
                 CountryId = countryId,
                 Latitude = latitude,

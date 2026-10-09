@@ -31,13 +31,18 @@ namespace Renty.Application.Handlers.UserHandlers
             if (user == null)
                 return OperationResult<GetUserProfileResponse>.Fail("User not found");
 
-            var reviews = await _context.Reviews
-                .AsNoTracking()
+            var baseReviewsQuery = _context.Reviews
+                            .AsNoTracking()
+                            .Where(r => r.Property.HostId == user.Id);
+
+            var totalReviewsCount = await baseReviewsQuery.CountAsync(cancellationToken);
+
+            var reviews = await baseReviewsQuery
                 .Include(r => r.User)
                 .Include(r => r.Property)
-                .Where(r => r.Property.HostId == user.Id)
                 .OrderByDescending(r => r.CreatedAt)
-                .Take(20)
+                .Skip((request.Page - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
             // Проверка владельца через переданный CurrentUserId
@@ -61,6 +66,8 @@ namespace Renty.Application.Handlers.UserHandlers
                 IconName = f.Type.GetMeta().IconName
             }).ToList() ?? new List<UserFactDto>();
 
+            //FOROLGA++
+            // Добавить в ReviewDto PropertySlug и PropertyName и заполнить их из r.Property — на странице профиля отзыв ведёт на квартиру
             var reviewDtos = reviews.Select(r => new ReviewDto
             {
                 Id = r.Id,
@@ -71,7 +78,9 @@ namespace Renty.Application.Handlers.UserHandlers
                 },
                 Rating = r.Rating,
                 Content = r.Comment,
-                CreatedAt = r.CreatedAt
+                CreatedAt = r.CreatedAt,
+                PropertySlug = r.Property?.Slug,
+                PropertyName = r.Property?.Name
             }).ToList();
 
             var avgRating = reviews.Any() ? reviews.Average(r => r.Rating) : 0m;
@@ -84,7 +93,7 @@ namespace Renty.Application.Handlers.UserHandlers
                 FullName = (user.FirstName + " " + user.LastName).Trim(),
                 IsSuperHost = user.IsSuperHost,
                 Rating = Math.Round(avgRating, 2),
-                ReviewsCount = reviews.Count,
+                ReviewsCount = totalReviewsCount,
                 MonthsOnPlatform = Math.Max(0, months),
                 IsVerified = user.IsVerified,
                 HomeCity = homeCity,
@@ -92,7 +101,11 @@ namespace Renty.Application.Handlers.UserHandlers
                 Languages = languages,
                 Info = user.Info,
                 Facts = facts,
-                Reviews = reviewDtos
+                Reviews = reviewDtos,
+
+                CurrentPage = request.Page,
+                TotalReviews = totalReviewsCount,
+                TotalPages = (int)Math.Ceiling(totalReviewsCount / (double)request.PageSize)
             };
 
             return OperationResult<GetUserProfileResponse>.Success(response);

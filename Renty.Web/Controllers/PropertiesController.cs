@@ -69,5 +69,36 @@ namespace Renty.Web.Controllers
 
             return Json(result.Data);
         }
+
+        //FOROLGA++
+        // Отдавать отзывы в формате ReviewViewModel (authorName, authorAvatarUrl, rating, text, createdAt), как Users/Reviews
+        [HttpGet("properties/{slug}/reviews")]
+        public async Task<IActionResult> Reviews(string slug, [FromQuery] int page = 1)
+        {
+            var query = new GetPropertyReviewsQuery(Slug: slug, Page: page, PageSize: 10);
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            var formattedReviews = result.Data.Reviews.Select(r => new
+            {
+                id = r.Id,
+                authorName = r.Author.FullName,
+                authorAvatarUrl = r.Author.AvatarUrl,
+                rating = r.Rating,
+                text = r.Content,
+                createdAt = r.CreatedAt.ToString("dd MMMM yyyy") 
+            });
+
+            return Json(new
+            {
+                reviews = formattedReviews,
+                currentPage = result.Data.Page,
+                totalPages = result.Data.TotalPages
+            });
+        }
     }
 }

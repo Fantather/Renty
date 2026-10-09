@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Renty.Application.Common;
 using Renty.Application.DTOs.GetReviews;
 using System;
@@ -11,8 +11,13 @@ namespace Renty.Application.Queries
     /// Запрос на отзывы под недвижимостью
     /// </summary>
     /// <param name="PropertyId">Идентификатор недвижимости</param>
-    ///// <param name="Page">Текущая страница отзывов</param>
-    ///// <param name="PageSize">Количество отзывов на страницу</param>
-    public record GetPropertyReviewsQuery(Guid PropertyId/*, int Page, int PageSize*/) : IRequest<OperationResult<GetReviewsResponse>>;
-
+    /// <param name="Page">Текущая страница отзывов</param>
+    /// <param name="PageSize">Количество отзывов на страницу</param>
+    /// <param name="Slug"> Cлаг</param>
+    public record GetPropertyReviewsQuery(
+            Guid? PropertyId = null,
+            string? Slug = null,
+            int Page = 1,
+            int PageSize = 10
+        ) : IRequest<OperationResult<GetReviewsResponse>>;
 }

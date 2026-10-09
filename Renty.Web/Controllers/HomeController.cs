@@ -17,7 +17,7 @@ namespace Renty.Web.Controllers
         {
             _mediator = mediator;
         }
-        public async Task<IActionResult> Index(PropertyFilterViewModel filter)
+        public async Task<IActionResult> Index(PropertyFilterViewModel filter, int page = 1)
         {
             Guid? currentUserId = null;
             if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -42,13 +42,14 @@ namespace Renty.Web.Controllers
                 //передача фильтра по городу и стране в запрос
                 Destination = filter.Destination,
 
-                Page=1,
+                Page = page,
                 PageSize = 20,
                 UserId = currentUserId
             };
 
             var propertiesResult = await _mediator.Send(propertiesQuery);
             var propertiesVm = new List<PropertyCardViewModel>();
+            var pagination = new PaginationViewModel { CurrentPage = page };
 
             if (propertiesResult.IsSuccess && propertiesResult.Data != null)
             {
@@ -66,6 +67,8 @@ namespace Renty.Web.Controllers
                     
 
                 }).ToList();
+
+                pagination.TotalPages = propertiesResult.Data.TotalPages;
             }
 
             //модель в html
@@ -73,6 +76,7 @@ namespace Renty.Web.Controllers
             {
                 Properties = propertiesVm,
                 Filter = filter,
+                Pagination = pagination,
             };
 
             return View(vm);

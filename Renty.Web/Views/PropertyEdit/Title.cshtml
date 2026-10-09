@@ -1,0 +1,10 @@
+@model Renty.Web.Models.InputModels.Properties.TitleInputModel
+@{
+    ViewData["FormId"] = "title-form";
+}
+
+<div class="property-edit-title-page">
+    <h2 class="property-edit-title-page__title">Название</h2>
+
+    <partial name="_TitleForm" model="Model" />
+</div>

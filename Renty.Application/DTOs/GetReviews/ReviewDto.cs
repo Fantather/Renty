@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -34,5 +34,8 @@ namespace Renty.Application.DTOs.GetReviews
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
+
+        public string? PropertySlug { get; set; }
+        public string? PropertyName { get; set; }
     }
 }

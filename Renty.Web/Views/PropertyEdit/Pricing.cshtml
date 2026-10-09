@@ -1,4 +1,14 @@
-﻿@page
-@model Renty.Web.Views.PropertyEdit.PricingModel
+@model Renty.Web.Models.InputModels.Properties.PricingInputModel
 @{
+    ViewData["FormId"] = "pricing-form";
+}
+
+<div class="property-edit-pricing-page">
+    <h2 class="property-edit-pricing-page__title">Цена</h2>
+
+    <partial name="_PricingForm" model="Model" />
+</div>
+
+@section Scripts {
+    <script type="module" src="~/js/property-create/pricing.js" asp-append-version="true"></script>
 }

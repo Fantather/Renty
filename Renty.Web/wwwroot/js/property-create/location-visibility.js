@@ -1,4 +1,4 @@
-import { loadGoogleMapsScript, createMap } from '../shared/google-maps.js';
+import { loadGoogleMapsScript, createMap, createApproximateCircle, APPROXIMATE_RADIUS } from '../shared/google-maps.js';
 
 var mapEl = document.getElementById('locationPreviewMap');
 var canvasEl = document.getElementById('locationPreviewCanvas');
@@ -18,17 +18,9 @@ loadGoogleMapsScript(mapEl.dataset.apiKey).then(function () {
         streetViewControl: false,
     });
 
-    var TARGET_RADIUS = 300;
+    var TARGET_RADIUS = APPROXIMATE_RADIUS;
 
-    var circle = new google.maps.Circle({
-        center: position,
-        radius: 0,
-        fillColor: '#000',
-        fillOpacity: 0.15,
-        strokeColor: '#000',
-        strokeOpacity: 0.3,
-        strokeWeight: 1,
-    });
+    var circle = createApproximateCircle({ center: position, radius: 0 });
 
     function animateCircleIn() {
         var start = performance.now();

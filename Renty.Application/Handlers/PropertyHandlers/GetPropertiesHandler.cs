@@ -9,18 +9,20 @@ using Renty.Application.Queries;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Infrastructure.Data;
 using Renty.Infrastructure.Helpers;
-
+using Renty.Domain.Interfaces;
+    
 namespace Renty.Application.Handlers.PropertyHandlers
 {
     public class GetPropertiesHandler : IRequestHandler<GetPropertiesQuery, OperationResult<GetPropertiesResponse>>
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-
-        public GetPropertiesHandler(AppDbContext context, IMapper mapper)
+        private readonly ILocationResolverService _locationResolver;
+        public GetPropertiesHandler(AppDbContext context, IMapper mapper, ILocationResolverService locationResolver)
         {
             _context = context;
             _mapper = mapper;
+            _locationResolver = locationResolver;
         }
 
         public async Task<OperationResult<GetPropertiesResponse>> Handle(GetPropertiesQuery request, CancellationToken cancellationToken)
@@ -43,18 +45,24 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     .AsNoTracking()
                     .AsQueryable();
 
-                // Специфичный фильтр для этого хендлера
-                if (!string.IsNullOrWhiteSpace(request.Destination))
+                if (!string.IsNullOrWhiteSpace(request.PlaceId) || !string.IsNullOrWhiteSpace(request.Destination))
                 {
-                    var destination = request.Destination.ToLower().Trim();
+                    try
+                    {
+                        var city = await _locationResolver.ResolveCityFromInputAsync(request.PlaceId, request.Destination, cancellationToken);
 
-                    if (RuHelper.IsCyrillic(destination))
-                    {
-                        query = query.Where(p => p.City.NameRu != null && p.City.NameRu.ToLower().Contains(destination));
+                        query = query.Where(p => p.CityId == city.Id);
                     }
-                    else
+                    catch (Exception)
                     {
-                        query = query.Where(p => p.City.Name != null && p.City.Name.ToLower().Contains(destination));
+
+                        return OperationResult<GetPropertiesResponse>.Success(new GetPropertiesResponse
+                        {
+                            Page = request.Page,
+                            PageSize = request.PageSize,
+                            TotalCount = 0,
+                            Properties = new List<PropertyListItem>()
+                        });
                     }
                 }
 

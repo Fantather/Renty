@@ -77,7 +77,7 @@ namespace Renty.Web.Controllers
         public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
-                return LocalRedirect(nameof(Login));
+                return RedirectToAction(nameof(Login));
 
             var result = await _mediator.Send(new ConfirmEmailCommand(userId, token));
 
@@ -100,8 +100,7 @@ namespace Renty.Web.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View(new LoginViewModel());
+            return RedirectToAction("Index", "Home", new { login = 1 });
         }
 
         [HttpPost]

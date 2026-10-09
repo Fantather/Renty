@@ -139,6 +139,9 @@ namespace Renty.Infrastructure.Repository
         {
             var query = _dbSet
                 .Include(p => p.PropertyImages)
+                .Include(p => p.City)
+                .Include(p => p.Country)
+                .Include(p => p.Category)
                 .AsQueryable();
 
             if (hostId.HasValue)

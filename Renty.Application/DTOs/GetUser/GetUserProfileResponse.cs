@@ -19,6 +19,10 @@ namespace Renty.Application.DTOs.GetUser
         public string? Info { get; set; }
         public List<UserFactDto> Facts { get; set; } = new();
         public List<ReviewDto> Reviews { get; set; } = new();
+
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int TotalReviews { get; set; }
     }
 
 
