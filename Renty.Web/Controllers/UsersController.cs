@@ -50,13 +50,42 @@ namespace Renty.Web.Controllers
             return View(vm);
         }
 
-        //FOROLGA
+        //FOROLGA++
         // Контроллер для подгрузки комментариев в Модалку со страницы пользователя
-        [HttpGet]
-        public IActionResult Reviews(Guid? id, int page = 1)
+        [HttpGet("users/{id:guid}/reviews")]
+        public async Task<IActionResult> Reviews(Guid id, [FromQuery] int page = 1)
         {
-            return Ok();
+            if (id == Guid.Empty) return BadRequest();
+
+            var query = new GetHostReviewsQuery(id, page, 10);
+            var result = await _mediator.Send(query);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            var formattedReviews = result.Data.Reviews.Select(r => new
+            {
+                id = r.Id,
+                authorName = r.Author.FullName,
+                authorAvatarUrl = r.Author.AvatarUrl,
+                rating = r.Rating,
+                text = r.Content,
+                createdAt = r.CreatedAt.ToString("dd MMMM yyyy"),
+                propertySlug = r.PropertySlug,
+                propertyName = r.PropertyName
+            });
+
+            return Json(new
+            {
+                reviews = formattedReviews,
+                currentPage = result.Data.Page,
+                totalPages = result.Data.TotalPages
+            });
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> Edit()

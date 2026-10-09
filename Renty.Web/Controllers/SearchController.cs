@@ -115,11 +115,12 @@ namespace Renty.Web.Controllers
                     CheckOutDate = checkOut,
                     Destination = filter.Destination,
                     GuestCount = filter.GuestCount,
+                    PlaceId = filter.PlaceId,
                     PetsAllowed = filter.Pets,
                     UserId = currentUserId,
                     Page = page,
                 });
-
+                    
                 if (propertiesResult.IsSuccess && propertiesResult.Data != null)
                 {
                     items = _mapper.Map<List<PropertyCardViewModel>>(propertiesResult.Data.Properties);

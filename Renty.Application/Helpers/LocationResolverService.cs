@@ -101,7 +101,7 @@ namespace Renty.Application.Services
             }
             else if (!string.IsNullOrWhiteSpace(cityText))
             {
-                geoResult = await _geocodingService.GetAddressDetailsAsync(cityText, ct);
+                geoResult = await _geocodingService.GetAddressDetailsAsync(cityText, ct);   
             }
             else
                 throw new Exception("Укажите город");

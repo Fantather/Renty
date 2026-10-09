@@ -137,6 +137,7 @@ namespace Renty.Infrastructure.Seeders
                 var livingRoomId = Guid.CreateVersion7();
                 var kitchenId = Guid.CreateVersion7();
                 var balconyId = Guid.CreateVersion7();
+                var address = GenerateRandomAddress(odesa.Id, "seed-odesa", "Аркадийское плато", 30.767277, 46.429824);
 
                 var reviews = new List<Review>();
                 reviews.AddRange(Enumerable.Range(0, counter + 1)
@@ -150,6 +151,7 @@ namespace Renty.Infrastructure.Seeders
                     HostId = hostOdesa.Id,
                     CategoryId = catSea.Id,
                     AddressId = addressOdesa.Id,
+                    Address = address,
                     CityId = odesa.Id,
                     CountryId = odesa.CountryId,
                     PricePerNight = Random.Shared.Next(1000, 5000),
@@ -259,6 +261,7 @@ namespace Renty.Infrastructure.Seeders
                 var studioId = Guid.CreateVersion7();
                 var bathroomId = Guid.CreateVersion7();
                 var reviews = new List<Review>();
+                var address = GenerateRandomAddress(kyiv.Id, "seed-kyiv", "Прорезная", 30.520308, 50.448625);
                 reviews.AddRange(Enumerable.Range(0, counter + 1)
                 .Select(i => GetRandomReview(min: 1, max: 5, hostId: hostOdesa.Id, index: i)));
                 return new Property
@@ -269,6 +272,7 @@ namespace Renty.Infrastructure.Seeders
                     HostId = hostKyiv.Id,
                     CategoryId = catCenter!.Id,
                     AddressId = addressKyiv.Id,
+                    Address = address,
                     CityId = kyiv.Id,
                     CountryId = kyiv.CountryId,
                     PricePerNight = Random.Shared.Next(1000, 2500),
@@ -351,7 +355,23 @@ namespace Renty.Infrastructure.Seeders
                 }
             }
         }
+        private static Address GenerateRandomAddress(Guid cityId, string placePrefix, string street, double baseLng, double baseLat)
+        {
 
+            double offset = 0.005;
+            double latOffset = (Random.Shared.NextDouble() * 2 - 1) * offset;
+            double lngOffset = (Random.Shared.NextDouble() * 2 - 1) * offset;
+
+            return new Address
+            {
+                Id = Guid.CreateVersion7(),
+                PlaceId = $"{placePrefix}-{Guid.NewGuid().ToString().Substring(0, 8)}",
+                FullAddress = $"{street}, {Random.Shared.Next(1, 150)}", 
+                Street = street,
+                Location = new Point(baseLng + lngOffset, baseLat + latOffset) { SRID = 4326 },
+                CityId = cityId
+            };
+        }
         private static async Task<Property> SeedPropery(AppDbContext context, Property property)
         {
             if (string.IsNullOrWhiteSpace(property.Slug))
@@ -381,7 +401,7 @@ namespace Renty.Infrastructure.Seeders
                         "Очень уютно, все необходимое для проживания есть. Вид шикарный!",
                         "Прекрасное расположение, чисто и комфортно. Обязательно вернусь еще раз.",
                         "Во имя императора эта квартира заставила мою кровь бурлить!",
-                        "Я ВЫЖИЛ УРА"
+                        "Мне понравилась эта квартира"
                     };
                     var neutralComments = new[]
                                 {
