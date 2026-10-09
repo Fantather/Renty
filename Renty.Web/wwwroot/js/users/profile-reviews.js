@@ -11,9 +11,10 @@ var reviewsList = document.getElementById('profileReviewsList');
 var allReviewsList = document.getElementById('profileAllReviewsList');
 var reviewsDataEl = document.getElementById('profileReviewsData');
 
-if (reviewsList && allReviewsList && reviewsDataEl) {
-    var reviews = JSON.parse(reviewsDataEl.textContent);
-    reviews.forEach(function (review, index) {
+var reviewsPage = JSON.parse(reviewsDataEl.textContent);
+
+if (reviewsList && allReviewsList) {
+    reviewsPage.reviews.forEach(function (review, index) {
         if (index < VISIBLE_REVIEWS_COUNT) {
             reviewsList.appendChild(buildReviewCard(review));
         }
@@ -28,8 +29,8 @@ if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', reviewsModal.open);
 
     var sentinel = document.getElementById('profileReviewsSentinel');
-    var currentPage = Number(allReviewsList.dataset.currentPage);
-    var totalPages = Number(allReviewsList.dataset.totalPages);
+    var currentPage = reviewsPage.currentPage;
+    var totalPages = reviewsPage.totalPages;
     var userId = new URLSearchParams(window.location.search).get('id');
     var isLoading = false;
 

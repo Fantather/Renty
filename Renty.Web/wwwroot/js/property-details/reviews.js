@@ -17,7 +17,7 @@ var allReviewsList = document.getElementById('allReviewsList');
 var initialReviewsDataEl = document.getElementById('initialReviewsData');
 
 if (reviewsList && allReviewsList && initialReviewsDataEl) {
-    var initialReviews = JSON.parse(initialReviewsDataEl.textContent);
+    var initialReviews = JSON.parse(initialReviewsDataEl.textContent).reviews;
     initialReviews.forEach(function (review) {
         reviewsList.appendChild(buildReviewCard(review));
         allReviewsList.appendChild(buildReviewCard(review));

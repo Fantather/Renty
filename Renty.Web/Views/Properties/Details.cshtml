@@ -216,7 +216,7 @@
 
 </article>
 
-<script type="application/json" id="initialReviewsData">@Html.Raw(JsonSerializer.Serialize(Model.Reviews, reviewsJsonOptions))</script>
+<script type="application/json" id="initialReviewsData">@Html.Raw(JsonSerializer.Serialize(Model.ReviewsPage, reviewsJsonOptions))</script>
 
 @section Scripts {
     <script src="~/js/property-details/property-details.js" type="module" asp-append-version="true"></script>

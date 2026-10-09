@@ -83,13 +83,13 @@
         </div>
     </div>
 
-    @if (Model.Reviews.Any())
+    @if (Model.ReviewsPage.Reviews.Any())
     {
         <section class="user-profile__reviews">
             <h2><icon name="star" /> @Model.Rating.ToString("0.00") · @Model.ReviewsCount отзывов</h2>
             <div class="user-profile__reviews-grid" id="profileReviewsList"></div>
 
-            @if (Model.Reviews.Count > 4 || Model.TotalPages > 1)
+            @if (Model.ReviewsPage.Reviews.Count > 4 || Model.ReviewsPage.TotalPages > 1)
             {
                 <button type="button" id="profileLoadMoreReviewsBtn" class="btn-outline">Показать ещё</button>
             }
@@ -99,7 +99,7 @@
             <div class="modal-panel">
                 <button type="button" id="closeProfileReviewsModalBtn" class="modal-panel__close">×</button>
                 <h2>Отзывы</h2>
-                <div class="user-profile__reviews-grid" id="profileAllReviewsList" data-current-page="@Model.CurrentPage" data-total-pages="@Model.TotalPages"></div>
+                <div class="user-profile__reviews-grid" id="profileAllReviewsList"></div>
                 <div id="profileReviewsSentinel"></div>
             </div>
         </div>
@@ -107,7 +107,7 @@
 
 </article>
 
-<script type="application/json" id="profileReviewsData">@Html.Raw(JsonSerializer.Serialize(Model.Reviews, reviewsJsonOptions))</script>
+<script type="application/json" id="profileReviewsData">@Html.Raw(JsonSerializer.Serialize(Model.ReviewsPage, reviewsJsonOptions))</script>
 
 @section Scripts {
     <script src="~/js/users/profile-reviews.js" type="module" asp-append-version="true"></script>

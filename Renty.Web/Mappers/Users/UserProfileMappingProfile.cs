@@ -24,9 +24,11 @@ namespace Renty.Web.Mappers.Users
 
             CreateMap<EditUserProfileInputDto, EditUserProfileInputModel>().ReverseMap();
 
+            CreateMap<GetUserProfileResponse, ReviewsPageViewModel>();
+
             CreateMap<GetUserProfileResponse, UserProfileViewModel>()
                 .ForMember(dest => dest.Facts, opt => opt.MapFrom(src => src.Facts))
-                .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews));
+                .ForMember(dest => dest.ReviewsPage, opt => opt.MapFrom(src => src));
         }
     }
 }
