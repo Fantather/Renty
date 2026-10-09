@@ -427,8 +427,20 @@ namespace Renty.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("GuestsCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
 
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
@@ -1061,6 +1073,12 @@ namespace Renty.Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
+                    b.Property<string>("StripeAccountId")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("StripeOnboardingComplete")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("TravelReason")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -1092,6 +1110,9 @@ namespace Renty.Infrastructure.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
+
+                    b.HasIndex("StripeAccountId")
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers", (string)null);
                 });

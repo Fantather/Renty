@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
@@ -20,6 +20,10 @@ namespace Renty.Domain.Models.LookupsTables
         [Description("Не удалось")]
         Failed = 3,
         [Description("Возвращено")]
-        Refunded = 4
+        Refunded = 4,
+        [Description("Отменено")]
+        Canceled = 5,
+        [Description("Авторизован")]
+        Authorized = 6
     }
 }

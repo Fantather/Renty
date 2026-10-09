@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Renty.Infrastructure.Services
+namespace Renty.Infrastructure.Services.SMTP
 {
     public class EmailConfiguration
     {

@@ -12,6 +12,7 @@ namespace Renty.Application.DTOs.GetProperties.UserProperties
         public decimal Rating { get; set; }
         public decimal PricePerNight { get; set; }
         public string CategoryName { get; set; } = string.Empty;
+        public List<string> ImageUrls { get; set; } = new();
         public DateTime CreatedAt { get; set; }
     }
 }

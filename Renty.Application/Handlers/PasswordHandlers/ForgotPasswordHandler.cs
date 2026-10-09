@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Renty.Application.Commands.PasswordCommands;
 using Renty.Application.Common;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 using Renty.Domain.ServiceModels;
+using Renty.Domain.ServiceModels.SMTP;
 using System;
 using System.Collections.Generic;
 using System.Net;

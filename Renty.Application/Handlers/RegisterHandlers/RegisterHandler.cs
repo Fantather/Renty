@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Renty.Application.Commands.RegisterCommands;
@@ -6,6 +6,7 @@ using Renty.Application.Common;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.User;
 using Renty.Domain.ServiceModels;
+using Renty.Domain.ServiceModels.SMTP;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -60,7 +61,7 @@ namespace Renty.Application.Handlers.RegisterHandlers
             var message = new EmailMessage(
                 new string[] { request.Email },
                 "Email verification in Renty.",
-                $"Click this link to confirm your email, or ignore this message \n\n<a href='{confirmationLink}'>Confirm email</a>"
+                $"Click this link to confirm your email, or ignore this message <a href='{confirmationLink}'>Confirm email</a>"
                 );
 
             await _emailSender.SendEmailAsync(message);

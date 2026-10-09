@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Orders;
@@ -151,7 +151,14 @@ namespace Renty.Infrastructure.Repository
 
         public async Task<bool> IsDateRangeAvailableAsync(Guid propertyId, DateTime checkIn, DateTime checkOut, CancellationToken ct = default)
         {
-            throw new NotImplementedException();
+            return !await _dbSet
+                .Where(b => b.PropertyId == propertyId)
+                .AnyAsync(b => b.CheckOutDate > checkIn && b.CheckInDate < checkOut,ct);
+        }
+
+        public async Task<Booking?> GetByPaymentIntentIdAsync(string paymentIntentId, CancellationToken ct = default)
+        {
+            return await _dbSet.FirstOrDefaultAsync(b => b.PaymentIntentId == paymentIntentId,ct);
         }
     }
 }

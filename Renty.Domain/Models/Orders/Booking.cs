@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Renty.Domain.Models.Properties;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.User;
+using Renty.Domain.Enums;
 namespace Renty.Domain.Models.Orders
 {
     /// <summary>
@@ -21,6 +22,8 @@ namespace Renty.Domain.Models.Orders
         public Guid UserId { get; set; }
         //[ForeignKey(nameof(UserId))]
         public virtual ApplicationUser User { get; set; }
+        // Идентификатор платежа в Stripe
+        public string? PaymentIntentId { get; set; }
 
         // Даты заезда и выезда
         public DateTime CheckInDate { get; set; }
@@ -32,6 +35,12 @@ namespace Renty.Domain.Models.Orders
 
         // Стоимость
         public decimal TotalPrice { get; set; }
+
+        // Валюта объявления
+        public string Currency { get; set; } = null!;
+
+        // Card | Cash
+        public PaymentMethodType PaymentMethod { get; set; }
 
         // Статус бронирования (связь с StatusLookup)
         //public int StatusId { get; set; }

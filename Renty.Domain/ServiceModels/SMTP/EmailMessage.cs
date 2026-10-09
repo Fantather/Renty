@@ -1,9 +1,9 @@
-﻿using MimeKit;
+using MimeKit;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Renty.Domain.ServiceModels
+namespace Renty.Domain.ServiceModels.SMTP
 {
     public class EmailMessage
     {

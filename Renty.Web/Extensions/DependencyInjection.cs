@@ -3,10 +3,11 @@ using Renty.Application.Services;
 using Renty.Domain.Interfaces;
 using Renty.Domain.Models.Locations;
 using Renty.Infrastructure.Repository;
-using Renty.Infrastructure.Services;
 using Renty.Infrastructure.Services.CountryStateCityAPI;
 using Renty.Infrastructure.Services.GoogleGeocoding;
 using Renty.Infrastructure.Services.PlacesAPI;
+using Renty.Infrastructure.Services.SMTP;
+using Renty.Infrastructure.Services.StripeAPI;
 
 namespace Renty.Web.DI
 {
@@ -42,6 +43,11 @@ namespace Renty.Web.DI
                 client.Timeout = TimeSpan.FromSeconds(30);
             });
 
+            services.Configure<StripeOptions>(config.GetSection(StripeOptions.SectionName));
+            services.AddScoped<IPaymentService, StripeService>();
+
+            services.AddScoped<OwnedBookingService>();
+            services.AddScoped<PriceCalculatorService>();
 
             return services;
         }

@@ -1,4 +1,4 @@
-﻿using Renty.Domain.ServiceModels;
+using Renty.Domain.ServiceModels.SMTP;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;

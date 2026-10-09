@@ -9,6 +9,8 @@ using Renty.Web.Models.InputModels.Users;
 using Renty.Web.Models.Users;
 using System.Security.Claims;
 using Renty.Web.Models.Shared;
+using Microsoft.AspNetCore.Authorization;
+using Renty.Application.Commands.OnbordingCommands;
 
 namespace Renty.Web.Controllers
 {
@@ -157,5 +159,36 @@ namespace Renty.Web.Controllers
 
             return Json(new { avatarUrl = result.Data });
         }
+
+        [Authorize]
+        [HttpGet("onbording")]
+        public async Task<IActionResult> StartOnboarding(CancellationToken ct)
+        {
+            var refreshUrl = Url.Action(nameof(OnboardingRefresh), "Users", null, Request.Scheme)!;
+            var returnUrl = Url.Action(nameof(OnboardingReturn), "Users", null, Request.Scheme)!;
+
+            var result = await _mediator.Send(new CreateOnboardingLinkCommand(CurrentUserId(), returnUrl, refreshUrl), ct);
+
+            if (!result.IsSuccess)
+            {
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
+                return View();
+            }
+
+            return Redirect(result.Data!);
+        }
+
+        [Authorize]
+        [HttpGet("refresh")]
+        public IActionResult OnboardingRefresh() => RedirectToAction(nameof(StartOnboarding));
+
+        [Authorize]
+        [HttpGet("return")]
+        public IActionResult OnboardingReturn()
+        {
+            return View();
+        }
+
+        private Guid CurrentUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }
 }

@@ -84,14 +84,13 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
             {
                 // Ошибка подтверждения
-                ViewData["Error"] = string.Join(", ", result.Errors);
+                ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
                 ViewData["IsConfirm"] = result.IsSuccess;
-                return View(nameof(ConfirmEmail));
+                return View(nameof(RegisterConfirmation));
             }
 
             // Почта подтверждена
-            ViewData["IsConfirm"] = result.IsSuccess;
-            return View(nameof(ConfirmEmail));
+            return RedirectToAction("Index", "Home");
         }
 
         #endregion

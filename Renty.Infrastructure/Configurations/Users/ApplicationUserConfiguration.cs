@@ -47,6 +47,10 @@ namespace Renty.Infrastructure.Configurations.Users
                 .IsRequired()
                 .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+            builder.HasIndex(u => u.StripeAccountId)
+                .IsUnique();
+                
+
             // Связи с Country и City
             builder.HasOne(u => u.HomeCountry)
                 .WithMany()

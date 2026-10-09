@@ -31,7 +31,6 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     Id = p.Id,
                     City = string.IsNullOrEmpty(p.City.NameRu) ? p.City.Name : p.City.NameRu,
                     Country = string.IsNullOrEmpty(p.Country.NameRu) ? p.Country.Name : p.Country.NameRu,
-                    CreatedAt = p.CreatedAt
                 }).ToList(),
                 Published = properties.Where(p => p.Status == PropertyStatusEnum.Draft).Select(p => new PropertyCardModel
                 {
@@ -41,7 +40,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     Country = string.IsNullOrEmpty(p.Country.NameRu) ? p.Country.Name : p.Country.NameRu,
                     Rating = p.AverageRating,
                     PricePerNight = p.PricePerNight,
-                    CreatedAt = p.CreatedAt
+                    ImageUrls = p.PropertyImages.Select(i => i.ImageUrl).ToList()
                 }).ToList()
             };
 

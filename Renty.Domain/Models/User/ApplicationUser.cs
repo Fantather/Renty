@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Renty.Domain.Models.Locations;
 using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Orders;
@@ -79,7 +79,10 @@ namespace Renty.Domain.Models.User
 
         public string? Info { get; set; }
 
-
+        // Идентификатор аккаунта для перевода/вывода
+        public string? StripeAccountId { get; set; }
+        /// Может ли этот пользователь получать платежи
+        public bool StripeOnboardingComplete { get; set; }
         //Коллекции
         public virtual ICollection<Languages> Languages { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }

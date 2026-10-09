@@ -80,7 +80,7 @@ namespace Renty.Application.Helpers
             }
 
             var country = await _locationResolver.ResolveCountryAsync(geoResult.CountryName, geoResult.CountryCode, ct);
-            var city = await _locationResolver.ResolveCityAsync(geoResult.CityName, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
+            var city = await _locationResolver.ResolveCityAsync(geoResult.CityName, geoResult.PlaceId!, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
 
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 

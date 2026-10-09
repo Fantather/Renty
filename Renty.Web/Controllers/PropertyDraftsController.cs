@@ -26,7 +26,6 @@ namespace Renty.Web.Controllers
             // черновики ведут на PropertyCreate/PropertyAddress/{id}, опубликованные на PropertyEdit/Title/{id}.
             var result = await _mediator.Send(new GetUserPropertiesQuery(CurrentUserId()));
 
-            // TODO: сделать страницу с отображением полей с UserPropertyCardViewModel
             var vm = new PropertyDraftsViewModel
             {
                 //Drafts = new List<UserPropertyCardViewModel>
@@ -60,15 +59,14 @@ namespace Renty.Web.Controllers
                 //        ActionUrl = Url.Action("Title", "PropertyEdit", new { id = Guid.Parse("22222222-0000-0000-0000-000000000001") }),
                 //    },
                 //},
-                Drafts = result.Data!.Drafts.Select(p => new UserPropertyCardViewModel
+                Drafts = result.Data!.Drafts.Select(p => new PropertyCardViewModel
                 {
                     Id = p.Id,
                     City = p.City,
                     Country = p.Country,
-                    CreatedAt = p.CreatedAt,
                     ActionUrl = Url.Action("PropertyAddress", "PropertyCreate", new { id = p.Id})
                 }).ToList(),
-                Published = result.Data!.Published.Select(p => new UserPropertyCardViewModel
+                Published = result.Data!.Published.Select(p => new PropertyCardViewModel
                 {
                     Id = p.Id,
                     CategoryName = p.CategoryName,
@@ -76,7 +74,7 @@ namespace Renty.Web.Controllers
                     Rating = p.Rating,
                     City = p.City,
                     Country = p.Country,
-                    CreatedAt = p.CreatedAt,
+                    ImageUrls = p.ImageUrls,
                     ActionUrl = Url.Action("Title", "PropertyEdit", new { id = p.Id })
                 }).ToList()
             };

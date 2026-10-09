@@ -1,4 +1,4 @@
-﻿using Renty.Domain.Models.LookupsTables;
+using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Orders;
 using Renty.Domain.Parameters;
 using System;
@@ -76,5 +76,7 @@ namespace Renty.Domain.Interfaces
         /// <param name="ct">Токен отмены</param>
         /// <returns><c>true</c>, если статус оплаты был успешно изменен, иначе <c>false</c></returns>
         Task<bool> ChangePaymentStatusAsync(Guid bookingId, PaymentStatusEnum newStatus, CancellationToken ct = default);
+
+        Task<Booking?> GetByPaymentIntentIdAsync(string paymentIntentId, CancellationToken ct = default);
     }
 }

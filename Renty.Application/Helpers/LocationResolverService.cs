@@ -47,10 +47,10 @@ namespace Renty.Application.Services
             return country;
         }
 
-        public async Task<City> ResolveCityAsync(string? cityName, Guid countryId, string? countryName, string? regionName, CancellationToken ct = default)
+        public async Task<City> ResolveCityAsync(string? cityName, string placeId, Guid countryId, string? countryName, string? regionName, CancellationToken ct = default)
         {
             var name = string.IsNullOrWhiteSpace(cityName) ? "Unknown" : cityName;
-            var city = await _cityRepository.GetCityByNameAndCountryAsync(name, countryId, ct);
+            var city = await _cityRepository.GetByPlaceIdAsync(placeId, ct);
 
             if (city == null)
             {
@@ -72,6 +72,7 @@ namespace Renty.Application.Services
 
                 city = new City
                 {
+                    PlaceId = placeId,
                     Name = name,
                     CountryId = countryId,
                     RegionId = regionId,
@@ -110,13 +111,13 @@ namespace Renty.Application.Services
                 throw new Exception("Не удалось определить город.Проверьте написание.");
 
             var country = await ResolveCountryAsync(geoResult.CountryName, geoResult.CountryCode, ct);
-            var city = await ResolveCityAsync(geoResult.CityName, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
+            var city = await ResolveCityAsync(geoResult.CityName, geoResult.PlaceId!, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
 
-            if (string.IsNullOrWhiteSpace(city.PlaceId) && geoResult.PlaceId != null)
-            {
-                city.PlaceId = geoResult.PlaceId;
-                await _cityRepository.UpdateAsync(city, ct);
-            }
+            //if (string.IsNullOrWhiteSpace(city.PlaceId) && geoResult.PlaceId != null)
+            //{
+            //    city.PlaceId = geoResult.PlaceId;
+            //    await _cityRepository.UpdateAsync(city, ct);
+            //}
 
             return city;
         }

@@ -1,13 +1,13 @@
-﻿using MimeKit;
+using MimeKit;
 using MailKit.Net.Smtp;
 using Renty.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Renty.Domain.ServiceModels;
 using Microsoft.Extensions.Options;
+using Renty.Domain.ServiceModels.SMTP;
 
-namespace Renty.Infrastructure.Services
+namespace Renty.Infrastructure.Services.SMTP
 {
     public class EmailSender : IEmailSender
     {
@@ -27,7 +27,7 @@ namespace Renty.Infrastructure.Services
             mimeMessage.To.Add(message.To.First());
             mimeMessage.From.Add(new MailboxAddress(_emailConfig.From, _emailConfig.From));
             mimeMessage.Subject = message.Subject;
-            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
+            mimeMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = message.Content };
 
             return mimeMessage;
         }

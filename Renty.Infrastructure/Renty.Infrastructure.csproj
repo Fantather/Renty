@@ -27,6 +27,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.3" />
     <PackageReference Include="Slugify.Core" Version="5.1.1" />
+    <PackageReference Include="Stripe.net" Version="53.0.0" />
   </ItemGroup>
 
   <ItemGroup>

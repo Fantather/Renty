@@ -54,6 +54,11 @@ namespace Renty.Infrastructure.Configurations.Orders
                 .HasConversion<string>()
                 .HasMaxLength(30);
 
+            builder.Property(b => b.PaymentMethod)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(30);
+
             //builder.HasOne(b => b.Status)
             //    .WithMany()
             //    .HasForeignKey(b => b.StatusId)
