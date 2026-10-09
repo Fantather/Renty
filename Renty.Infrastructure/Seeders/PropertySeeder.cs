@@ -162,7 +162,7 @@ namespace Renty.Infrastructure.Seeders
                     ReviewsCount = reviews.Count,
                     Details = new PropertyDetails
                     {
-                        MaxGuests = 4,
+                        MaxGuests = Random.Shared.Next(1, 5),
                         BedsCount = 2,
                         BedroomsCount = 1,
                         BathroomsCount = 1,
@@ -284,7 +284,7 @@ namespace Renty.Infrastructure.Seeders
 
                     Details = new PropertyDetails
                     {
-                        MaxGuests = 2,
+                        MaxGuests = Random.Shared.Next(1, 5),
                         BedsCount = 1,
                         BedroomsCount = 1,
                         BathroomsCount = 1,
