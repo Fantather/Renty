@@ -43,7 +43,7 @@ namespace Renty.Web.Controllers
                     Rating = p.Rating,
                     City = p.City,
                     Country = p.Country,
-                    ShowFavorite = false
+                    ShowFavorite = false,
                     ImageUrls = p.ImageUrls,
                     ActionUrl = Url.Action("Title", "PropertyEdit", new { id = p.Id })
                 }).ToList()
