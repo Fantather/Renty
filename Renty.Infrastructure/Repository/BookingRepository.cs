@@ -152,7 +152,7 @@ namespace Renty.Infrastructure.Repository
         public async Task<bool> IsDateRangeAvailableAsync(Guid propertyId, DateTime checkIn, DateTime checkOut, CancellationToken ct = default)
         {
             return !await _dbSet
-                .Where(b => b.PropertyId == propertyId)
+                .Where(b => b.PropertyId == propertyId && b.Status != BookingStatusEnum.Cancelled)
                 .AnyAsync(b => b.CheckOutDate > checkIn && b.CheckInDate < checkOut,ct);
         }
 

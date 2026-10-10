@@ -6,7 +6,7 @@
     var hostProfileUrl = Url.Action("Profile", "Users", new { id = Model.Host.Id });
 }
 
-<article id="propertyDetails" class="property-details" data-slug="@Model.Slug">
+<article id="propertyDetails" class="property-details" data-slug="@Model.Slug" data-property-id="@Model.Id">
 
     <header class="property-details__header">
         <h1 class="property-details__title">@Model.Name</h1>
@@ -100,7 +100,7 @@
                 }
             </section>
 
-            <section id="calendar" class="property-calendar">
+            <section id="calendar" class="property-calendar" data-booked-ranges="@System.Text.Json.JsonSerializer.Serialize(Model.BookedRanges.Select(r => new[] { r.From.ToString("yyyy-MM-dd"), r.To.ToString("yyyy-MM-dd") }))">
                 <h2>Выберите даты</h2>
                 <div class="property-calendar__months">
                     <button type="button" id="calendarPrevBtn" class="date-popover__nav date-popover__nav--prev">
@@ -188,7 +188,8 @@
                     <input type="hidden" name="Pets" id="guestsPetsInput" value="false" />
                 </div>
                 <p id="totalPrice" class="booking-card__total-price" hidden></p>
-                <button type="button" class="btn-primary booking-card__submit">Забронировать</button>
+                <p class="booking-card__error" id="bookingError" hidden></p>
+                <button type="button" class="btn-primary booking-card__submit" id="bookingSubmitBtn">Забронировать</button>
                 <p class="booking-card__note">Пока что вы ничего не платите</p>
             </div>
         </aside>

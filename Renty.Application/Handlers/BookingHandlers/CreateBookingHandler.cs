@@ -6,6 +6,7 @@ using Renty.Application.DTOs.Booking;
 using Renty.Application.Helpers;
 using Renty.Domain.Enums;
 using Renty.Domain.Interfaces;
+using Renty.Domain.Models.LookupsTables;
 using Renty.Domain.Models.Orders;
 using Renty.Domain.Models.User;
 using System;
@@ -37,13 +38,18 @@ namespace Renty.Application.Handlers.BookingHandlers
         public async Task<OperationResult<CreateBookingResponse>> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
         {
             var property = await _propertyRepository.GetPropertyWithDetailsAsync(request.PropertyId, cancellationToken);
+            if (property != null && property.Status != PropertyStatusEnum.Active)
+                return OperationResult<CreateBookingResponse>.Fail("Квартира недоступна для бронирования");
+
+            var checkIn = DateTime.SpecifyKind(request.CheckInDate.Date, DateTimeKind.Utc);
+            var checkOut = DateTime.SpecifyKind(request.CheckOutDate.Date, DateTimeKind.Utc);
 
             var result = _priceCalculatorService.Calculate(property, DateOnly.FromDateTime(request.CheckInDate), DateOnly.FromDateTime(request.CheckOutDate));
 
             if (!result.IsSuccess)
                 return OperationResult<CreateBookingResponse>.Fail(result.Errors.ToArray());
 
-            var isValide = await _bookingRepository.IsDateRangeAvailableAsync(property!.Id,request.CheckInDate,request.CheckOutDate,cancellationToken);
+            var isValide = await _bookingRepository.IsDateRangeAvailableAsync(property!.Id,checkIn,checkOut,cancellationToken);
 
             if (!isValide)
                 return OperationResult<CreateBookingResponse>.Fail("Выбранный диапазон дат уже забронирован");
@@ -51,8 +57,8 @@ namespace Renty.Application.Handlers.BookingHandlers
             var booking = new Booking
             {
                 PropertyId = property!.Id,
-                CheckInDate = request.CheckInDate,
-                CheckOutDate = request.CheckOutDate,
+                CheckInDate = checkIn,
+                CheckOutDate = checkOut,
                 GuestsCount = request.GuestsCount,
                 PaymentMethod = request.PaymentMethod,
                 Currency = property.Currency,
@@ -60,7 +66,7 @@ namespace Renty.Application.Handlers.BookingHandlers
                 TotalPrice = result.Data!
             };
 
-            var owner = booking.Property.Host;
+            var owner = property.Host;
 
             string? clientSecret = null;
 
@@ -88,6 +94,10 @@ namespace Renty.Application.Handlers.BookingHandlers
 
                 booking.PaymentIntentId = intent.PaymentIntentId;
                 clientSecret = intent.ClientSecret;
+            }
+            else
+            {
+                booking.Status = BookingStatusEnum.Confirmed;
             }
 
             await _bookingRepository.AddAsync(booking, cancellationToken);

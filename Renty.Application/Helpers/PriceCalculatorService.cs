@@ -64,7 +64,7 @@ namespace Renty.Application.Helpers
                     discountAmount = baseTotal * (maxPercentage / 100m);
                 }
             }
-            return OperationResult<decimal>.Success(discountAmount);
+            return OperationResult<decimal>.Success(baseTotal - discountAmount);
         }
     }
 }

@@ -7,6 +7,7 @@ export function createDateRangePicker(options) {
     var prevBtn = options.prevBtn;
     var nextBtn = options.nextBtn;
     var onSelect = options.onSelect;
+    var isDisabled = options.isDisabled;
 
     var viewDate = new Date();
     viewDate.setDate(1);
@@ -60,6 +61,10 @@ export function createDateRangePicker(options) {
             grid.appendChild(buildDayCell(year, month, d));
         }
 
+        for (var t = leadingBlanks + daysInMonth; t < 42; t++) {
+            grid.appendChild(document.createElement('div'));
+        }
+
         wrapper.appendChild(grid);
         return wrapper;
     }
@@ -80,6 +85,12 @@ export function createDateRangePicker(options) {
         if (isRangeStart && checkOut) dayBtn.classList.add('is-range-start');
         if (isRangeEnd) dayBtn.classList.add('is-range-end');
         if (isInRange) dayBtn.classList.add('is-in-range');
+
+        var pendingCheckIn = checkOut ? null : checkIn;
+        if (isDisabled && !isRangeStart && !isRangeEnd && isDisabled(cellDate, pendingCheckIn)) {
+            dayBtn.disabled = true;
+            return dayBtn;
+        }
 
         dayBtn.addEventListener('click', function () {
             selectDate(cellDate);

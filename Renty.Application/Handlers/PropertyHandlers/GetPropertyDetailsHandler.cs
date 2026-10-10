@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Renty.Application.Common;
@@ -6,6 +6,7 @@ using Renty.Application.DTOs.GetProperties;
 using Renty.Application.DTOs.GetProperty;
 using Renty.Application.Queries;
 using Renty.Domain.Interfaces;
+using Renty.Domain.Models.LookupsTables;
 using Renty.Infrastructure.Data;
 using System.Linq;
 using System.Threading;
@@ -54,14 +55,15 @@ namespace Renty.Application.Handlers.PropertyHandlers
              .FirstOrDefaultAsync(cancellationToken) ?? new RatingBreakdownDto();
 
             //пропущенное поле
-            propertyDto.BookedRanges = property.Bookings
-                .Where(b => b.CheckOutDate > DateTime.UtcNow)
+            propertyDto.BookedRanges = await _context.Bookings
+                .AsNoTracking()
+                .Where(b => b.PropertyId == property.Id && b.CheckOutDate > DateTime.UtcNow && b.Status != BookingStatusEnum.Cancelled)
                 .Select(b => new BookedRangeDto
                 {
                     From = b.CheckInDate,
                     To = b.CheckOutDate
                 })
-                .ToList();
+                .ToListAsync(cancellationToken);
 
 
             // isFavorite

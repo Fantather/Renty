@@ -5,6 +5,7 @@ namespace Renty.Web.Models.Properties
     // Данные для страницы деталей квартиры (Properties/Details.cshtml)
     public class PropertyDetailsViewModel
     {
+        public Guid Id { get; set; }
         public string Slug { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

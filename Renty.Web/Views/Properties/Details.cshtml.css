@@ -391,6 +391,13 @@
     color: var(--color-text-muted);
 }
 
+.booking-card__error {
+    margin: 0;
+    text-align: center;
+    color: var(--color-like);
+    font-size: 0.85rem;
+}
+
 .booking-card__note {
     margin: 0;
     text-align: center;

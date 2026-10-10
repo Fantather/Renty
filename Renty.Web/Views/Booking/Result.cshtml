@@ -1,0 +1,52 @@
+@model Renty.Web.Models.BookingModels.BookingResultViewModel
+@{
+    ViewData["Title"] = "Бронирование";
+    var nights = (Model.CheckOutDate.Date - Model.CheckInDate.Date).Days;
+    var isConfirmed = Model.IsConfirmed;
+}
+
+<div class="booking-result">
+    <h1 class="booking-result__title">@(isConfirmed ? "Бронирование подтверждено" : "Бронирование создано")</h1>
+    @if (!isConfirmed)
+    {
+        <p class="booking-result__status">Статус: @Model.Status</p>
+    }
+
+    <div class="booking-result__card">
+        <a class="booking-result__property" asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.PropertySlug">
+            @if (!string.IsNullOrEmpty(Model.PropertyImageUrl))
+            {
+                <img class="booking-result__image" src="@Model.PropertyImageUrl" alt="@Model.PropertyName" />
+            }
+            else
+            {
+                <div class="booking-result__image"></div>
+            }
+            <div>
+                <p class="booking-result__name">@Model.PropertyName</p>
+                <p class="booking-result__location">@Model.City, @Model.Country</p>
+            </div>
+        </a>
+
+        <dl class="booking-result__details">
+            <div>
+                <dt>Даты</dt>
+                <dd>@Model.CheckInDate.ToString("dd.MM.yyyy") - @Model.CheckOutDate.ToString("dd.MM.yyyy")</dd>
+            </div>
+            <div>
+                <dt>Ночей</dt>
+                <dd>@nights</dd>
+            </div>
+            <div>
+                <dt>Гости</dt>
+                <dd>@Model.GuestsCount</dd>
+            </div>
+            <div class="booking-result__total">
+                <dt>Итого</dt>
+                <dd>$@Model.TotalPrice.ToString("0.##")</dd>
+            </div>
+        </dl>
+    </div>
+
+    <a class="btn-primary booking-result__home" asp-controller="Home" asp-action="Index">На главную</a>
+</div>

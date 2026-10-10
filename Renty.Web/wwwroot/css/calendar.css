@@ -17,6 +17,10 @@
     grid-template-columns: repeat(7, 1fr);
 }
 
+.date-popover__grid > div:empty {
+    aspect-ratio: 1;
+}
+
 .date-popover__weekday {
     text-align: center;
     font-size: 0.75rem;
@@ -36,8 +40,15 @@
     position: relative;
 }
 
-    .date-popover__day:hover {
+    .date-popover__day:hover:not(:disabled) {
         background-color: var(--color-hover);
+    }
+
+    .date-popover__day:disabled {
+        color: var(--color-text-muted);
+        opacity: 0.6;
+        text-decoration: line-through;
+        cursor: default;
     }
 
     .date-popover__day.is-selected {
