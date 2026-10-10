@@ -26,7 +26,7 @@
 
             <div class="edit-profile__facts-container">
                 <button type="button" id="languagesTrigger">
-                    <icon name="star" class="edit-profile__row-icon" />
+                    <icon name="profile/speech-bubble" class="edit-profile__row-icon" />
                     <span id="languagesRowLabel">Языки, на которых я говорю: @string.Join(", ", currentLanguages.Select(l => l.Name))</span>
                     <icon name="chevron-right" class="edit-profile__row-chevron" />
                 </button>
@@ -56,7 +56,7 @@
                 }
 
                 <button type="button" id="homeCityTrigger">
-                    <icon name="star" class="edit-profile__row-icon" />
+                    <icon name="profile/globe" class="edit-profile__row-icon" />
                     <span id="homeCityRowLabel">Где я живу: @Model.Input.HomeCityDisplay</span>
                     <icon name="chevron-right" class="edit-profile__row-chevron" />
                 </button>

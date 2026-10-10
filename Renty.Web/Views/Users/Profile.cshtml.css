@@ -43,16 +43,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background-color: var(--color-like);
     color: #fff;
 }
 
 ::deep .user-profile__verified-badge svg {
-    width: 10px;
-    height: 10px;
+    width: 16px;
+    height: 16px;
 }
 
 .user-profile__stats {
@@ -74,8 +74,8 @@
 }
 
 ::deep .user-profile__superhost svg {
-    width: 14px;
-    height: 14px;
+    width: 20px;
+    height: 20px;
 }
 
 .user-profile__name {
@@ -88,6 +88,12 @@
     margin: 0;
     color: var(--color-text-muted);
     font-size: 0.9rem;
+}
+
+.user-profile__superhost {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .user-profile__header-row {
