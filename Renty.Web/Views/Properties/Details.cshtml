@@ -43,9 +43,19 @@
                     <h2>Жильё в аренду, хозяин — <a class="property-overview__host-link" href="@hostProfileUrl">@Model.Host.FullName</a></h2>
                     <p>@Model.MaxGuests гостей · @Model.Bedrooms спальня · @Model.Beds кроватей · @Model.Bathrooms ванная комната</p>
                 </div>
-                <a href="@hostProfileUrl">
-                    <partial name="_Avatar" model="new AvatarViewModel { Url = Model.Host.AvatarUrl, Name = Model.Host.FullName, SizePx = 56 }" />
-                </a>
+                <div class="property-overview__host">
+                    <a class="property-overview__avatar" href="@hostProfileUrl">
+                        <partial name="_Avatar" model="new AvatarViewModel { Url = Model.Host.AvatarUrl, Name = Model.Host.FullName, SizePx = 56 }" />
+                        @if (Model.Host.IsVerified)
+                        {
+                            <span class="property-overview__verified-badge"><icon name="profile/verified" /></span>
+                        }
+                    </a>
+                    @if (Model.Host.IsSuperhost)
+                    {
+                        <p class="property-overview__superhost"><icon name="profile/superhost" /> Суперхозяин</p>
+                    }
+                </div>
             </section>
 
             @if (Model.Tags.Any())

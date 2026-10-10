@@ -29,6 +29,8 @@ namespace Renty.Application.DTOs.GetProperty
         // Верифицирован ли пользователь
         public bool IsVerified { get; set; }
 
+        public bool IsSuperHost { get; set; }
+
         // Информация о пользователе
         public string? Info { get; set; }
     }

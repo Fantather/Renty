@@ -16,7 +16,7 @@ namespace Renty.Web.Mappers.Shared
                 .ForMember(dest => dest.AvatarUrl, opt => opt.MapFrom(src => src.AvatarUrl))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FullName))
                 .ForMember(dest => dest.ResponseSpeed, opt => opt.MapFrom(src => src.ResponseSpeed))
-                .ForMember(dest => dest.IsSuperhost, opt => opt.MapFrom(src => src.IsVerified))
+                .ForMember(dest => dest.IsSuperhost, opt => opt.MapFrom(src => src.IsSuperHost))
                 .ForMember(dest => dest.YearsHosting, opt => opt.MapFrom(src => DateTime.UtcNow.Year - src.CreatedAt.Year));
 
             CreateMap<AmenitiesDto, AmenityViewModel>()
