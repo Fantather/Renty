@@ -39,6 +39,35 @@ namespace Renty.Web.Controllers
             return Ok(result.Data); // { bookingId, clientSecret }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Pay(Guid bookingId, CancellationToken ct)
+        {
+            var payment = await _mediator.Send(new GetBookingPaymentQuery(bookingId, CurrentUserId), ct);
+            if (!payment.IsSuccess)
+                return RedirectToAction(nameof(Result), new { bookingId });
+
+            var booking = await _mediator.Send(new GetBookingResultQuery(bookingId, CurrentUserId), ct);
+
+            return View(new BookingPayViewModel
+            {
+                Booking = _mapper.Map<BookingResultViewModel>(booking.Data),
+                ClientSecret = payment.Data!,
+                PublishableKey = _publicKey
+            });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CompletePayment(Guid bookingId, CancellationToken ct)
+        {
+            var result = await _mediator.Send(new CompleteBookingPaymentCommand(bookingId, CurrentUserId), ct);
+
+            if (!result.IsSuccess)
+                return BadRequest(new { errors = result.Errors });
+
+            return Ok(new { redirectUrl = Url.Action(nameof(Result), new { bookingId }) });
+        }
+
         // Куда Stripe вернёт гостя после оплаты
         [HttpGet]
         public async Task<IActionResult> Result(Guid bookingId, CancellationToken ct)

@@ -1,0 +1,41 @@
+@model Renty.Web.Models.BookingModels.BookingPayViewModel
+@{
+    ViewData["Title"] = "Оплата";
+}
+
+<div class="booking-pay" id="bookingPay"
+     data-publishable-key="@Model.PublishableKey"
+     data-client-secret="@Model.ClientSecret"
+     data-complete-url="@Url.Action("CompletePayment", "Booking", new { bookingId = Model.Booking.BookingId })">
+    <div class="booking-pay__header">
+        <a class="booking-pay__back" asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.Booking.PropertySlug">
+            <icon name="chevron" class="booking-pay__back-icon" />
+        </a>
+        <h1 class="booking-pay__title">Подтвердите и оплатите</h1>
+    </div>
+
+    <div class="booking-pay__layout">
+        <form class="booking-pay__form" id="bookingPayForm">
+            @Html.AntiForgeryToken()
+            <div class="booking-pay__card">
+                <h2 class="booking-pay__card-title">Способ оплаты</h2>
+                <div class="booking-pay__field" id="cardNumberElement"></div>
+                <div class="booking-pay__row">
+                    <div class="booking-pay__field" id="cardExpiryElement"></div>
+                    <div class="booking-pay__field" id="cardCvcElement"></div>
+                </div>
+            </div>
+            <p class="booking-pay__error" id="bookingPayError" hidden></p>
+            <button type="submit" class="btn-primary" id="bookingPaySubmit">Подтвердить и оплатить</button>
+        </form>
+
+        <aside class="booking-pay__summary">
+            <partial name="_BookingSummary" model="Model.Booking" />
+        </aside>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script type="module" src="~/js/booking/pay.js" asp-append-version="true"></script>
+}

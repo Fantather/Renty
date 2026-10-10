@@ -1,0 +1,96 @@
+.booking-pay {
+    max-width: 1000px;
+    margin: 48px auto;
+    padding: 0 16px;
+}
+
+.booking-pay__header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+::deep .booking-pay__back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--color-hover);
+    color: var(--color-text);
+}
+
+::deep .booking-pay__back-icon {
+    width: 16px;
+    height: 16px;
+    transform: rotate(90deg);
+}
+
+.booking-pay__title {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.booking-pay__layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 64px;
+    align-items: start;
+}
+
+.booking-pay__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.booking-pay__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.booking-pay__card-title {
+    margin: 0 0 4px;
+    font-size: 1.1rem;
+}
+
+.booking-pay__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.booking-pay__field {
+    padding: 14px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+}
+
+.booking-pay__form .btn-primary {
+    width: 100%;
+}
+
+.booking-pay__error {
+    margin: 0;
+    color: var(--color-like);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+    .booking-pay__layout {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .booking-pay__summary {
+        order: -1;
+    }
+}

@@ -8,5 +8,6 @@ namespace Renty.Domain.ServiceModels.Stripe
     {
         public string PaymentIntentId { get; set; } = null!;
         public string ClientSecret { get; set; } = null!;
+        public string Status { get; set; } = string.Empty;
     }
 }
