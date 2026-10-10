@@ -83,7 +83,8 @@ public class LocationSeeder
                         CountryId = country.Id,
                         RegionId = regionId,
                         Latitude = cityDto.Latitude,
-                        Longitude = cityDto.Longitude
+                        Longitude = cityDto.Longitude,
+                        PlaceId = cityDto.PlaceId
                     };
                     context.Add(city);
                 }

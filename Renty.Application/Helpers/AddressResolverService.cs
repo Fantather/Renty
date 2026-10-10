@@ -79,8 +79,10 @@ namespace Renty.Application.Helpers
                     return OperationResult<Address>.Success(existing);
             }
 
-            var country = await _locationResolver.ResolveCountryAsync(geoResult.CountryName, geoResult.CountryCode, ct);
-            var city = await _locationResolver.ResolveCityAsync(geoResult.CityName, geoResult.PlaceId!, country.Id, geoResult.CountryName, geoResult.RegionName, ct);
+            if (string.IsNullOrWhiteSpace(geoResult.CityName))
+                return OperationResult<Address>.Fail("Не удалось определить город по адресу. Укажите адрес точнее.");
+
+            var city = await _locationResolver.ResolveCityFromInputAsync(null, $"{geoResult.CityName}, {geoResult.CountryName}", ct);
 
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
