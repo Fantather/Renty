@@ -63,7 +63,7 @@ namespace Renty.Application.Handlers.PropertyHandlers
 
             if (discount == null)
             {
-                if (!enabled)
+                if (!enabled && percent == 0)
                     return;
 
                 discount = new Discount

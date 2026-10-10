@@ -60,7 +60,7 @@ namespace Renty.Web.Controllers
         {
             if (id == Guid.Empty) return BadRequest();
 
-            var query = new GetHostReviewsQuery(id, page, 10);
+            var query = new GetHostReviewsQuery(id, page, 20);
             var result = await _mediator.Send(query);
 
             if (!result.IsSuccess)
@@ -75,7 +75,7 @@ namespace Renty.Web.Controllers
                 authorAvatarUrl = r.Author.AvatarUrl,
                 rating = r.Rating,
                 text = r.Content,
-                createdAt = r.CreatedAt.ToString("dd MMMM yyyy"),
+                createdAt = r.CreatedAt,
                 propertySlug = r.PropertySlug,
                 propertyName = r.PropertyName
             });

@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = Model.Name;
     var reviewsJsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+    var hostProfileUrl = Url.Action("Profile", "Users", new { id = Model.Host.Id });
 }
 
 <article id="propertyDetails" class="property-details" data-slug="@Model.Slug">
@@ -39,11 +40,23 @@
 
             <section class="property-overview">
                 <div class="property-overview__info">
-                    <h2>Жильё в аренду, хозяин — @Model.Host.FullName</h2>
+                    <h2>Жильё в аренду, хозяин — <a class="property-overview__host-link" href="@hostProfileUrl">@Model.Host.FullName</a></h2>
                     <p>@Model.MaxGuests гостей · @Model.Bedrooms спальня · @Model.Beds кроватей · @Model.Bathrooms ванная комната</p>
                 </div>
-                <partial name="_Avatar" model="new AvatarViewModel { Url = Model.Host.AvatarUrl, Name = Model.Host.FullName, SizePx = 56 }" />
+                <a href="@hostProfileUrl">
+                    <partial name="_Avatar" model="new AvatarViewModel { Url = Model.Host.AvatarUrl, Name = Model.Host.FullName, SizePx = 56 }" />
+                </a>
             </section>
+
+            @if (Model.Tags.Any())
+            {
+                <section class="property-tags">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span class="property-tags__item">@tag.Name</span>
+                    }
+                </section>
+            }
 
             <section class="property-description">
                 <p class="property-description__text">@Model.Description</p>
@@ -105,7 +118,10 @@
 
                 <div class="property-reviews__grid" id="reviewsList"></div>
 
-                <button type="button" id="loadMoreReviewsBtn" class="btn-outline">Показать ещё</button>
+                @if (Model.ReviewsPage.Reviews.Count > 4 || Model.ReviewsPage.TotalPages > 1)
+                {
+                    <button type="button" id="loadMoreReviewsBtn" class="btn-outline">Показать ещё</button>
+                }
             </section>
 
             <section id="location" class="property-location">
@@ -154,6 +170,7 @@
                         <icon name="chevron" class="booking-card__guests-chevron" />
                     </button>
                     <div class="popover-panel guests-popover" id="guestsPopover" hidden>
+                        @{ ViewData["MaxGuests"] = Model.MaxGuests > 0 ? Model.MaxGuests : null; }
                         <partial name="_GuestsPopoverRows" />
                         <p class="guests-popover__note">Жильё рассчитано максимум на @Model.MaxGuests гостей.</p>
                     </div>

@@ -1,6 +1,8 @@
 import { createModal } from '../shared/popover.js';
 import { buildReviewCard } from '../shared/review-card.js';
 
+var VISIBLE_REVIEWS_COUNT = 4;
+
 // TODO: заменить на реальный запрос, когда на бэке появится контроллер поверх GetPropertyReviewsQuery
 // async function loadMoreReviews(propertyId) {
 //     var res = await fetch('/api/properties/' + propertyId + '/reviews?skip=4');
@@ -18,8 +20,10 @@ var initialReviewsDataEl = document.getElementById('initialReviewsData');
 
 if (reviewsList && allReviewsList && initialReviewsDataEl) {
     var initialReviews = JSON.parse(initialReviewsDataEl.textContent).reviews;
-    initialReviews.forEach(function (review) {
-        reviewsList.appendChild(buildReviewCard(review));
+    initialReviews.forEach(function (review, index) {
+        if (index < VISIBLE_REVIEWS_COUNT) {
+            reviewsList.appendChild(buildReviewCard(review));
+        }
         allReviewsList.appendChild(buildReviewCard(review));
     });
 }

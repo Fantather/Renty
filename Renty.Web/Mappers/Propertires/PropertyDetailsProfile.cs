@@ -14,6 +14,9 @@ namespace Renty.Web.Mappers.Properties
 
             CreateMap<RatingBreakdownDto, RatingBreakdownViewModel>();
 
+            CreateMap<TagDto, TagViewModel>()
+                .ForMember(dest => dest.IconName, opt => opt.Ignore());
+
             CreateMap<GetPropertyDetailsResponse, ReviewsPageViewModel>()
                 .ForMember(dest => dest.CurrentPage, opt => opt.MapFrom(src => 1))
                 .ForMember(dest => dest.TotalPages, opt => opt.MapFrom(src => 1));

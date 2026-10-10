@@ -46,6 +46,13 @@ namespace Renty.Application.Handlers.UserHandlers
             user.AvatarUrl = request.Input.AvatarUrl ?? user.AvatarUrl;
             user.Info = request.Input.Info;
             user.HomeCityId = request.Input.HomeCityId;
+            if (request.Input.HomeCityId.HasValue)
+            {
+                user.HomeCountryId = await _context.Cities
+                    .Where(c => c.Id == request.Input.HomeCityId.Value)
+                    .Select(c => (Guid?)c.CountryId)
+                    .FirstOrDefaultAsync(cancellationToken) ?? user.HomeCountryId;
+            }
 
             // Update languages
             user.Languages.Clear();

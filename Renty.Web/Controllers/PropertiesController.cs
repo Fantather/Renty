@@ -90,7 +90,7 @@ namespace Renty.Web.Controllers
                 authorAvatarUrl = r.Author.AvatarUrl,
                 rating = r.Rating,
                 text = r.Content,
-                createdAt = r.CreatedAt.ToString("dd MMMM yyyy") 
+                createdAt = r.CreatedAt
             });
 
             return Json(new

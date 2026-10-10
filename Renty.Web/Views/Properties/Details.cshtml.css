@@ -104,6 +104,26 @@
     border-bottom: 1px solid var(--color-border);
 }
 
+.property-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.property-tags__item {
+    padding: 6px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font-size: 0.9rem;
+}
+
+.property-overview__host-link {
+    color: inherit;
+    text-decoration: underline;
+}
+
 .property-description__text {
     white-space: pre-line;
     display: -webkit-box;

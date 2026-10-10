@@ -31,6 +31,7 @@ namespace Renty.Web.Models.Properties
 
         public List<AmenityViewModel> Amenities { get; set; } = new(); // список удобств квартиры
         public List<RoomViewModel> Rooms { get; set; } = new();
+        public List<TagViewModel> Tags { get; set; } = new();
 
         public ReviewsPageViewModel ReviewsPage { get; set; } = new();
 

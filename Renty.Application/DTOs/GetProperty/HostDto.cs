@@ -10,6 +10,8 @@ namespace Renty.Application.DTOs.GetProperty
     public class HostDto
 
     {
+        public Guid Id { get; set; }
+
         public string? AvatarUrl { get; set; }
 
         // Полное имя

@@ -3,6 +3,7 @@ namespace Renty.Web.Models.Properties
     // Хозяин квартиры
     public class HostViewModel
     {
+        public Guid Id { get; set; }
         public string? AvatarUrl { get; set; }
         public string FullName { get; set; } = string.Empty;
         public bool IsSuperhost { get; set; } // значок "Суперхозяин"

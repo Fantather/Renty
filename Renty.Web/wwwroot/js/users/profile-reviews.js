@@ -4,7 +4,9 @@ import { buildReviewCard } from '../shared/review-card.js';
 var VISIBLE_REVIEWS_COUNT = 4;
 
 async function loadReviewsPage(page, userId) {
-    return { reviews: [], currentPage: page, totalPages: 0 };
+    var response = await fetch('/users/' + userId + '/reviews?page=' + page);
+    if (!response.ok) return { reviews: [], currentPage: page, totalPages: 0 };
+    return await response.json();
 }
 
 var reviewsList = document.getElementById('profileReviewsList');
@@ -31,7 +33,7 @@ if (loadMoreBtn) {
     var sentinel = document.getElementById('profileReviewsSentinel');
     var currentPage = reviewsPage.currentPage;
     var totalPages = reviewsPage.totalPages;
-    var userId = new URLSearchParams(window.location.search).get('id');
+    var userId = document.getElementById('profileReviewsModal').dataset.userId;
     var isLoading = false;
 
     var observer = new IntersectionObserver(async function (entries) {

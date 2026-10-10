@@ -5,6 +5,7 @@ namespace Renty.Web.Models.Users
     // Данные для readonly-страницы профиля пользователя (Users/Profile.cshtml)
     public class UserProfileViewModel
     {
+        public Guid UserId { get; set; }
         public bool IsOwner { get; set; } // свой профиль -> показываем кнопку "Редактировать"
 
         public string AvatarUrl { get; set; } = string.Empty;

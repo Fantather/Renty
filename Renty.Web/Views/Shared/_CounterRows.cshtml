@@ -2,7 +2,7 @@
 
 @foreach (var counter in Model)
 {
-    <div class="popover-row" data-counter="@counter.Key" data-counter-min="@counter.Min">
+    <div class="popover-row" data-counter="@counter.Key" data-counter-min="@counter.Min" data-counter-max="@counter.Max">
         <div class="popover-row__info">
             <p class="popover-row__title">@counter.Title</p>
             @if (!string.IsNullOrEmpty(counter.Subtitle))

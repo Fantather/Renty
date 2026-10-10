@@ -6,5 +6,6 @@ namespace Renty.Web.Models.Shared
         public string Title { get; set; } = string.Empty;
         public string? Subtitle { get; set; }
         public int Min { get; set; } = 0;
+        public int? Max { get; set; }
     }
 }
