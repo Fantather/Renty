@@ -1,7 +1,7 @@
 import { limitCheckboxSelection } from '../shared/limited-checkboxes.js';
 
 var checkboxes = Array.from(document.querySelectorAll('input[name="TagIds"]'));
-var nextButton = document.querySelector('button[type="submit"][form="' + checkboxes[0].form.id + '"]');
+var nextButton = document.querySelector('button[type="submit"][form="' + checkboxes[0].form.id + '"]:not([name="saveAndExit"])');
 
 limitCheckboxSelection(checkboxes, 2);
 

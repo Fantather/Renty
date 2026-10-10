@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Renty.Application.Commands.PropertyCommands;
 using Renty.Application.Common;
 using Renty.Application.DTOs.CreateProperty;
@@ -180,14 +181,7 @@ namespace Renty.Web.Controllers
                 //    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Гостевой дом", IconName = "star" },
                 //    new() { Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Гостиница", IconName = "star" },
                 //},
-                Categories = resultCategories.Data!.Categories
-                .Select(c => new CategoryViewModel
-                {
-                    Id = c.Id,
-                    Slug = c.Slug,
-                    Name = c.Name,
-                    IconName = c.IconName ?? "star"
-                }).ToList(),
+                Categories = _mapper.Map<List<CategoryViewModel>>(resultCategories.Data!.Categories),
                 Input = new CategoryInputModel
                 {
                     CategoryId = result.Data!.CategoryId ?? Guid.Empty
@@ -678,6 +672,30 @@ namespace Renty.Web.Controllers
             ViewData["StepFooter"] = true;
             ViewData["StepProgress"] = (index + 1) * 100 / Steps.Length;
         }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            if (IsSaveAndExit()
+                && (!ModelState.IsValid || context.RouteData.Values["action"] as string == nameof(Publish)))
+            {
+                context.Result = RedirectToAction("Index", "PropertyDrafts");
+                return;
+            }
+
+            base.OnActionExecuting(context);
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            if (IsSaveAndExit() && context.Result is RedirectToActionResult)
+            {
+                context.Result = RedirectToAction("Index", "PropertyDrafts");
+            }
+
+            base.OnActionExecuted(context);
+        }
+
+        private bool IsSaveAndExit() => Request.HasFormContentType && Request.Form.ContainsKey("saveAndExit");
 
         private Guid CurrentUserId() => Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     }

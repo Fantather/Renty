@@ -1,5 +1,5 @@
 var inputs = document.querySelectorAll('.option-card__input');
-var nextButton = document.querySelector('button[type="submit"][form="' + inputs[0].form.id + '"]');
+var nextButton = document.querySelector('button[type="submit"][form="' + inputs[0].form.id + '"]:not([name="saveAndExit"])');
 
 function updateSelection() {
     var anyChecked = false;

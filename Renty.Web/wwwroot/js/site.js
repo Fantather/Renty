@@ -15,3 +15,12 @@ document.querySelectorAll('.input-field__input[maxlength]').forEach(function (in
     input.addEventListener('input', updateCounter);
     updateCounter();
 });
+
+document.addEventListener('click', function (e) {
+    var button = e.target.closest('button[formnovalidate][form]');
+    if (!button) return;
+
+    var form = document.getElementById(button.getAttribute('form'));
+    var validator = form && $(form).data('validator');
+    if (validator) validator.cancelSubmit = true;
+});

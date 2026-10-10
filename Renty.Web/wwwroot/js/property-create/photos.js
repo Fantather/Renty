@@ -2,7 +2,7 @@ var picker = document.getElementById('photoPicker');
 var imagesInput = document.getElementById('Images');
 var grid = document.getElementById('photoGrid');
 var orderedImagesFields = document.getElementById('orderedImagesFields');
-var submitButton = document.querySelector('button[type="submit"][form="' + imagesInput.form.id + '"]');
+var submitButton = document.querySelector('button[type="submit"][form="' + imagesInput.form.id + '"]:not([name="saveAndExit"])');
 
 var MIN_PHOTOS = 5;
 
@@ -91,7 +91,7 @@ function addHiddenField(name, value) {
     orderedImagesFields.appendChild(input);
 }
 
-submitButton.addEventListener('click', function () {
+imagesInput.form.addEventListener('submit', function () {
     orderedImagesFields.innerHTML = '';
     var dataTransfer = new DataTransfer();
 

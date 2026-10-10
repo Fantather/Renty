@@ -137,7 +137,7 @@ namespace Renty.Infrastructure.Seeders
                 var livingRoomId = Guid.CreateVersion7();
                 var kitchenId = Guid.CreateVersion7();
                 var balconyId = Guid.CreateVersion7();
-                var address = GenerateRandomAddress(odesa.Id, "seed-odesa", "Аркадийское плато", 30.767277, 46.429824);
+                var address = GenerateRandomAddress(odesa.Id, "seed-odesa", "Аркадийское плато", 30.755, 46.433);
 
                 var reviews = new List<Review>();
                 reviews.AddRange(Enumerable.Range(0, counter + 1)

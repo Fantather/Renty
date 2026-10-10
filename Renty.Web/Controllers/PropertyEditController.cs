@@ -490,14 +490,7 @@ namespace Renty.Web.Controllers
             if (!result.IsSuccess)
                 return new List<CategoryViewModel>();
 
-            return result.Data!.Categories
-                .Select(c => new CategoryViewModel
-                {
-                    Id = c.Id,
-                    Slug = c.Slug,
-                    Name = c.Name,
-                    IconName = c.IconName ?? "star"
-                }).ToList();
+            return _mapper.Map<List<CategoryViewModel>>(result.Data!.Categories);
         }
 
         private async Task<List<AmenityViewModel>> LoadAmenitiesAsync(CancellationToken ct)
