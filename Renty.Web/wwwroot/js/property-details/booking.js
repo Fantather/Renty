@@ -131,7 +131,7 @@ bookingSubmitBtn.addEventListener('click', function () {
             checkIn: checkIn,
             checkOut: checkOut,
             guests: Number(document.getElementById('guestsInput').value),
-            paymentMethod: 2
+            paymentMethod: 1
         })
     })
         .then(function (response) {
@@ -144,7 +144,7 @@ bookingSubmitBtn.addEventListener('click', function () {
                     showBookingError(data.errors ? data.errors.join(', ') : 'Не удалось забронировать');
                     return null;
                 }
-                window.location.href = '/Booking/Result?bookingId=' + data.bookingId;
+                window.location.href = (data.clientSecret ? '/Booking/Pay?bookingId=' : '/Booking/Result?bookingId=') + data.bookingId;
             });
         })
         .catch(function () {

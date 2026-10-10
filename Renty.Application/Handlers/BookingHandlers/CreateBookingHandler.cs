@@ -66,32 +66,11 @@ namespace Renty.Application.Handlers.BookingHandlers
                 TotalPrice = result.Data!
             };
 
-            var owner = property.Host;
-
             string? clientSecret = null;
-
             if(request.PaymentMethod == PaymentMethodType.Card)
             {
-                if (!owner.StripeOnboardingComplete)
-                {
-                    var status = await  _paymentService.GetConnectedAccountStatusAsync(owner.StripeAccountId!, cancellationToken);
-                    
-                    if(!status.CanReceiveTransfers)
-                        return OperationResult<CreateBookingResponse>.Fail("Арендодатель не принимает оплату картой");
-
-                    owner.StripeOnboardingComplete = status.CanReceiveTransfers;
-
-                    await _userManager.UpdateAsync(owner);
-                }
-                    
-
                 var amount = StripeAmountConverter.ToStripeAmount(booking.TotalPrice, booking.Currency);
-
-                // Процент базоваой комиссии
-                var fee = StripeAmountConverter.ToStripeAmount(booking.TotalPrice * 0.10m, booking.Currency);
-
-                var intent = await _paymentService.CreatePaymentIntentAsync(booking.Id,amount,booking.Currency,owner.StripeAccountId!,fee,property.InstantBook,cancellationToken);
-
+                var intent = await _paymentService.CreatePlatformPaymentIntentAsync(booking.Id, amount, booking.Currency, cancellationToken);
                 booking.PaymentIntentId = intent.PaymentIntentId;
                 clientSecret = intent.ClientSecret;
             }

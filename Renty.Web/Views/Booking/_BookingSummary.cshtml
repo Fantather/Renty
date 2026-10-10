@@ -1,0 +1,40 @@
+@model Renty.Web.Models.BookingModels.BookingResultViewModel
+@{
+    var nights = (Model.CheckOutDate.Date - Model.CheckInDate.Date).Days;
+}
+
+<div class="booking-summary__card">
+    <a class="booking-summary__property" asp-controller="Properties" asp-action="Details" asp-route-slug="@Model.PropertySlug">
+        @if (!string.IsNullOrEmpty(Model.PropertyImageUrl))
+        {
+            <img class="booking-summary__image" src="@Model.PropertyImageUrl" alt="@Model.PropertyName" />
+        }
+        else
+        {
+            <div class="booking-summary__image"></div>
+        }
+        <div>
+            <p class="booking-summary__name">@Model.PropertyName</p>
+            <p class="booking-summary__location">@Model.City, @Model.Country</p>
+        </div>
+    </a>
+
+    <dl class="booking-summary__details">
+        <div>
+            <dt>Даты</dt>
+            <dd>@Model.CheckInDate.ToString("dd.MM.yyyy") - @Model.CheckOutDate.ToString("dd.MM.yyyy")</dd>
+        </div>
+        <div>
+            <dt>Ночей</dt>
+            <dd>@nights</dd>
+        </div>
+        <div>
+            <dt>Гости</dt>
+            <dd>@Model.GuestsCount</dd>
+        </div>
+        <div class="booking-summary__total">
+            <dt>Итого</dt>
+            <dd>$@Model.TotalPrice.ToString("0.##")</dd>
+        </div>
+    </dl>
+</div>

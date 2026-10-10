@@ -13,6 +13,8 @@ namespace Renty.Domain.Interfaces
 
         // Оплата
         Task<PaymentIntentResult> CreatePaymentIntentAsync(Guid bookingId, long amountInCents, string currency, string destinationAccountId, long applicationFeeInCents, bool autoBookingEnabled, CancellationToken ct = default);
+        Task<PaymentIntentResult> CreatePlatformPaymentIntentAsync(Guid bookingId, long amountInCents, string currency, CancellationToken ct = default);
+        Task<PaymentIntentResult> GetPaymentIntentAsync(string paymentIntentId, CancellationToken ct = default);
         Task CapturePaymentAsync(string paymentIntentId, CancellationToken ct = default);
         Task CancelPaymentAsync(string paymentIntentId, CancellationToken ct = default);
 

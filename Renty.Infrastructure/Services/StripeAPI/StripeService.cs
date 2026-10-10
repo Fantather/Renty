@@ -94,6 +94,42 @@ namespace Renty.Infrastructure.Services.StripeAPI
         /// <param name="applicationFeeInCents">Сумма комиссии за обработку платежа</param>
         /// <param name="ct">Токен отмены</param>
         /// <returns>Клиентский секрет (client secret) для данного объекта PaymentIntent. Используется на стороне клиента для получения данных с помощью публичного ключа (publishable key). Этот секрет позволяет завершить платеж на стороне фронтенда.</returns>
+        public async Task<PaymentIntentResult> CreatePlatformPaymentIntentAsync(Guid bookingId, long amountInCents, string currency, CancellationToken ct = default)
+        {
+            var service = new PaymentIntentService(_client);
+            var intent = await service.CreateAsync(new PaymentIntentCreateOptions
+            {
+                Amount = amountInCents,
+                Currency = currency.ToLowerInvariant(),
+                AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
+                {
+                    Enabled = true,
+                    AllowRedirects = "never"
+                },
+                Metadata = new Dictionary<string, string> { ["bookingId"] = bookingId.ToString() }
+            }, cancellationToken: ct);
+
+            return new PaymentIntentResult
+            {
+                PaymentIntentId = intent.Id,
+                ClientSecret = intent.ClientSecret,
+                Status = intent.Status
+            };
+        }
+
+        public async Task<PaymentIntentResult> GetPaymentIntentAsync(string paymentIntentId, CancellationToken ct = default)
+        {
+            var service = new PaymentIntentService(_client);
+            var intent = await service.GetAsync(paymentIntentId, cancellationToken: ct);
+
+            return new PaymentIntentResult
+            {
+                PaymentIntentId = intent.Id,
+                ClientSecret = intent.ClientSecret,
+                Status = intent.Status
+            };
+        }
+
         public async Task<PaymentIntentResult> CreatePaymentIntentAsync(Guid bookingId, long amountInCents, string currency, string destinationAccountId, long applicationFeeInCents, bool autoBookingEnabled, CancellationToken ct = default)
         {
 
