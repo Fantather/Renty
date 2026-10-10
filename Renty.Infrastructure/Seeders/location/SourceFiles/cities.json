@@ -5,7 +5,8 @@
     "name": "Odesa",
     "name_ru": "Одесса",
     "latitude": 46.482526,
-    "longitude": 30.7233095
+    "longitude": 30.7233095,
+    "place_id": "ChIJQ0yGC4oxxkARbBfyjOKPnxI"
   },
   {
     "country_iso2": "UA",
@@ -13,7 +14,8 @@
     "name": "Kyiv",
     "name_ru": "Киев",
     "latitude": 50.4501,
-    "longitude": 30.5234
+    "longitude": 30.5234,
+    "place_id": "ChIJBUVa4U7P1EAR_kYBF9IxSXY"
   },
   {
     "country_iso2": "US",
@@ -21,6 +23,7 @@
     "name": "New York City",
     "name_ru": "Нью-Йорк",
     "latitude": 40.7128,
-    "longitude": -74.0060
+    "longitude": -74.0060,
+    "place_id": "ChIJOwg_06VPwokRYv534QaPC8g"
   }
 ]

@@ -13,5 +13,6 @@ namespace Renty.Infrastructure.Seeders.location.DTO
         [JsonPropertyName("name_ru")] public string NameRu { get; set; } = string.Empty;
         [JsonPropertyName("latitude")] public decimal Latitude { get; set; }
         [JsonPropertyName("longitude")] public decimal Longitude { get; set; }
+        [JsonPropertyName("place_id")] public string? PlaceId { get; set; }
     }
 }
