@@ -32,6 +32,19 @@ namespace Renty.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            DateOnly dateOfBirth = default;
+            if (model.BirthDay.HasValue && model.BirthMonth.HasValue && model.BirthYear.HasValue)
+            {
+                if (model.BirthDay > DateTime.DaysInMonth(model.BirthYear.Value, model.BirthMonth.Value))
+                    ModelState.AddModelError(nameof(model.BirthDay), "Такой даты не существует");
+                else
+                {
+                    dateOfBirth = new DateOnly(model.BirthYear.Value, model.BirthMonth.Value, model.BirthDay.Value);
+                    if (dateOfBirth.AddYears(18) > DateOnly.FromDateTime(DateTime.Today))
+                        ModelState.AddModelError(nameof(model.BirthYear), "Регистрация доступна с 18 лет");
+                }
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -40,7 +53,7 @@ namespace Renty.Web.Controllers
             // Полный абсолютный адрес
             var confirmBaseUrl = Url.Action(nameof(ConfirmEmail), "Account", null, Request.Scheme)!;
 
-            var result = await _mediator.Send(new RegisterCommand(model.Name, model.Email, model.Password, confirmBaseUrl));
+            var result = await _mediator.Send(new RegisterCommand(model.FirstName, model.LastName, dateOfBirth, model.Email, model.Password, confirmBaseUrl));
 
             if (!result.IsSuccess)
             {

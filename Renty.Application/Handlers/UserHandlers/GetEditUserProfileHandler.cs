@@ -35,7 +35,9 @@ namespace Renty.Application.Handlers.UserHandlers
             var factsDto = allFacts.Select(type => new UserFactInputDto
             {
                 Type = type,
-                Value = userFactsDict.TryGetValue(type, out var value) ? value : string.Empty,
+                Value = type == UserFactTypeEnum.Generation
+                    ? (user.DateOfBirth.HasValue ? user.DateOfBirth.Value.ToDecade() + "-е" : string.Empty)
+                    : userFactsDict.TryGetValue(type, out var value) ? value : string.Empty,
                 IconName = type.GetMeta().IconName
             }).ToList();
 
@@ -51,7 +53,8 @@ namespace Renty.Application.Handlers.UserHandlers
                     : string.Empty,
                 LanguageIds = user.Languages?.Select(l => l.Id).ToList() ?? new List<Guid>(),
                 Info = user.Info,
-                Facts = factsDto
+                Facts = factsDto,
+                ShowGeneration = user.ShowGeneration
             };
 
             var availableLanguages = await _context.Languages

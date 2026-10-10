@@ -5,6 +5,8 @@
 }
 
 .register-card {
+    max-width: 520px;
+    padding: 40px;
     border: 1px solid var(--color-border);
 }
 
@@ -24,4 +26,75 @@
     display: flex;
     align-items: center;
     color: var(--color-text-muted);
+}
+
+.birth-date {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr 1.2fr;
+    gap: 8px;
+}
+
+.birth-date ::deep .custom-select {
+    position: relative;
+    min-width: 0;
+}
+
+.birth-date ::deep select {
+    width: 100%;
+    padding-right: 28px;
+    appearance: none;
+    background: var(--color-surface) url('/icons/chevron.svg') no-repeat right 10px center / 12px;
+    cursor: pointer;
+}
+
+.birth-date ::deep .custom-select__panel {
+    top: calc(100% + 6px);
+    left: -10px;
+    right: -10px;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 260px;
+    padding: 0;
+    border: 6px solid transparent;
+    box-shadow: 0 0 0 1px var(--color-border), var(--shadow-card);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.birth-date ::deep .custom-select__panel[hidden] {
+    display: none;
+}
+
+.birth-date ::deep .custom-select__option {
+    padding: 8px 12px;
+    border: none;
+    border-radius: var(--radius-md);
+    background: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.birth-date ::deep .custom-select__option:hover {
+    background-color: var(--color-hover);
+}
+
+.birth-date ::deep .custom-select__option.is-selected {
+    font-weight: 600;
+    background-color: var(--color-hover);
+}
+
+.birth-date__errors {
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+
+.birth-date__errors ::deep .auth-card__error {
+    margin: 0;
+}
+
+.birth-date__errors ::deep .field-validation-error ~ .field-validation-error {
+    display: none;
 }

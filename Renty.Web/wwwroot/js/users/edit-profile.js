@@ -63,7 +63,9 @@ if (generationTrigger) {
 
 generationSaveBtn.addEventListener('click', function () {
     showGenerationInput.value = generationToggle.checked;
-    if (generationTrigger) generationTrigger.hidden = !generationToggle.checked;
+
+    var generationLabel = document.getElementById('generationLabel');
+    generationLabel.textContent = generationLabel.dataset.label + ': ' + (generationToggle.checked ? generationLabel.dataset.value : '');
 
     generationModal.close();
 });

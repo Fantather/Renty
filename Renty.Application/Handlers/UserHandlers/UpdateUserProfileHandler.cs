@@ -46,6 +46,7 @@ namespace Renty.Application.Handlers.UserHandlers
             user.AvatarUrl = request.Input.AvatarUrl ?? user.AvatarUrl;
             user.Info = request.Input.Info;
             user.HomeCityId = request.Input.HomeCityId;
+            user.ShowGeneration = request.Input.ShowGeneration;
             if (request.Input.HomeCityId.HasValue)
             {
                 user.HomeCountryId = await _context.Cities
@@ -70,7 +71,7 @@ namespace Renty.Application.Handlers.UserHandlers
             _context.UserFacts.RemoveRange(user.Facts);
             if (request.Input.Facts != null && request.Input.Facts.Any())
             {
-                foreach (var f in request.Input.Facts)
+                foreach (var f in request.Input.Facts.Where(f => f.Type != Renty.Domain.Models.LookupsTables.UserFactTypeEnum.Generation))
                 {
 
                     if (!string.IsNullOrWhiteSpace(f.Value))

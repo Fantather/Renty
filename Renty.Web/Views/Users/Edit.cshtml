@@ -38,9 +38,9 @@
 
                     if (fact.Type == UserFactTypeEnum.Generation)
                     {
-                        <button type="button" id="generationTrigger" hidden="@(Model.Input.ShowGeneration ? null : "hidden")">
+                        <button type="button" id="generationTrigger">
                             <icon name="@fact.IconName" class="edit-profile__row-icon" />
-                            <span id="factLabel-@i" data-label="@label">@label: @fact.Value</span>
+                            <span id="generationLabel" data-label="@label" data-value="@fact.Value">@label: @(Model.Input.ShowGeneration ? fact.Value : null)</span>
                             <icon name="chevron-right" class="edit-profile__row-chevron" />
                         </button>
                     }
@@ -125,7 +125,7 @@
                     }
                     @if (generationFact != null)
                     {
-                        <span>@generationFact.Type.GetDescription() @generationFact.Value</span>
+                        <span>@(string.IsNullOrEmpty(generationFact.Value) ? "Дата рождения не указана" : generationFact.Type.GetDescription() + ": " + generationFact.Value)</span>
                     }
                 </div>
                 <label class="toggle">

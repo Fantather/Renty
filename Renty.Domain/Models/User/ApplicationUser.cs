@@ -56,6 +56,9 @@ namespace Renty.Domain.Models.User
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
+        public DateOnly? DateOfBirth { get; set; }
+        public bool ShowGeneration { get; set; } = true;
+
         ///ссылка на аватарку пользователя
         public string? AvatarUrl { get; set; }
 

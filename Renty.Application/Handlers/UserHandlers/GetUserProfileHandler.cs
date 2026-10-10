@@ -5,6 +5,8 @@ using Renty.Application.DTOs.GetUser;
 using Renty.Application.Extensions;
 using Renty.Application.Queries;
 using Renty.Infrastructure.Data;
+using Renty.Domain.Models.LookupsTables;
+using Renty.Domain.Models.User;
 using Renty.Application.DTOs.GetReviews;
 
 namespace Renty.Application.Handlers.UserHandlers
@@ -59,12 +61,22 @@ namespace Renty.Application.Handlers.UserHandlers
             if (user.HomeCountry != null)
                 homeCountry = string.IsNullOrWhiteSpace(user.HomeCountry.NameRu) ? user.HomeCountry.Name : user.HomeCountry.NameRu;
 
-            var facts = user.Facts?.Select(f => new UserFactDto
-            {
-                Type = f.Type.ToString(),
-                Value = f.Value,
-                IconName = f.Type.GetMeta().IconName
-            }).ToList() ?? new List<UserFactDto>();
+            var facts = (user.Facts ?? new List<UserFact>())
+                .Where(f => f.Type != UserFactTypeEnum.Generation)
+                .Select(f => new { f.Type, f.Value })
+                .ToList();
+
+            if (user.ShowGeneration && user.DateOfBirth.HasValue)
+                facts.Add(new { Type = UserFactTypeEnum.Generation, Value = "Родились в " + user.DateOfBirth.Value.ToDecade() + "-х" });
+
+            var factDtos = facts
+                .OrderBy(f => f.Type)
+                .Select(f => new UserFactDto
+                {
+                    Type = f.Type.ToString(),
+                    Value = f.Value,
+                    IconName = f.Type.GetMeta().IconName
+                }).ToList();
 
             //FOROLGA++
             // Добавить в ReviewDto PropertySlug и PropertyName и заполнить их из r.Property — на странице профиля отзыв ведёт на квартиру
@@ -89,7 +101,7 @@ namespace Renty.Application.Handlers.UserHandlers
             {
                 UserId = user.Id,
                 IsOwner = isOwner,
-                AvatarUrl = string.IsNullOrWhiteSpace(user.AvatarUrl) ? "https://placehold.co/160x160" : user.AvatarUrl,
+                AvatarUrl = user.AvatarUrl,
                 FullName = (user.FirstName + " " + user.LastName).Trim(),
                 IsSuperHost = user.IsSuperHost,
                 Rating = Math.Round(avgRating, 2),
@@ -100,7 +112,7 @@ namespace Renty.Application.Handlers.UserHandlers
                 HomeCountry = homeCountry,
                 Languages = languages,
                 Info = user.Info,
-                Facts = facts,
+                Facts = factDtos,
                 Reviews = reviewDtos,
 
                 CurrentPage = request.Page,

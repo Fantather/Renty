@@ -38,6 +38,9 @@ namespace Renty.Application.Handlers.RegisterHandlers
             {
                 UserName = request.Email,
                 Email = request.Email,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                DateOfBirth = request.DateOfBirth,
                 EmailConfirmed = false
             };
 

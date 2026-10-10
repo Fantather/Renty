@@ -1,6 +1,8 @@
 @model Renty.Web.Models.RegisterViewModel
 @{
     ViewData["Title"] = "Регистрация";
+    var months = new[] { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
+    var currentYear = DateTime.Today.Year;
 }
 
 <div class="register-page">
@@ -9,9 +11,43 @@
 
         <form asp-controller="Account" asp-action="Register" method="post" class="auth-card__form">
             <div asp-validation-summary="ModelOnly" class="auth-card__error"></div>
-            <label class="auth-card__label" asp-for="Name">Имя</label>
-            <input asp-for="Name" class="auth-card__input" />
-            <span asp-validation-for="Name" class="auth-card__error"></span>
+            <label class="auth-card__label" asp-for="FirstName">Имя</label>
+            <input asp-for="FirstName" class="auth-card__input" />
+            <span asp-validation-for="FirstName" class="auth-card__error"></span>
+
+            <label class="auth-card__label" asp-for="LastName">Фамилия</label>
+            <input asp-for="LastName" class="auth-card__input" />
+            <span asp-validation-for="LastName" class="auth-card__error"></span>
+
+            <label class="auth-card__label" asp-for="BirthDay">Дата рождения</label>
+            <div class="birth-date">
+                <select asp-for="BirthDay" class="auth-card__input">
+                    <option value="">День</option>
+                    @for (var day = 1; day <= 31; day++)
+                    {
+                        <option value="@day">@day</option>
+                    }
+                </select>
+                <select asp-for="BirthMonth" class="auth-card__input">
+                    <option value="">Месяц</option>
+                    @for (var month = 1; month <= 12; month++)
+                    {
+                        <option value="@month">@months[month - 1]</option>
+                    }
+                </select>
+                <select asp-for="BirthYear" class="auth-card__input">
+                    <option value="">Год</option>
+                    @for (var year = currentYear; year >= currentYear - 100; year--)
+                    {
+                        <option value="@year">@year</option>
+                    }
+                </select>
+            </div>
+            <div class="birth-date__errors">
+                <span asp-validation-for="BirthDay" class="auth-card__error"></span>
+                <span asp-validation-for="BirthMonth" class="auth-card__error"></span>
+                <span asp-validation-for="BirthYear" class="auth-card__error"></span>
+            </div>
 
             <label class="auth-card__label" asp-for="Email">Email</label>
             <input asp-for="Email" class="auth-card__input" />
@@ -42,10 +78,10 @@
 
         <div class="auth-card__divider"><span>или</span></div>
 
-        <button type="button" class="auth-card__google-btn" id="googleSignUpBtn" disabled>
-            <icon name="star" class="auth-card__google-icon" />
+        <a class="auth-card__google-btn" asp-controller="Account" asp-action="ExternalLogin" asp-route-provider="Google">
+            <icon name="google" class="auth-card__google-icon" />
             Продолжить с Google
-        </button>
+        </a>
 
         <p class="auth-card__footer">Уже есть аккаунт? <a asp-controller="Home" asp-action="Index">Войти</a></p>
     </div>
@@ -53,4 +89,5 @@
 
 @section Scripts {
     <script src="~/js/register/register.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/register/birth-date.js" asp-append-version="true"></script>
 }
