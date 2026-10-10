@@ -1,11 +1,8 @@
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Renty.Application.Commands;
-using Renty.Web.Models.Shared;
 using System.Security.Claims;
-using Renty.Application.Queries;
 
 namespace Renty.Web.Controllers
 {
@@ -13,32 +10,10 @@ namespace Renty.Web.Controllers
     public class FavoritesController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public FavoritesController(IMediator mediator, IMapper mapper)
+        public FavoritesController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
-        }
-
-        /// <summary>
-        /// Возвращает страницу со списком избранного пользователя
-        /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-            var result = await _mediator.Send(new GetUserFavoritesQuery(userId));
-
-            if (!result.IsSuccess)
-            {
-                return View(new List<PropertyCardViewModel>());
-            }
-
-            var viewModel = _mapper.Map<List<PropertyCardViewModel>>(result.Data);
-
-            return View(viewModel);
         }
 
         /// <summary>

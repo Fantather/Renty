@@ -17,6 +17,7 @@ namespace Renty.Web.Models.Shared
         public decimal PricePerNight { get; set; }
         // Цена до скидки, выводится зачёркнутой; null, если скидки нет
         public decimal? OriginalPricePerNight { get; set; }
+        public decimal? TotalPrice { get; set; }
         // Подпись скидки под ценой, например «−10% · новое объявление»; null, если скидки нет
         public string? DiscountLabel { get; set; }
         public double? Latitude { get; set; }
