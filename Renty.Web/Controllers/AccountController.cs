@@ -98,12 +98,16 @@ namespace Renty.Web.Controllers
             {
                 // Ошибка подтверждения
                 ModelState.AddModelError(string.Empty, string.Join(", ", result.Errors));
-                ViewData["IsConfirm"] = result.IsSuccess;
                 return View(nameof(RegisterConfirmation));
             }
 
-            // Почта подтверждена
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(EmailConfirmed));
+        }
+
+        [HttpGet]
+        public IActionResult EmailConfirmed()
+        {
+            return View();
         }
 
         #endregion

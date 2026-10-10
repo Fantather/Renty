@@ -30,10 +30,13 @@ namespace Renty.Web.Controllers
                 Drafts = result.Data!.Drafts.Select(p => new PropertyCardViewModel
                 {
                     Id = p.Id,
+                    CategoryName = p.CategoryName,
+                    PricePerNight = p.PricePerNight,
                     City = p.City,
                     Country = p.Country,
                     ActionUrl = Url.Action("Title", "PropertyEdit", new { id = p.Id }),
-                    ShowFavorite = false
+                    ShowFavorite = false,
+                    ImageUrls = p.ImageUrls
                 }).ToList(),
                 Published = result.Data!.Published.Select(p => new PropertyCardViewModel
                 {

@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Почта подтверждена";
+    var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+}
+
+<div class="confirmation-page">
+    <div class="auth-card confirmation-card">
+        <h1 class="auth-card__title">Почта подтверждена</h1>
+        @if (isAuthenticated)
+        {
+            <p>Поздравляем, регистрация завершена! Вы уже вошли в аккаунт.</p>
+            <a href="/" class="btn-primary">На главную</a>
+        }
+        else
+        {
+            <p>Почта уже подтверждена. Войдите, чтобы продолжить.</p>
+            <a href="?login" class="btn-primary">Войти</a>
+        }
+    </div>
+</div>

@@ -31,6 +31,9 @@ namespace Renty.Application.Handlers.PropertyHandlers
                     Id = p.Id,
                     City = string.IsNullOrEmpty(p.City.NameRu) ? p.City.Name : p.City.NameRu,
                     Country = string.IsNullOrEmpty(p.Country.NameRu) ? p.Country.Name : p.Country.NameRu,
+                    CategoryName = p.Category?.Name ?? string.Empty,
+                    PricePerNight = p.PricePerNight,
+                    ImageUrls = p.PropertyImages.Select(i => i.ImageUrl).ToList()
                 }).ToList(),
                 Published = properties.Where(p => p.Status == PropertyStatusEnum.Active).Select(p => new PropertyCardModel
                 {

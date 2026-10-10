@@ -8,7 +8,7 @@
     aspect-ratio: 4 / 3;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    background-color: var(--color-surface);
+    background-color: var(--color-hover);
 }
 
 ::deep .property-card__image-link {

@@ -13,9 +13,11 @@ namespace Renty.Application.Handlers.RegisterHandlers
     public class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, OperationResult<bool>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        public ConfirmEmailHandler(UserManager<ApplicationUser> userManager)
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        public ConfirmEmailHandler(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
         }
         public async Task<OperationResult<bool>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
         {
@@ -24,12 +26,17 @@ namespace Renty.Application.Handlers.RegisterHandlers
             if (user == null)
                 return OperationResult<bool>.Fail("User not found");
 
+            if (user.EmailConfirmed)
+                return OperationResult<bool>.Success(false);
+
             var result = await _userManager.ConfirmEmailAsync(user,request.Token);
 
             if (!result.Succeeded)
             {
                 return OperationResult<bool>.Fail(result.Errors.Select(e => e.Description).ToArray());
             }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
 
             return OperationResult<bool>.Success(true);
         }

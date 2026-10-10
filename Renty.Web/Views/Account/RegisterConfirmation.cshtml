@@ -1,13 +1,30 @@
 @{
     var confirmEmail = ViewData["email"]?.ToString();
+    var isLinkInvalid = !ViewData.ModelState.IsValid;
 }
 
 <div class="confirmation-page">
     <div class="auth-card confirmation-card">
-        <h1 class="auth-card__title">Подтвердите почту</h1>
-        <p>Письмо с подтверждением отправлено на <strong>@confirmEmail</strong>. Проверьте входящие.</p>
+        @if (isLinkInvalid)
+        {
+            <h1 class="auth-card__title">Ссылка недействительна</h1>
+            <div asp-validation-summary="ModelOnly" class="auth-card__error"></div>
+            <p>Возможно, срок действия ссылки истёк. Укажите почту, и мы отправим письмо ещё раз.</p>
+        }
+        else
+        {
+            <h1 class="auth-card__title">Подтвердите почту</h1>
+            <p>Письмо с подтверждением отправлено на <strong>@confirmEmail</strong>. Проверьте входящие.</p>
+        }
         <form method="post" action="/Account/SendConfirmationEmail">
-            <input type="hidden" name="email" value="@confirmEmail" />
+            @if (string.IsNullOrEmpty(confirmEmail))
+            {
+                <input type="email" name="email" class="auth-card__input" placeholder="Почта" required />
+            }
+            else
+            {
+                <input type="hidden" name="email" value="@confirmEmail" />
+            }
             <button type="submit" class="btn-primary" style="width: 100%">Отправить письмо ещё раз</button>
         </form>
     </div>
