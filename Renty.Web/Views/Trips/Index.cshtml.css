@@ -1,20 +1,30 @@
-.favorites {
+.trips {
     padding: 2rem 1rem;
     max-width: 1280px;
     margin: 0 auto;
 }
 
-.favorites__title {
-    font-size: 2.5rem;
+.trips__title {
+    font-size: 1.75rem;
     font-weight: 600;
     margin-bottom: 1.5rem;
 }
 
-.favorites__empty {
+.trips__section {
+    margin-bottom: 3rem;
+}
+
+.trips__section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.trips__empty {
     color: var(--color-text-muted);
 }
 
-.favorites__grid {
+.trips__grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1.5rem;

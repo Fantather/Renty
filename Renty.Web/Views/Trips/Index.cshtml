@@ -1,0 +1,46 @@
+@using Renty.Web.Models.Trips
+@model TripsViewModel
+
+@{
+    ViewData["Title"] = "Поездки";
+}
+
+<div class="trips">
+    <h1 class="trips__title">Поездки</h1>
+
+    <section class="trips__section">
+        <h2 class="trips__section-title">Бронирования</h2>
+
+        @if (!Model.Bookings.Any())
+        {
+            <p class="trips__empty">Пока нет бронирований</p>
+        }
+        else
+        {
+            <div class="trips__grid">
+                @foreach (var card in Model.Bookings)
+                {
+                    <partial name="_PropertyCard" model="card" />
+                }
+            </div>
+        }
+    </section>
+
+    <section class="trips__section">
+        <h2 class="trips__section-title">Избранное</h2>
+
+        @if (!Model.Favorites.Any())
+        {
+            <p class="trips__empty">Пока ничего нет</p>
+        }
+        else
+        {
+            <div class="trips__grid">
+                @foreach (var card in Model.Favorites)
+                {
+                    <partial name="_PropertyCard" model="card" />
+                }
+            </div>
+        }
+    </section>
+</div>

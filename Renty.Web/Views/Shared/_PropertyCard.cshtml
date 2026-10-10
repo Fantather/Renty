@@ -37,11 +37,18 @@
         <p class="property-card__category">@Model.CategoryName</p>
         <p class="property-card__duration">@Model.DurationLabel</p>
         <p class="property-card__price">
-            @if (Model.OriginalPricePerNight > Model.PricePerNight)
+            @if (Model.TotalPrice.HasValue)
             {
-                <s class="property-card__price-original">$@Model.OriginalPricePerNight.Value.ToString("0")</s>
+                <strong>$@Model.TotalPrice.Value.ToString("0")</strong> @("всего")
             }
-            <strong>$@Model.PricePerNight.ToString("0")</strong> ночь
+            else
+            {
+                @if (Model.OriginalPricePerNight > Model.PricePerNight)
+                {
+                    <s class="property-card__price-original">$@Model.OriginalPricePerNight.Value.ToString("0")</s>
+                }
+                <strong>$@Model.PricePerNight.ToString("0")</strong> @("ночь")
+            }
         </p>
         @if (!string.IsNullOrEmpty(Model.DiscountLabel))
         {
